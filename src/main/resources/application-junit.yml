@@ -1,0 +1,38 @@
+#========================================
+# Test profile settings (junit tests)
+#========================================
+logging:
+  level:
+    root: INFO
+integration:
+  operaton:
+    url: http://operaton.url
+scheduler:
+  notification-cleanup:
+    cron: '-'
+    name: notification-cleanup
+    shedlock-lock-at-most-for: PT5M
+    maximum-execution-time: PT5M
+spring:
+  cache:
+    type: none
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mariadb:10.6:///junittest
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: update
+  security:
+    oauth2:
+      client:
+        provider:
+          operaton:
+            token-uri: http://token.url
+        registration:
+          operaton:
+            client-id: the-client-id
+            client-secret: the-client-secret

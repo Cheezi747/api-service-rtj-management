@@ -1,0 +1,75 @@
+{
+	"errands": [
+		{
+			"id": "55555555-5555-5555-5555-555555555555",
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"typeSlug": "TYPE-1",
+			"title": "Errand five",
+			"status": "NEW",
+			"description": "Running process errand",
+			"priority": "MEDIUM",
+			"reporterUserId": "reporter5",
+			"processDefinitionName": "Handläggning",
+			"processInstanceId": "pi-running-55",
+			"created": "${json-unit.any-string}",
+			"modified": "${json-unit.any-string}",
+			"touched": "${json-unit.any-string}"
+		},
+		{
+			"id": "44444444-4444-4444-4444-444444444444",
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"typeSlug": "TYPE-1",
+			"title": "Errand four",
+			"status": "NEW",
+			"description": "Fourth errand description",
+			"priority": "LOW",
+			"reporterUserId": "reporter4",
+			"created": "${json-unit.any-string}",
+			"modified": "${json-unit.any-string}",
+			"touched": "${json-unit.any-string}"
+		},
+		{
+			"id": "22222222-2222-2222-2222-222222222222",
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"typeSlug": "TYPE-1",
+			"title": "Errand two",
+			"status": "NEW",
+			"description": "Second errand description",
+			"priority": "MEDIUM",
+			"reporterUserId": "reporter2",
+			"assignedUserId": "assignee2",
+			"created": "${json-unit.any-string}",
+			"modified": "${json-unit.any-string}",
+			"touched": "${json-unit.any-string}"
+		},
+		{
+			"id": "11111111-1111-1111-1111-111111111111",
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"typeSlug": "TYPE-1",
+			"title": "Errand one",
+			"status": "NEW",
+			"description": "First errand description",
+			"priority": "HIGH",
+			"reporterUserId": "reporter1",
+			"assignedUserId": "assignee1",
+			"created": "${json-unit.any-string}",
+			"modified": "${json-unit.any-string}",
+			"touched": "${json-unit.any-string}"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 10,
+		"count": 4,
+		"totalRecords": 4,
+		"totalPages": 1,
+		"sortBy": [
+			"touched"
+		],
+		"sortDirection": "DESC"
+	}
+}

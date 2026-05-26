@@ -1,0 +1,20 @@
+[
+	{
+		"id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+		"externalId": "198001011234",
+		"externalIdType": "PRIVATE",
+		"role": "APPLICANT",
+		"firstName": "Joe",
+		"lastName": "Doe",
+		"address": "Storgatan 1",
+		"zipCode": "85248",
+		"city": "Sundsvall",
+		"country": "Sweden",
+		"contactChannels": [
+			{
+				"key": "Email",
+				"value": "joe.doe@example.com"
+			}
+		]
+	}
+]

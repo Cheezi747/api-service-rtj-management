@@ -1,0 +1,53 @@
+#========================================
+# General settings
+#========================================
+logging:
+  level:
+    root: INFO
+openapi:
+  name: ${spring.application.name}
+  title: ${spring.application.name}
+  version: '@project.version@'
+springdoc:
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+spring:
+  application:
+    name: rtj-management
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+  flyway:
+    enabled: false
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: none
+  security:
+    oauth2:
+      client:
+        registration:
+          operaton:
+            authorization-grant-type: client_credentials
+            provider: operaton
+#========================================
+# Integration settings
+#========================================
+integration:
+  operaton:
+    connect-timeout: 5
+    read-timeout: 30
+#========================================
+# Notification settings
+#========================================
+notification:
+  ttl: P30D
+scheduler:
+  notification-cleanup:
+    cron: '0 0 2 * * *'
+    name: notification-cleanup
+    shedlock-lock-at-most-for: PT5M
+    maximum-execution-time: PT5M

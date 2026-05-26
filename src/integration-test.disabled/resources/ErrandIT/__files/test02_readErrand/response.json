@@ -1,0 +1,15 @@
+{
+	"id": "11111111-1111-1111-1111-111111111111",
+	"municipalityId": "2281",
+	"namespace": "MY_NAMESPACE",
+	"typeSlug": "TYPE-1",
+	"title": "Errand one",
+	"status": "NEW",
+	"description": "First errand description",
+	"priority": "HIGH",
+	"reporterUserId": "reporter1",
+	"assignedUserId": "assignee1",
+	"created": "${json-unit.any-string}",
+	"modified": "${json-unit.any-string}",
+	"touched": "${json-unit.any-string}"
+}
