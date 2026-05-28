@@ -2,6 +2,7 @@ package se.sundsvall.rtjmanagement.core.api.model;
 
 import com.google.code.beanmatchers.BeanMatchers;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -51,8 +52,10 @@ class ErrandTest {
 			.withPriority("HIGH")
 			.withReporterUserId("reporter")
 			.withAssignedUserId("assignee")
+			.withApplicantEmail("anna@example.com")
 			.withProcessDefinitionName("BPMN")
 			.withProcessInstanceId("pi-1")
+			.withProcessVariables(Map.of("forceSufficient", false))
 			.withCreated(created)
 			.withModified(modified)
 			.withTouched(touched);
@@ -69,8 +72,10 @@ class ErrandTest {
 		assertThat(errand.getPriority()).isEqualTo("HIGH");
 		assertThat(errand.getReporterUserId()).isEqualTo("reporter");
 		assertThat(errand.getAssignedUserId()).isEqualTo("assignee");
+		assertThat(errand.getApplicantEmail()).isEqualTo("anna@example.com");
 		assertThat(errand.getProcessDefinitionName()).isEqualTo("BPMN");
 		assertThat(errand.getProcessInstanceId()).isEqualTo("pi-1");
+		assertThat(errand.getProcessVariables()).containsEntry("forceSufficient", false);
 		assertThat(errand.getCreated()).isEqualTo(created);
 		assertThat(errand.getModified()).isEqualTo(modified);
 		assertThat(errand.getTouched()).isEqualTo(touched);

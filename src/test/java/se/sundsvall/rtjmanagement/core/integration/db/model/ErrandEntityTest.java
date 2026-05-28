@@ -51,6 +51,7 @@ class ErrandEntityTest {
 		final var priority = "priority";
 		final var reporterUserId = "reporterUserId";
 		final var assignedUserId = "assignedUserId";
+		final var applicantEmail = "anna@example.com";
 		final var processDefinitionName = "Handläggning";
 		final var processInstanceId = "pi-1";
 
@@ -66,6 +67,7 @@ class ErrandEntityTest {
 			.withPriority(priority)
 			.withReporterUserId(reporterUserId)
 			.withAssignedUserId(assignedUserId)
+			.withApplicantEmail(applicantEmail)
 			.withProcessDefinitionName(processDefinitionName)
 			.withProcessInstanceId(processInstanceId)
 			.withCreated(now)
@@ -84,6 +86,7 @@ class ErrandEntityTest {
 		assertThat(entity.getPriority()).isEqualTo(priority);
 		assertThat(entity.getReporterUserId()).isEqualTo(reporterUserId);
 		assertThat(entity.getAssignedUserId()).isEqualTo(assignedUserId);
+		assertThat(entity.getApplicantEmail()).isEqualTo(applicantEmail);
 		assertThat(entity.getProcessDefinitionName()).isEqualTo(processDefinitionName);
 		assertThat(entity.getProcessInstanceId()).isEqualTo(processInstanceId);
 		assertThat(entity).extracting(

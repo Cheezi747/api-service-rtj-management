@@ -1,6 +1,7 @@
 package se.sundsvall.rtjmanagement.core.service;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import se.sundsvall.rtjmanagement.core.service.event.ErrandAssigned;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandCreated;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandDeleted;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandStatusChanged;
+import se.sundsvall.rtjmanagement.operaton.service.ProcessService;
 import se.sundsvall.rtjmanagement.shared.NotificationRequest;
 
 import static java.time.OffsetDateTime.now;
@@ -37,7 +39,11 @@ import static se.sundsvall.rtjmanagement.core.service.mapper.PatchMapper.patchEr
  * {@link ErrandDeleted}) on the application bus — other modules ({@code statushistory},
  * {@code notifications}, type modules) react via {@code @ApplicationModuleListener}.
  *
- * BPMN process start is intentionally NOT here (D6: per-type, deploy-time concern).
+ * When the request carries a {@code processDefinitionName}, the matching Operaton BPMN is
+ * started immediately after the envelope is persisted and the returned {@code processInstanceId}
+ * is stored on the same row before the transaction commits — so the envelope and its process
+ * handle land atomically. Type-agnostic: any errand that names a process gets one started; types
+ * that don't use Operaton leave the field null.
  */
 @Service
 @Transactional
@@ -47,15 +53,24 @@ public class ErrandService {
 
 	private final ErrandRepository errandRepository;
 	private final ApplicationEventPublisher eventPublisher;
+	private final ProcessService processService;
 
-	ErrandService(final ErrandRepository errandRepository, final ApplicationEventPublisher eventPublisher) {
+	ErrandService(final ErrandRepository errandRepository,
+		final ApplicationEventPublisher eventPublisher,
+		final ProcessService processService) {
 		this.errandRepository = errandRepository;
 		this.eventPublisher = eventPublisher;
+		this.processService = processService;
 	}
 
 	public String createErrand(final String municipalityId, final String namespace, final Errand errand) {
 		final var saved = errandRepository.save(toErrandEntity(errand, namespace, municipalityId));
 		final var timestamp = nowTs();
+
+		processService.startProcess(municipalityId, saved.getProcessDefinitionName(), saved.getId(),
+			buildProcessVariables(municipalityId, namespace, saved.getId(), saved.getApplicantEmail(),
+				errand.getProcessVariables()))
+			.ifPresent(saved::setProcessInstanceId);
 
 		eventPublisher.publishEvent(new ErrandCreated(
 			saved.getId(), saved.getTypeSlug(), municipalityId, namespace,
@@ -131,5 +146,23 @@ public class ErrandService {
 
 	private static OffsetDateTime nowTs() {
 		return now(systemDefault()).truncatedTo(MILLIS);
+	}
+
+	/**
+	 * Build the process-variable map handed to Operaton on start. The three envelope
+	 * keys (errandId, municipalityId, namespace) are always present; anything the
+	 * client passed in {@code errand.processVariables} is merged on top and may
+	 * override (e.g. a demo passing {@code forceSufficient=false}).
+	 */
+	private static Map<String, Object> buildProcessVariables(final String municipalityId, final String namespace,
+		final String errandId, final String applicantEmail, final Map<String, Object> extras) {
+
+		final var vars = new java.util.HashMap<String, Object>();
+		vars.put("errandId", errandId);
+		vars.put("municipalityId", municipalityId);
+		vars.put("namespace", namespace);
+		ofNullable(applicantEmail).ifPresent(v -> vars.put("applicantEmail", v));
+		ofNullable(extras).ifPresent(vars::putAll);
+		return vars;
 	}
 }

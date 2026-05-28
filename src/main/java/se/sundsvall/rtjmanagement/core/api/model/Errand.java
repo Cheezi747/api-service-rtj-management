@@ -1,14 +1,17 @@
 package se.sundsvall.rtjmanagement.core.api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Null;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.rtjmanagement.core.api.validation.groups.OnCreate;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.WRITE_ONLY;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 /**
@@ -56,12 +59,19 @@ public class Errand {
 	@Schema(description = "User id of the assignee", examples = "jane02doe")
 	private String assignedUserId;
 
+	@Schema(description = "Email address of the applicant — used by the BPMN to send decision and supplementation emails. Stored on the errand so workers can reference it as a process variable.", examples = "anna.andersson@example.com")
+	private String applicantEmail;
+
 	@Schema(description = "Name of the Operaton process definition to start when the errand is created", examples = "Handläggning av ärende")
 	private String processDefinitionName;
 
 	@Schema(description = "Id of the Operaton process instance started for this errand", examples = "a-process-instance-id", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private String processInstanceId;
+
+	@Schema(description = "Extra process variables forwarded to Operaton when the BPMN is started. Merged on top of the defaults (errandId, municipalityId, namespace). Write-only — never persisted, never returned on read.", accessMode = WRITE_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Map<String, Object> processVariables;
 
 	@Schema(description = "Created timestamp", accessMode = READ_ONLY)
 	@DateTimeFormat(iso = DATE_TIME)
@@ -123,12 +133,20 @@ public class Errand {
 		return assignedUserId;
 	}
 
+	public String getApplicantEmail() {
+		return applicantEmail;
+	}
+
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
 
 	public String getProcessInstanceId() {
 		return processInstanceId;
+	}
+
+	public Map<String, Object> getProcessVariables() {
+		return processVariables;
 	}
 
 	public OffsetDateTime getCreated() {
@@ -187,12 +205,20 @@ public class Errand {
 		this.assignedUserId = v;
 	}
 
+	public void setApplicantEmail(final String v) {
+		this.applicantEmail = v;
+	}
+
 	public void setProcessDefinitionName(final String v) {
 		this.processDefinitionName = v;
 	}
 
 	public void setProcessInstanceId(final String v) {
 		this.processInstanceId = v;
+	}
+
+	public void setProcessVariables(final Map<String, Object> v) {
+		this.processVariables = v;
 	}
 
 	public void setCreated(final OffsetDateTime v) {
@@ -262,6 +288,11 @@ public class Errand {
 		return this;
 	}
 
+	public Errand withApplicantEmail(final String v) {
+		this.applicantEmail = v;
+		return this;
+	}
+
 	public Errand withProcessDefinitionName(final String v) {
 		this.processDefinitionName = v;
 		return this;
@@ -269,6 +300,11 @@ public class Errand {
 
 	public Errand withProcessInstanceId(final String v) {
 		this.processInstanceId = v;
+		return this;
+	}
+
+	public Errand withProcessVariables(final Map<String, Object> v) {
+		this.processVariables = v;
 		return this;
 	}
 
@@ -298,8 +334,10 @@ public class Errand {
 			&& Objects.equals(status, errand.status) && Objects.equals(description, errand.description)
 			&& Objects.equals(priority, errand.priority) && Objects.equals(reporterUserId, errand.reporterUserId)
 			&& Objects.equals(assignedUserId, errand.assignedUserId)
+			&& Objects.equals(applicantEmail, errand.applicantEmail)
 			&& Objects.equals(processDefinitionName, errand.processDefinitionName)
 			&& Objects.equals(processInstanceId, errand.processInstanceId)
+			&& Objects.equals(processVariables, errand.processVariables)
 			&& Objects.equals(created, errand.created) && Objects.equals(modified, errand.modified)
 			&& Objects.equals(touched, errand.touched);
 	}
@@ -307,7 +345,8 @@ public class Errand {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, municipalityId, namespace, errandNumber, typeSlug, title, status, description, priority,
-			reporterUserId, assignedUserId, processDefinitionName, processInstanceId, created, modified, touched);
+			reporterUserId, assignedUserId, applicantEmail, processDefinitionName, processInstanceId, processVariables,
+			created, modified, touched);
 	}
 
 	@Override
@@ -316,7 +355,9 @@ public class Errand {
 			+ "', errandNumber='" + errandNumber + "', typeSlug='" + typeSlug + "', status='" + status
 			+ "', title='" + title + "', description='" + description + "', priority='" + priority
 			+ "', reporterUserId='" + reporterUserId + "', assignedUserId='" + assignedUserId
+			+ "', applicantEmail='" + applicantEmail
 			+ "', processDefinitionName='" + processDefinitionName + "', processInstanceId='" + processInstanceId
+			+ "', processVariables=" + processVariables
 			+ "', created=" + created + ", modified=" + modified + ", touched=" + touched + '}';
 	}
 }

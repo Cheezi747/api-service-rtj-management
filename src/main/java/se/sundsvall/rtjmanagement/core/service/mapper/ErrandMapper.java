@@ -28,6 +28,7 @@ public final class ErrandMapper {
 				.withPriority(e.getPriority())
 				.withReporterUserId(e.getReporterUserId())
 				.withAssignedUserId(e.getAssignedUserId())
+				.withApplicantEmail(e.getApplicantEmail())
 				.withProcessDefinitionName(e.getProcessDefinitionName())
 				.withProcessInstanceId(e.getProcessInstanceId())
 				.withCreated(e.getCreated())
@@ -49,6 +50,7 @@ public final class ErrandMapper {
 				.withPriority(source.getPriority())
 				.withReporterUserId(source.getReporterUserId())
 				.withAssignedUserId(source.getAssignedUserId())
+				.withApplicantEmail(source.getApplicantEmail())
 				.withProcessDefinitionName(source.getProcessDefinitionName()))
 			.orElse(null);
 	}

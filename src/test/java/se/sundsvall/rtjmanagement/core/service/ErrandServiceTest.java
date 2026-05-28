@@ -20,6 +20,7 @@ import se.sundsvall.rtjmanagement.core.service.event.ErrandAssigned;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandCreated;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandDeleted;
 import se.sundsvall.rtjmanagement.core.service.event.ErrandStatusChanged;
+import se.sundsvall.rtjmanagement.operaton.service.ProcessService;
 import se.sundsvall.rtjmanagement.shared.NotificationRequest;
 
 import static java.util.List.of;
@@ -44,6 +45,9 @@ class ErrandServiceTest {
 
 	@Mock
 	private ApplicationEventPublisher eventPublisherMock;
+
+	@Mock
+	private ProcessService processServiceMock;
 
 	@InjectMocks
 	private ErrandService service;

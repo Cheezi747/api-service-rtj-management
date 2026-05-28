@@ -83,6 +83,9 @@ public class ErrandEntity implements Auditable {
 	@Column(name = "assigned_user_id")
 	private String assignedUserId;
 
+	@Column(name = "applicant_email", length = 255)
+	private String applicantEmail;
+
 	@Column(name = "process_definition_name")
 	private String processDefinitionName;
 
@@ -199,6 +202,14 @@ public class ErrandEntity implements Auditable {
 		this.assignedUserId = assignedUserId;
 	}
 
+	public String getApplicantEmail() {
+		return applicantEmail;
+	}
+
+	public void setApplicantEmail(final String applicantEmail) {
+		this.applicantEmail = applicantEmail;
+	}
+
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
@@ -298,6 +309,11 @@ public class ErrandEntity implements Auditable {
 		return this;
 	}
 
+	public ErrandEntity withApplicantEmail(final String v) {
+		this.applicantEmail = v;
+		return this;
+	}
+
 	public ErrandEntity withProcessDefinitionName(final String v) {
 		this.processDefinitionName = v;
 		return this;
@@ -334,6 +350,7 @@ public class ErrandEntity implements Auditable {
 			&& Objects.equals(errandNumber, that.errandNumber) && Objects.equals(typeSlug, that.typeSlug) && Objects.equals(title, that.title)
 			&& Objects.equals(status, that.status) && Objects.equals(description, that.description) && Objects.equals(priority, that.priority)
 			&& Objects.equals(reporterUserId, that.reporterUserId) && Objects.equals(assignedUserId, that.assignedUserId)
+			&& Objects.equals(applicantEmail, that.applicantEmail)
 			&& Objects.equals(processDefinitionName, that.processDefinitionName) && Objects.equals(processInstanceId, that.processInstanceId)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified) && Objects.equals(touched, that.touched);
 	}
@@ -341,7 +358,7 @@ public class ErrandEntity implements Auditable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, municipalityId, namespace, errandNumber, typeSlug, title, status, description, priority,
-			reporterUserId, assignedUserId, processDefinitionName, processInstanceId, created, modified, touched);
+			reporterUserId, assignedUserId, applicantEmail, processDefinitionName, processInstanceId, created, modified, touched);
 	}
 
 	@Override
@@ -358,6 +375,7 @@ public class ErrandEntity implements Auditable {
 			", priority='" + priority + '\'' +
 			", reporterUserId='" + reporterUserId + '\'' +
 			", assignedUserId='" + assignedUserId + '\'' +
+			", applicantEmail='" + applicantEmail + '\'' +
 			", processDefinitionName='" + processDefinitionName + '\'' +
 			", processInstanceId='" + processInstanceId + '\'' +
 			", created=" + created +
