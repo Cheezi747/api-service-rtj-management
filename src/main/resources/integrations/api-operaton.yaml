@@ -1,13 +1,14 @@
+---
 openapi: 3.1.0
 info:
-  title: operaton
+  title: api-service-operaton
   contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "1.0"
+  version: '1.0'
 servers:
-- url: https://operaton-af-operaton.apps.ocp201.sundsvall.se
+- url: http://localhost:8080
   description: Generated server url
 tags:
 - name: Deployments
@@ -17,56 +18,12 @@ tags:
     a reusable building block that can be used in BPMN process models
 - name: Processes
   description: Manage deployed process definitions and running process instances
-- name: Decisions
-  description: Manage deployed DMN decision definitions
 - name: Messages
   description: Correlate BPMN messages to running process instances
+- name: Decisions
+  description: Manage deployed DMN decision definitions
 paths:
-  /{municipalityId}/message:
-    post:
-      tags:
-      - Messages
-      summary: Correlate a BPMN message to a process instance waiting on a receive
-        task or message catch event
-      operationId: correlateMessage
-      parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CorrelationMessageRequest"
-        required: true
-      responses:
-        "204":
-          description: Message correlated
-        "404":
-          description: No process instance waiting for the message
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-instances:
+  "/{municipalityId}/process-instances":
     get:
       tags:
       - Processes
@@ -81,31 +38,31 @@ paths:
           type: string
         example: 2281
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProcessInstancesResponse"
-        "400":
+                "$ref": "#/components/schemas/ProcessInstancesResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
+                "$ref": "#/components/schemas/Problem"
     post:
       tags:
       - Processes
-      summary: "Start a new process instance by process definition key, optionally\
-        \ with variables"
+      summary: Start a new process instance by process definition key, optionally
+        with variables
       operationId: startProcessInstance
       parameters:
       - name: municipalityId
@@ -119,30 +76,127 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StartProcessInstanceRequest"
+              "$ref": "#/components/schemas/StartProcessInstanceRequest"
         required: true
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProcessInstanceResponse"
-        "400":
+                "$ref": "#/components/schemas/ProcessInstanceResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/deployments:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/process-instances/{id}/variables":
+    post:
+      tags:
+      - Processes
+      summary: Modify variables (add, update, delete) on a running process instance
+      operationId: modifyProcessInstanceVariables
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: id
+        in: path
+        description: Process instance id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModifyVariablesRequest"
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                "$ref": "#/components/schemas/Problem"
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/message":
+    post:
+      tags:
+      - Messages
+      summary: Correlate a BPMN message to a process instance waiting on a receive
+        task or message catch event
+      description: Delivers the message to every process instance that matches the
+        supplied messageName and businessKey. If multiple instances share the same
+        businessKey (rare but allowed), all of them are advanced. Returns 404 when
+        no waiting instance matches.
+      operationId: correlateMessage
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CorrelationMessageRequest"
+        required: true
+      responses:
+        '204':
+          description: Message correlated to one or more instances
+        '404':
+          description: No process instance waiting for the message
+          content:
+            application/problem+json:
+              schema:
+                "$ref": "#/components/schemas/Problem"
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/deployments":
     get:
       tags:
       - Deployments
@@ -157,26 +211,26 @@ paths:
           type: string
         example: 2281
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeploymentsResponse"
-        "400":
+                "$ref": "#/components/schemas/DeploymentsResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
+                "$ref": "#/components/schemas/Problem"
     post:
       tags:
       - Deployments
@@ -209,27 +263,27 @@ paths:
               required:
               - file
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeploymentResponse"
-        "400":
+                "$ref": "#/components/schemas/DeploymentResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/topics:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/topics":
     get:
       tags:
       - Topics
@@ -245,29 +299,29 @@ paths:
           type: string
         example: 2281
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TopicDescription"
-        "400":
+                  "$ref": "#/components/schemas/TopicDescription"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/topics/{topic}:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/topics/{topic}":
     get:
       tags:
       - Topics
@@ -290,33 +344,33 @@ paths:
           type: string
         example: send-email
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TopicDescription"
-        "404":
+                "$ref": "#/components/schemas/TopicDescription"
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/topics/templates:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/topics/templates":
     get:
       tags:
       - Topics
@@ -332,78 +386,29 @@ paths:
           type: string
         example: 2281
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ElementTemplate"
-        "400":
+                  "$ref": "#/components/schemas/ElementTemplate"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-instances/{id}/variables:
-    post:
-      tags:
-      - Processes
-      summary: Modify variables (add, update, delete) on a running process instance
-      operationId: modifyProcessInstanceVariables
-      parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      - name: id
-        in: path
-        description: Process instance id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ModifyVariablesRequest"
-        required: true
-      responses:
-        "204":
-          description: Variables modified
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-instances/{id}:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/process-instances/{id}":
     get:
       tags:
       - Processes
@@ -424,33 +429,33 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProcessInstanceResponse"
-        "404":
+                "$ref": "#/components/schemas/ProcessInstanceResponse"
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-definitions:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/process-definitions":
     get:
       tags:
       - Processes
@@ -472,27 +477,27 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProcessDefinitionsResponse"
-        "400":
+                "$ref": "#/components/schemas/ProcessDefinitionsResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-definitions/{id}:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/process-definitions/{id}":
     get:
       tags:
       - Processes
@@ -514,33 +519,33 @@ paths:
           type: string
         example: send-email-process:1:4
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProcessDefinitionResponse"
-        "404":
+                "$ref": "#/components/schemas/ProcessDefinitionResponse"
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/process-definitions/{id}/xml:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/process-definitions/{id}/xml":
     get:
       tags:
       - Processes
@@ -562,34 +567,34 @@ paths:
           type: string
         example: send-email-process:1:4
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/xml:
               schema:
                 type: string
                 format: byte
-        "404":
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/decision-definitions:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/decision-definitions":
     get:
       tags:
       - Decisions
@@ -604,27 +609,27 @@ paths:
           type: string
         example: 2281
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DecisionDefinitionsResponse"
-        "400":
+                "$ref": "#/components/schemas/DecisionDefinitionsResponse"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/decision-definitions/{id}:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/decision-definitions/{id}":
     get:
       tags:
       - Decisions
@@ -646,33 +651,33 @@ paths:
           type: string
         example: approve-loan:1:5
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DecisionDefinitionResponse"
-        "404":
+                "$ref": "#/components/schemas/DecisionDefinitionResponse"
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /{municipalityId}/decision-definitions/{id}/xml:
+                "$ref": "#/components/schemas/Problem"
+  "/{municipalityId}/decision-definitions/{id}/xml":
     get:
       tags:
       - Decisions
@@ -694,41 +699,41 @@ paths:
           type: string
         example: approve-loan:1:5
       responses:
-        "200":
+        '200':
           description: Successful Operation
           content:
             application/xml:
               schema:
                 type: string
                 format: byte
-        "404":
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /api-docs:
+                "$ref": "#/components/schemas/Problem"
+  "/api-docs":
     get:
       tags:
       - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/yaml:
@@ -737,7 +742,7 @@ paths:
       x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-mutual-ssl: Optional
-  /{municipalityId}/deployments/{id}:
+  "/{municipalityId}/deployments/{id}":
     delete:
       tags:
       - Deployments
@@ -766,53 +771,30 @@ paths:
           type: boolean
           default: false
       responses:
-        "204":
+        '204':
           description: Deployment deleted
-        "404":
+        '404':
           description: Not Found
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                "$ref": "#/components/schemas/Problem"
+        '400':
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
+                - "$ref": "#/components/schemas/Problem"
+                - "$ref": "#/components/schemas/ConstraintViolationProblem"
+        '500':
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
-                $ref: "#/components/schemas/Problem"
+                "$ref": "#/components/schemas/Problem"
 components:
   schemas:
-    CorrelationMessageRequest:
-      type: object
-      description: Request to correlate a BPMN message to a waiting receive task
-      properties:
-        messageName:
-          type: string
-          description: Name of the BPMN message to correlate
-          examples:
-          - PaymentDecisionReceived
-          minLength: 1
-        businessKey:
-          type: string
-          description: Business key identifying the target process instance
-          examples:
-          - errand-12345
-          minLength: 1
-        processVariables:
-          type: object
-          additionalProperties: {}
-          description: Process variables to set when correlating the message
-      required:
-      - messageName
-      - businessKey
     StartProcessInstanceRequest:
       type: object
       description: Request to start a process instance
@@ -834,20 +816,6 @@ components:
           description: Process variables to set when starting the instance
       required:
       - processDefinitionKey
-    ModifyVariablesRequest:
-      type: object
-      description: Request to add, update, and/or remove variables on a running process
-        instance
-      properties:
-        modifications:
-          type: object
-          additionalProperties: {}
-          description: Variables to add or update (keyed by variable name)
-        deletions:
-          type: array
-          description: Names of variables to remove
-          items:
-            type: string
     Problem:
       type: object
       properties:
@@ -876,7 +844,7 @@ components:
         violations:
           type: array
           items:
-            $ref: "#/components/schemas/Violation"
+            "$ref": "#/components/schemas/Violation"
         title:
           type: string
         instance:
@@ -885,7 +853,7 @@ components:
         detail:
           type: string
         causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
+          "$ref": "#/components/schemas/ThrowableProblem"
     ThrowableProblem:
       type: object
       properties:
@@ -935,6 +903,43 @@ components:
         ended:
           type: boolean
           description: Whether the process instance has ended
+    ModifyVariablesRequest:
+      type: object
+      description: Request to add, update, and/or remove variables on a running process
+        instance
+      properties:
+        modifications:
+          type: object
+          additionalProperties: {}
+          description: Variables to add or update (keyed by variable name)
+        deletions:
+          type: array
+          description: Names of variables to remove
+          items:
+            type: string
+    CorrelationMessageRequest:
+      type: object
+      description: Request to correlate a BPMN message to a waiting receive task
+      properties:
+        messageName:
+          type: string
+          description: Name of the BPMN message to correlate
+          examples:
+          - PaymentDecisionReceived
+          minLength: 1
+        businessKey:
+          type: string
+          description: Business key identifying the target process instance
+          examples:
+          - errand-12345
+          minLength: 1
+        processVariables:
+          type: object
+          additionalProperties: {}
+          description: Process variables to set when correlating the message
+      required:
+      - businessKey
+      - messageName
     DeploymentResponse:
       type: object
       description: Deployment response model
@@ -943,7 +948,7 @@ components:
           type: string
           description: Deployment ID
           examples:
-          - "12345"
+          - '12345'
         name:
           type: string
           description: Deployment name
@@ -1004,15 +1009,15 @@ components:
           type: array
           description: BPMN element types this template can be applied to
           examples:
-          - "[\"bpmn:ServiceTask\"]"
+          - - bpmn:ServiceTask
           items:
             type: string
         properties:
           type: array
           description: Editable properties exposed by this template
           items:
-            $ref: "#/components/schemas/ElementTemplateProperty"
-        $schema:
+            "$ref": "#/components/schemas/ElementTemplateProperty"
+        "$schema":
           type: string
           description: JSON schema the template conforms to
           examples:
@@ -1039,7 +1044,7 @@ components:
           type: boolean
           description: Whether the value must not be empty
           examples:
-          - "true"
+          - 'true'
     ElementTemplateProperty:
       type: object
       description: A single editable property inside an element template
@@ -1062,10 +1067,10 @@ components:
           description: Whether the user may change the value (defaults to true when
             omitted)
         binding:
-          $ref: "#/components/schemas/ElementTemplateBinding"
+          "$ref": "#/components/schemas/ElementTemplateBinding"
           description: How the property is bound to the BPMN model
         constraints:
-          $ref: "#/components/schemas/ElementTemplateConstraints"
+          "$ref": "#/components/schemas/ElementTemplateConstraints"
           description: Validation constraints for the property
     ProcessInstancesResponse:
       type: object
@@ -1074,7 +1079,7 @@ components:
         processInstances:
           type: array
           items:
-            $ref: "#/components/schemas/ProcessInstanceResponse"
+            "$ref": "#/components/schemas/ProcessInstanceResponse"
     ProcessDefinitionResponse:
       type: object
       description: Process definition response model
@@ -1099,7 +1104,7 @@ components:
           format: int32
           description: Process definition version
           examples:
-          - "1"
+          - 1
         deploymentId:
           type: string
           description: ID of the deployment this process definition belongs to
@@ -1112,7 +1117,7 @@ components:
         processDefinitions:
           type: array
           items:
-            $ref: "#/components/schemas/ProcessDefinitionResponse"
+            "$ref": "#/components/schemas/ProcessDefinitionResponse"
     DeploymentsResponse:
       type: object
       description: Deployments response model
@@ -1120,7 +1125,7 @@ components:
         deployments:
           type: array
           items:
-            $ref: "#/components/schemas/DeploymentResponse"
+            "$ref": "#/components/schemas/DeploymentResponse"
     DecisionDefinitionResponse:
       type: object
       description: Decision definition response model
@@ -1145,7 +1150,7 @@ components:
           format: int32
           description: Decision definition version
           examples:
-          - "1"
+          - 1
         deploymentId:
           type: string
           description: ID of the deployment this decision definition belongs to
@@ -1158,5 +1163,5 @@ components:
         decisionDefinitions:
           type: array
           items:
-            $ref: "#/components/schemas/DecisionDefinitionResponse"
+            "$ref": "#/components/schemas/DecisionDefinitionResponse"
   securitySchemes: {}
