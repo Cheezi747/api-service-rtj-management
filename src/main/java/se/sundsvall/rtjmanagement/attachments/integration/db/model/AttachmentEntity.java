@@ -58,6 +58,9 @@ public class AttachmentEntity implements Auditable {
 	@Column(name = "file_size")
 	private Integer fileSize;
 
+	@Column(name = "category", length = 32)
+	private String category;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
 	@JoinColumn(name = "attachment_data_id", nullable = false, foreignKey = @ForeignKey(name = "fk_attachment_data_attachment"))
 	private AttachmentDataEntity attachmentData;
@@ -102,6 +105,10 @@ public class AttachmentEntity implements Auditable {
 		return fileSize;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
 	public AttachmentDataEntity getAttachmentData() {
 		return attachmentData;
 	}
@@ -140,6 +147,10 @@ public class AttachmentEntity implements Auditable {
 
 	public void setFileSize(final Integer v) {
 		this.fileSize = v;
+	}
+
+	public void setCategory(final String v) {
+		this.category = v;
 	}
 
 	public void setAttachmentData(final AttachmentDataEntity v) {
@@ -191,6 +202,11 @@ public class AttachmentEntity implements Auditable {
 		return this;
 	}
 
+	public AttachmentEntity withCategory(final String v) {
+		this.category = v;
+		return this;
+	}
+
 	public AttachmentEntity withAttachmentData(final AttachmentDataEntity v) {
 		this.attachmentData = v;
 		return this;
@@ -214,18 +230,20 @@ public class AttachmentEntity implements Auditable {
 		return Objects.equals(id, that.id) && Objects.equals(errandId, that.errandId)
 			&& Objects.equals(namespace, that.namespace) && Objects.equals(municipalityId, that.municipalityId)
 			&& Objects.equals(fileName, that.fileName) && Objects.equals(mimeType, that.mimeType)
-			&& Objects.equals(fileSize, that.fileSize) && Objects.equals(attachmentData, that.attachmentData)
+			&& Objects.equals(fileSize, that.fileSize) && Objects.equals(category, that.category)
+			&& Objects.equals(attachmentData, that.attachmentData)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, errandId, namespace, municipalityId, fileName, mimeType, fileSize, attachmentData, created, modified);
+		return Objects.hash(id, errandId, namespace, municipalityId, fileName, mimeType, fileSize, category, attachmentData, created, modified);
 	}
 
 	@Override
 	public String toString() {
 		return "AttachmentEntity{id='" + id + "', errandId='" + errandId + "', fileName='" + fileName
-			+ "', mimeType='" + mimeType + "', fileSize=" + fileSize + ", created=" + created + ", modified=" + modified + '}';
+			+ "', mimeType='" + mimeType + "', fileSize=" + fileSize + ", category='" + category
+			+ "', created=" + created + ", modified=" + modified + '}';
 	}
 }

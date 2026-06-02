@@ -39,9 +39,9 @@ public class AttachmentService {
 		this.attachmentRepository = attachmentRepository;
 	}
 
-	public String createAttachment(final String municipalityId, final String namespace, final String errandId, final MultipartFile file) {
+	public String createAttachment(final String municipalityId, final String namespace, final String errandId, final MultipartFile file, final String category) {
 		ensureErrandExists(municipalityId, namespace, errandId);
-		final var saved = attachmentRepository.save(toAttachmentEntity(errandId, namespace, municipalityId, file));
+		final var saved = attachmentRepository.save(toAttachmentEntity(errandId, namespace, municipalityId, file, category));
 		return saved.getId();
 	}
 

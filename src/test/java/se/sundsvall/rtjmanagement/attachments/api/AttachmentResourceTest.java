@@ -20,6 +20,7 @@ import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -44,7 +45,7 @@ class AttachmentResourceTest {
 
 	@Test
 	void createAttachment() {
-		when(serviceMock.createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class))).thenReturn(ATTACHMENT_ID);
+		when(serviceMock.createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), isNull())).thenReturn(ATTACHMENT_ID);
 
 		final var builder = new MultipartBodyBuilder();
 		builder.part("file", "hello".getBytes()).filename("hello.txt");
@@ -57,7 +58,7 @@ class AttachmentResourceTest {
 			.exchange()
 			.expectStatus().isCreated();
 
-		verify(serviceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class));
+		verify(serviceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), isNull());
 	}
 
 	@Test

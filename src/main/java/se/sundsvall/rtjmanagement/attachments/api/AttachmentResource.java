@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.dept44.problem.Problem;
@@ -68,9 +71,12 @@ class AttachmentResource {
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @Pattern(regexp = NAMESPACE_REGEXP, message = NAMESPACE_VALIDATION_MESSAGE) @PathVariable final String namespace,
 		@Parameter(name = "errandId", description = "Errand id") @ValidUuid @PathVariable final String errandId,
-		@NotNull @RequestPart("file") final MultipartFile file) {
+		@NotNull @RequestPart("file") final MultipartFile file,
+		@Parameter(name = "category", description = "Optional purpose tag (DELEGATION / COMPETENCE / OTHER)") @RequestParam(required = false) @Nullable @OneOf(value = {
+			"DELEGATION", "COMPETENCE", "OTHER"
+		}, nullable = true) final String category) {
 
-		final var attachmentId = service.createAttachment(municipalityId, namespace, errandId, file);
+		final var attachmentId = service.createAttachment(municipalityId, namespace, errandId, file, category);
 		return created(fromPath("/{municipalityId}/{namespace}/errands/{errandId}/attachments/{attachmentId}")
 			.buildAndExpand(municipalityId, namespace, errandId, attachmentId).toUri())
 			.header(CONTENT_TYPE, ALL_VALUE)

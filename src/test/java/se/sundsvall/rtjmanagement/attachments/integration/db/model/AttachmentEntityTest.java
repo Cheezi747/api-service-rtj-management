@@ -52,6 +52,7 @@ class AttachmentEntityTest {
 			.withFileName("file.txt")
 			.withMimeType("text/plain")
 			.withFileSize(10)
+			.withCategory("DELEGATION")
 			.withAttachmentData(attachmentData)
 			.withCreated(created)
 			.withModified(modified);
@@ -64,6 +65,7 @@ class AttachmentEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getFileName()).isEqualTo("file.txt");
 		org.assertj.core.api.Assertions.assertThat(entity.getMimeType()).isEqualTo("text/plain");
 		org.assertj.core.api.Assertions.assertThat(entity.getFileSize()).isEqualTo(10);
+		org.assertj.core.api.Assertions.assertThat(entity.getCategory()).isEqualTo("DELEGATION");
 		org.assertj.core.api.Assertions.assertThat(entity.getAttachmentData()).isSameAs(attachmentData);
 		org.assertj.core.api.Assertions.assertThat(entity.getCreated()).isEqualTo(created);
 		org.assertj.core.api.Assertions.assertThat(entity.getModified()).isEqualTo(modified);

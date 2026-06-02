@@ -39,6 +39,7 @@ class AttachmentTest {
 		final var fileName = "file.pdf";
 		final var mimeType = "application/pdf";
 		final var fileSize = 1024;
+		final var category = "DELEGATION";
 		final var created = now();
 		final var modified = now();
 
@@ -47,6 +48,7 @@ class AttachmentTest {
 			.withFileName(fileName)
 			.withMimeType(mimeType)
 			.withFileSize(fileSize)
+			.withCategory(category)
 			.withCreated(created)
 			.withModified(modified);
 
@@ -55,6 +57,7 @@ class AttachmentTest {
 		assertThat(result.getFileName()).isEqualTo(fileName);
 		assertThat(result.getMimeType()).isEqualTo(mimeType);
 		assertThat(result.getFileSize()).isEqualTo(fileSize);
+		assertThat(result.getCategory()).isEqualTo(category);
 		assertThat(result.getCreated()).isEqualTo(created);
 		assertThat(result.getModified()).isEqualTo(modified);
 	}

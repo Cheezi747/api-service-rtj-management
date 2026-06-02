@@ -27,6 +27,7 @@ class AttachmentMapperTest {
 			.withFileName("f.txt")
 			.withMimeType("text/plain")
 			.withFileSize(10)
+			.withCategory("COMPETENCE")
 			.withCreated(created)
 			.withModified(modified);
 
@@ -37,6 +38,7 @@ class AttachmentMapperTest {
 		assertThat(attachment.getFileName()).isEqualTo("f.txt");
 		assertThat(attachment.getMimeType()).isEqualTo("text/plain");
 		assertThat(attachment.getFileSize()).isEqualTo(10);
+		assertThat(attachment.getCategory()).isEqualTo("COMPETENCE");
 		assertThat(attachment.getCreated()).isEqualTo(created);
 		assertThat(attachment.getModified()).isEqualTo(modified);
 	}
@@ -50,12 +52,12 @@ class AttachmentMapperTest {
 	void toAttachmentEntityNullErrandIdReturnsNull() {
 		assertThat(AttachmentMapper.toAttachmentEntity(null, "ns", "mid", new MockMultipartFile("file", new byte[] {
 			1
-		}))).isNull();
+		}), "OTHER")).isNull();
 	}
 
 	@Test
 	void toAttachmentEntityNullFileReturnsNull() {
-		assertThat(AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", null)).isNull();
+		assertThat(AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", null, "OTHER")).isNull();
 	}
 
 	@Test
@@ -72,7 +74,7 @@ class AttachmentMapperTest {
 			}
 		};
 
-		assertThatThrownBy(() -> AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", file))
+		assertThatThrownBy(() -> AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", file, "OTHER"))
 			.isInstanceOf(ThrowableProblem.class)
 			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
 	}
@@ -98,7 +100,7 @@ class AttachmentMapperTest {
 		// Will likely fail at Hibernate.getLobHelper() since no JPA context is active.
 		// Either we get a real entity (when running in an integration setup) or an exception.
 		try {
-			final AttachmentEntity entity = AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", file);
+			final AttachmentEntity entity = AttachmentMapper.toAttachmentEntity("eid", "ns", "mid", file, "DELEGATION");
 			assertThat(entity).isNotNull();
 			assertThat(entity.getErrandId()).isEqualTo("eid");
 			assertThat(entity.getNamespace()).isEqualTo("ns");
@@ -106,6 +108,7 @@ class AttachmentMapperTest {
 			assertThat(entity.getFileName()).isEqualTo("hello.txt");
 			assertThat(entity.getMimeType()).isEqualTo("text/plain");
 			assertThat(entity.getFileSize()).isEqualTo(5);
+			assertThat(entity.getCategory()).isEqualTo("DELEGATION");
 			assertThat(entity.getAttachmentData()).isNotNull();
 		} catch (final Exception e) {
 			// Acceptable in unit context with no Hibernate session

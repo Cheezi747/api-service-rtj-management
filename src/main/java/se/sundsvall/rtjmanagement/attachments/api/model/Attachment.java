@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import org.springframework.format.annotation.DateTimeFormat;
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
 import se.sundsvall.rtjmanagement.core.api.validation.groups.OnCreate;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
@@ -25,6 +26,14 @@ public class Attachment {
 
 	@Schema(description = "File size in bytes", examples = "1024", accessMode = READ_ONLY)
 	private Integer fileSize;
+
+	@Schema(description = "Optional category tag distinguishing the purpose of the upload (e.g. DELEGATION for fullmakt, COMPETENCE for föreståndar-bevis, OTHER for general attachments).", examples = "DELEGATION", allowableValues = {
+		"DELEGATION", "COMPETENCE", "OTHER"
+	}, nullable = true)
+	@OneOf(value = {
+		"DELEGATION", "COMPETENCE", "OTHER"
+	}, nullable = true)
+	private String category;
 
 	@Schema(description = "Created timestamp", accessMode = READ_ONLY)
 	@DateTimeFormat(iso = DATE_TIME)
@@ -90,6 +99,19 @@ public class Attachment {
 		return this;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(final String category) {
+		this.category = category;
+	}
+
+	public Attachment withCategory(final String category) {
+		this.category = category;
+		return this;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -122,12 +144,13 @@ public class Attachment {
 			return false;
 		final Attachment that = (Attachment) o;
 		return Objects.equals(id, that.id) && Objects.equals(fileName, that.fileName) && Objects.equals(mimeType, that.mimeType) && Objects.equals(fileSize, that.fileSize)
+			&& Objects.equals(category, that.category)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, fileName, mimeType, fileSize, created, modified);
+		return Objects.hash(id, fileName, mimeType, fileSize, category, created, modified);
 	}
 
 	@Override
@@ -137,6 +160,7 @@ public class Attachment {
 			", fileName='" + fileName + '\'' +
 			", mimeType='" + mimeType + '\'' +
 			", fileSize=" + fileSize +
+			", category='" + category + '\'' +
 			", created=" + created +
 			", modified=" + modified +
 			'}';

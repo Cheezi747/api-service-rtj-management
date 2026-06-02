@@ -128,7 +128,7 @@ class AttachmentServiceTest {
 		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(mock(ErrandEntity.class)));
 		when(attachmentRepositoryMock.save(any())).thenReturn(AttachmentEntity.create().withId(ATTACHMENT_ID));
 
-		final var id = service.createAttachment(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, file);
+		final var id = service.createAttachment(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, file, "DELEGATION");
 
 		assertThat(id).isEqualTo(ATTACHMENT_ID);
 	}

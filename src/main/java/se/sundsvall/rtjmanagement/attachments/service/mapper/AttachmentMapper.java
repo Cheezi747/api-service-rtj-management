@@ -24,13 +24,14 @@ public final class AttachmentMapper {
 				.withFileName(e.getFileName())
 				.withMimeType(e.getMimeType())
 				.withFileSize(e.getFileSize())
+				.withCategory(e.getCategory())
 				.withCreated(e.getCreated())
 				.withModified(e.getModified()))
 			.orElse(null);
 	}
 
 	public static AttachmentEntity toAttachmentEntity(final String errandId, final String namespace,
-		final String municipalityId, final MultipartFile file) {
+		final String municipalityId, final MultipartFile file, final String category) {
 
 		if (errandId == null || file == null) {
 			return null;
@@ -43,6 +44,7 @@ public final class AttachmentMapper {
 				.withFileName(file.getOriginalFilename())
 				.withMimeType(file.getContentType())
 				.withFileSize(Math.toIntExact(file.getSize()))
+				.withCategory(category)
 				.withAttachmentData(AttachmentDataEntity.create()
 					.withFile(Hibernate.getLobHelper().createBlob(file.getInputStream(), file.getSize())));
 		} catch (final IOException ioException) {
