@@ -27,6 +27,7 @@ import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -83,6 +84,31 @@ class ErrandServiceTest {
 
 		verify(eventPublisherMock).publishEvent(any(ErrandCreated.class));
 		verify(eventPublisherMock, never()).publishEvent(any(NotificationRequest.class));
+	}
+
+	@Test
+	void startProcessStoresProcessInstanceId() {
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withApplicantEmail("a@b.c");
+		when(repositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(errand));
+		when(processServiceMock.startProcess(eq(MUNICIPALITY_ID), eq("proc"), eq(ERRAND_ID), any())).thenReturn(Optional.of("pid-1"));
+
+		final var result = service.startProcess(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, "proc", null);
+
+		assertThat(result).contains("pid-1");
+		assertThat(errand.getProcessInstanceId()).isEqualTo("pid-1");
+		verify(repositoryMock).save(errand);
+	}
+
+	@Test
+	void startProcessWithoutDefinitionDoesNotSave() {
+		final var errand = ErrandEntity.create().withId(ERRAND_ID);
+		when(repositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(errand));
+		when(processServiceMock.startProcess(any(), any(), any(), any())).thenReturn(Optional.empty());
+
+		final var result = service.startProcess(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, null, null);
+
+		assertThat(result).isEmpty();
+		verify(repositoryMock, never()).save(any());
 	}
 
 	@Test

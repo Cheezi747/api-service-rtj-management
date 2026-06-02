@@ -81,6 +81,24 @@ public class ErrandService {
 		return saved.getId();
 	}
 
+	/**
+	 * Starts the BPMN process for an already-created errand and stores the returned processInstanceId.
+	 * Used by type-specific submission flows that create the errand (+ its child data) first and start the
+	 * process last, so verification never runs before the application data is persisted.
+	 */
+	public Optional<String> startProcess(final String municipalityId, final String namespace, final String errandId,
+		final String processDefinitionName, final Map<String, Object> processVariables) {
+
+		final var errand = findEntity(municipalityId, namespace, errandId);
+		final var processInstanceId = processService.startProcess(municipalityId, processDefinitionName, errand.getId(),
+			buildProcessVariables(municipalityId, namespace, errand.getId(), errand.getApplicantEmail(), processVariables));
+		processInstanceId.ifPresent(id -> {
+			errand.setProcessInstanceId(id);
+			errandRepository.save(errand);
+		});
+		return processInstanceId;
+	}
+
 	public Errand readErrand(final String municipalityId, final String namespace, final String errandId) {
 		return toErrand(findEntity(municipalityId, namespace, errandId));
 	}
