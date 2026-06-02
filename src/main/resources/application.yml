@@ -33,11 +33,17 @@ spring:
           operaton:
             authorization-grant-type: client_credentials
             provider: operaton
+          citizen:
+            authorization-grant-type: client_credentials
+            provider: citizen
 #========================================
 # Integration settings
 #========================================
 integration:
   operaton:
+    connect-timeout: 5
+    read-timeout: 30
+  citizen:
     connect-timeout: 5
     read-timeout: 30
 #========================================

@@ -12,18 +12,23 @@ import se.sundsvall.rtjmanagement.stakeholders.service.StakeholderRoleContributi
  * and transitions match the {@code egensotning-process} BPMN states:
  *
  * <pre>
- *   REGISTERED ─┬─▶ DECIDED                      (happy path: Ritz OK → approval)
- *               ├─▶ AWAITING_SUPPLEMENTATION     (Ritz says not enough info)
- *               └─▶ REJECTED                     (defensive — would normally go via supplementation)
+ *   REGISTERED ─┬─▶ DECIDED                      (auto: all checks green → approval)
+ *               ├─▶ AWAITING_SUPPLEMENTATION     (bilaga saknas → begär komplettering)
+ *               ├─▶ UNDER_MANUAL_REVIEW          (ej folkbokförd / återansökan kräver granskning)
+ *               └─▶ REJECTED                     (defensive)
  *
- *   AWAITING_SUPPLEMENTATION ─┬─▶ DECIDED        (applicant supplements → approval)
- *                             └─▶ REJECTED       (no supplementation → on-site inspection fails)
+ *   AWAITING_SUPPLEMENTATION ─┬─▶ DECIDED        (komplettering → omverifiering → approval)
+ *                             ├─▶ UNDER_MANUAL_REVIEW (omverifiering kräver granskning)
+ *                             └─▶ REJECTED
+ *
+ *   UNDER_MANUAL_REVIEW ─┬─▶ DECIDED             (handläggare godkänner)
+ *                        └─▶ REJECTED            (handläggare avslår)
  * </pre>
  *
  * Stakeholder roles:
  * <ul>
  * <li>{@code APPLICANT} — the citizen who filed the ansökan (max 1).</li>
- * <li>{@code BSK} — brandskyddskontrollant assigned to review (max 1).</li>
+ * <li>{@code BSK} — brandskyddskontrollant assigned to manual review (max 1).</li>
  * </ul>
  */
 @Configuration
@@ -33,6 +38,7 @@ public class EgensotningModuleConfig {
 
 	public static final String STATUS_REGISTERED = "REGISTERED";
 	public static final String STATUS_AWAITING_SUPPLEMENTATION = "AWAITING_SUPPLEMENTATION";
+	public static final String STATUS_UNDER_MANUAL_REVIEW = "UNDER_MANUAL_REVIEW";
 	public static final String STATUS_DECIDED = "DECIDED";
 	public static final String STATUS_REJECTED = "REJECTED";
 
@@ -43,8 +49,9 @@ public class EgensotningModuleConfig {
 	ErrandTypeContribution egensotningType() {
 		return ErrandTypeContribution.builder(TYPE_SLUG)
 			.displayName("Ansökan om egen sotning")
-			.allowedTransition(STATUS_REGISTERED, STATUS_DECIDED, STATUS_AWAITING_SUPPLEMENTATION, STATUS_REJECTED)
-			.allowedTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_DECIDED, STATUS_REJECTED)
+			.allowedTransition(STATUS_REGISTERED, STATUS_DECIDED, STATUS_AWAITING_SUPPLEMENTATION, STATUS_UNDER_MANUAL_REVIEW, STATUS_REJECTED)
+			.allowedTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_DECIDED, STATUS_UNDER_MANUAL_REVIEW, STATUS_REJECTED)
+			.allowedTransition(STATUS_UNDER_MANUAL_REVIEW, STATUS_DECIDED, STATUS_REJECTED)
 			.build();
 	}
 
