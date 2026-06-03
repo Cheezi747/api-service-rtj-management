@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +41,7 @@ import static se.sundsvall.rtjmanagement.Constants.NAMESPACE_VALIDATION_MESSAGE;
 @Validated
 @RequestMapping("/{municipalityId}/{namespace}/egensotning/applications")
 @Tag(name = "Egensotning — ansökan",
-	description = "Skickar in en komplett egensotning-ansökan i ETT multipart-anrop: JSON-delen `application` + en eller flera `files` (bilagor). Servern skapar errand + details + sotningsobjekt + APPLICANT-stakeholder + bilagor atomiskt och startar processen sist.")
+	description = "Skickar in en komplett egensotning-ansökan i ETT multipart-anrop: JSON-delen `application` + bilagorna `sotningsprotokoll` och `utbildningsintyg` (en fil var, båda obligatoriska). Servern skapar errand + details + sotningsobjekt + APPLICANT-stakeholder + bilagor atomiskt och startar processen sist.")
 @ApiResponses(value = {
 	@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
 		Problem.class, ConstraintViolationProblem.class
@@ -51,7 +50,8 @@ import static se.sundsvall.rtjmanagement.Constants.NAMESPACE_VALIDATION_MESSAGE;
 })
 class EgensotningApplicationResource {
 
-	private static final String FILES_REQUIRED_MESSAGE = "At least one file (bilaga) is required";
+	private static final String SOTNINGSPROTOKOLL_REQUIRED_MESSAGE = "Attachment part 'sotningsprotokoll' is required";
+	private static final String UTBILDNINGSINTYG_REQUIRED_MESSAGE = "Attachment part 'utbildningsintyg' is required";
 
 	private final EgensotningApplicationService service;
 
@@ -67,13 +67,17 @@ class EgensotningApplicationResource {
 		@Parameter(name = "municipalityId", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "namespace", example = "EGENSOTNING") @Pattern(regexp = NAMESPACE_REGEXP, message = NAMESPACE_VALIDATION_MESSAGE) @PathVariable final String namespace,
 		@Valid @NotNull @RequestPart("application") final EgensotningApplication application,
-		@RequestPart(value = "files", required = false) final List<MultipartFile> files) {
+		@RequestPart(value = "sotningsprotokoll", required = false) final MultipartFile sotningsprotokoll,
+		@RequestPart(value = "utbildningsintyg", required = false) final MultipartFile utbildningsintyg) {
 
-		if (files == null || files.isEmpty()) {
-			throw valueOf(BAD_REQUEST, FILES_REQUIRED_MESSAGE);
+		if (sotningsprotokoll == null || sotningsprotokoll.isEmpty()) {
+			throw valueOf(BAD_REQUEST, SOTNINGSPROTOKOLL_REQUIRED_MESSAGE);
+		}
+		if (utbildningsintyg == null || utbildningsintyg.isEmpty()) {
+			throw valueOf(BAD_REQUEST, UTBILDNINGSINTYG_REQUIRED_MESSAGE);
 		}
 
-		final var errandId = service.submit(municipalityId, namespace, application, files);
+		final var errandId = service.submit(municipalityId, namespace, application, sotningsprotokoll, utbildningsintyg);
 		return created(fromPath("/{municipalityId}/{namespace}/errands/{errandId}")
 			.buildAndExpand(municipalityId, namespace, errandId).toUri())
 			.header(CONTENT_TYPE, ALL_VALUE)

@@ -66,7 +66,7 @@ class EgensotningDetailsResourceFailureTest {
 	}
 
 	@Test
-	void upsertDetails_tooLongPersonnummer() {
+	void upsertDetails_invalidPersonnummerFormat() {
 		webTestClient.put()
 			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "errandId", ERRAND_ID)))
 			.bodyValue(EgensotningDetails.create().withPersonnummer("1234567890123456789"))

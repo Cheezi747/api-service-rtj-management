@@ -13,6 +13,8 @@ public interface AttachmentRepository extends JpaRepository<AttachmentEntity, St
 
 	long countByErrandId(String errandId);
 
+	boolean existsByErrandIdAndCategory(String errandId, String category);
+
 	Optional<AttachmentEntity> findByNamespaceAndMunicipalityIdAndErrandIdAndId(String namespace, String municipalityId, String errandId, String id);
 
 	List<AttachmentEntity> findByNamespaceAndMunicipalityIdAndIdIn(String namespace, String municipalityId, List<String> ids);

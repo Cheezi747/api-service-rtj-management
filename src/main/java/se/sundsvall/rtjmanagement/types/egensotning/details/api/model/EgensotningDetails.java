@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import se.sundsvall.dept44.common.validators.annotation.ValidPersonalNumber;
 import se.sundsvall.rtjmanagement.core.api.validation.groups.OnCreate;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
@@ -13,8 +14,8 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 	description = "Type-specific extension fields for EGENSOTNING errands. One per errand (1:1). Holds the application data the automated checks need (applicant personnummer + the property the application concerns). The check-result fields are read-only and written by the verification step.")
 public class EgensotningDetails {
 
-	@Schema(description = "Sökandes personnummer. Används för folkbokföringskontroll och för att identifiera återansökningar.", examples = "199001011234")
-	@Size(max = 16)
+	@Schema(description = "Sökandes personnummer på formatet ÅÅÅÅMMDDNNNN. Används för folkbokföringskontroll och för att identifiera återansökningar.", examples = "199001011234")
+	@ValidPersonalNumber(nullable = true)
 	private String personnummer;
 
 	@Schema(description = "Fastighetsbeteckning för fastigheten ansökan gäller", examples = "Sundsvall Stenstaden 1:23")

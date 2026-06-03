@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import se.sundsvall.dept44.common.validators.annotation.ValidPersonalNumber;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.api.model.Sotningsobjekt;
 
 /**
@@ -38,9 +39,9 @@ public class EgensotningApplication {
 	@Email
 	private String applicantEmail;
 
-	@Schema(description = "Sökandes personnummer (folkbokförings- och återansökan-kontroll)", examples = "198507231234")
+	@Schema(description = "Sökandes personnummer på formatet ÅÅÅÅMMDDNNNN (folkbokförings- och återansökan-kontroll)", examples = "198507231234")
 	@NotBlank
-	@Size(max = 16)
+	@ValidPersonalNumber
 	private String personnummer;
 
 	@Schema(description = "Fastighetsbeteckning ansökan gäller", examples = "Sundsvall Stenstaden 1:23")

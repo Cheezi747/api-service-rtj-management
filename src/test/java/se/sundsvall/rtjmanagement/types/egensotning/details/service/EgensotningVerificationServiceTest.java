@@ -10,7 +10,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.exception.ClientProblem;
+import se.sundsvall.dept44.exception.ServerProblem;
 import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.rtjmanagement.attachments.integration.db.AttachmentRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
@@ -25,8 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_SOTNINGSPROTOKOLL;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_DECIDED;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_REGISTERED;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_REJECTED;
@@ -82,6 +86,12 @@ class EgensotningVerificationServiceTest {
 		when(detailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details()));
 	}
 
+	// Both required bilaga types present.
+	private void stubBilagorPresent() {
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_SOTNINGSPROTOKOLL)).thenReturn(true);
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_UTBILDNINGSINTYG)).thenReturn(true);
+	}
+
 	private void stubObjektPresent() {
 		when(sotningsobjektRepositoryMock.findByErrandIdOrderByTypAscFabrikatAsc(ERRAND_ID)).thenReturn(List.of(sampleObjekt()));
 	}
@@ -98,7 +108,7 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void allGreenAutoApprovesAndPersists() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
 		stubRegistered();
 		stubNoPriorApplications();
@@ -120,9 +130,9 @@ class EgensotningVerificationServiceTest {
 	}
 
 	@Test
-	void missingBilagaNeedsSupplement() {
+	void missingBilagorNeedsSupplement() {
+		// No bilaga types present (existsByErrandIdAndCategory defaults to false) → not complete.
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(0L);
 		stubObjektPresent();
 		stubRegistered();
 		stubNoPriorApplications();
@@ -135,9 +145,24 @@ class EgensotningVerificationServiceTest {
 	}
 
 	@Test
+	void onlySotningsprotokollNeedsSupplement() {
+		// Only one of the two required bilaga types present → not complete.
+		stubErrandAndDetails();
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_SOTNINGSPROTOKOLL)).thenReturn(true);
+		stubObjektPresent();
+		stubRegistered();
+		stubNoPriorApplications();
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("NEEDS_SUPPLEMENT");
+		assertThat(result.getBilagaPresent()).isFalse();
+	}
+
+	@Test
 	void missingSotningsobjektNeedsSupplement() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		when(sotningsobjektRepositoryMock.findByErrandIdOrderByTypAscFabrikatAsc(ERRAND_ID)).thenReturn(List.of());
 		stubRegistered();
 		stubNoPriorApplications();
@@ -151,7 +176,7 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void notRegisteredAtPropertyNeedsManualReview() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
 		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
 		when(citizenClientMock.getCitizen(MUNICIPALITY_ID, GUID)).thenReturn(citizenAtOtherProperty());
@@ -165,11 +190,12 @@ class EgensotningVerificationServiceTest {
 	}
 
 	@Test
-	void citizenNotFoundTreatedAsNotRegistered() {
+	void citizenClientErrorTreatedAsNotRegistered() {
+		// Citizen 4xx (e.g. unknown/malformed personnummer) → ClientProblem → route to manual review, not crash.
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
-		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenThrow(Problem.valueOf(NOT_FOUND, "person not found"));
+		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenThrow(new ClientProblem(BAD_GATEWAY, "citizen error: Invalid format or checksum"));
 		stubNoPriorApplications();
 
 		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
@@ -181,10 +207,11 @@ class EgensotningVerificationServiceTest {
 
 	@Test
 	void citizenServerErrorBubblesUp() {
+		// Citizen 5xx (outage) → ServerProblem → must propagate so the worker retries via incident.
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
-		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenThrow(Problem.valueOf(org.springframework.http.HttpStatus.BAD_GATEWAY, "citizen down"));
+		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenThrow(new ServerProblem(BAD_GATEWAY, "citizen down"));
 
 		assertThatThrownBy(() -> service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID))
 			.isInstanceOf(ThrowableProblem.class);
@@ -193,7 +220,7 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void reapplicationPreviouslyApprovedAutoApproves() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
 		stubRegistered();
 		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
@@ -209,7 +236,7 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void reapplicationPreviouslyRejectedNeedsManualReview() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
 		stubRegistered();
 		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
@@ -226,7 +253,7 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void reapplicationWithOngoingErrandNeedsManualReview() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(1L);
+		stubBilagorPresent();
 		stubObjektPresent();
 		stubRegistered();
 		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
@@ -243,7 +270,6 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void notRegisteredTakesPrecedenceOverMissingBilaga() {
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(0L);
 		stubObjektPresent();
 		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
 		when(citizenClientMock.getCitizen(MUNICIPALITY_ID, GUID)).thenReturn(citizenAtOtherProperty());
@@ -259,7 +285,6 @@ class EgensotningVerificationServiceTest {
 	@Test
 	void detailsMissingNeedsSupplement() {
 		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(egensotningErrand()));
-		when(attachmentRepositoryMock.countByErrandId(ERRAND_ID)).thenReturn(0L);
 		when(detailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.empty());
 
 		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);

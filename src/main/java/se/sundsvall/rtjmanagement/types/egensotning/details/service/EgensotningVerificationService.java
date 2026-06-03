@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.sundsvall.dept44.exception.ClientProblem;
 import se.sundsvall.dept44.problem.Problem;
-import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.rtjmanagement.attachments.integration.db.AttachmentRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
@@ -75,7 +75,8 @@ public class EgensotningVerificationService {
 	public EgensotningVerificationResult verify(final String municipalityId, final String namespace, final String errandId) {
 		findErrandWithType(municipalityId, namespace, errandId);
 
-		final var bilagaPresent = attachmentRepository.countByErrandId(errandId) > 0;
+		final var bilagaPresent = attachmentRepository.existsByErrandIdAndCategory(errandId, EgensotningModuleConfig.CATEGORY_SOTNINGSPROTOKOLL)
+			&& attachmentRepository.existsByErrandIdAndCategory(errandId, EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG);
 
 		final var detailsOpt = detailsRepository.findByErrandId(errandId);
 		if (detailsOpt.isEmpty()) {
@@ -106,8 +107,8 @@ public class EgensotningVerificationService {
 			outcome = OUTCOME_NEEDS_MANUAL_REVIEW;
 			manualReviewReason = reapplication.reason();
 		} else if (!bilagaPresent || !hasSotningsobjekt) {
-			// A complete application needs both the bilaga and at least one sotningsobjekt (so the
-			// auto-issued beslut actually lists the objekt + intervall it covers).
+			// A complete application needs both required bilagor (sotningsprotokoll + utbildningsintyg) and
+			// at least one sotningsobjekt (so the auto-issued beslut lists the objekt + intervall it covers).
 			outcome = OUTCOME_NEEDS_SUPPLEMENT;
 			manualReviewReason = null;
 		} else {
@@ -149,12 +150,13 @@ public class EgensotningVerificationService {
 			}
 			final var citizen = citizenClient.getCitizen(municipalityId, personId);
 			return EgensotningCheckUtil.isRegisteredAtProperty(citizen, municipalityId, details.getFastighetsbeteckning());
-		} catch (final ThrowableProblem e) {
-			if (NOT_FOUND.equals(e.getStatus())) {
-				// Unknown person/personnummer → not registered (route to manual review), not a server error.
-				return false;
-			}
-			throw e;
+		} catch (final ClientProblem e) {
+			// Citizen rejected the lookup (4xx — unknown or malformed personnummer). Not a citizen outage;
+			// treat as "can't confirm folkbokföring" → not registered, so the errand routes to manual review
+			// instead of failing the verify worker (which would block the BPMN process). Server errors
+			// (ServerProblem / 5xx) propagate so the worker retries via incident.
+			LOG.info("Citizen client error ({}) verifying errand {}; routing to manual review (not registered)", e.getStatus(), details.getErrandId());
+			return false;
 		}
 	}
 

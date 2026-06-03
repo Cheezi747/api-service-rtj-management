@@ -11,13 +11,13 @@ import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.rtjmanagement.Application;
 import se.sundsvall.rtjmanagement.types.egensotning.application.api.model.EgensotningApplication;
 import se.sundsvall.rtjmanagement.types.egensotning.application.service.EgensotningApplicationService;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.api.model.Sotningsobjekt;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -51,36 +51,63 @@ class EgensotningApplicationResourceTest {
 		return application;
 	}
 
-	private static MultipartBodyBuilder body(final EgensotningApplication application, final boolean withFile) {
+	private static MultipartBodyBuilder body(final EgensotningApplication application, final boolean withProtokoll, final boolean withIntyg) {
 		final var builder = new MultipartBodyBuilder();
 		builder.part("application", application, APPLICATION_JSON);
-		if (withFile) {
-			builder.part("files", new ByteArrayResource("sotningsintyg".getBytes())).filename("bilaga.txt");
+		if (withProtokoll) {
+			builder.part("sotningsprotokoll", new ByteArrayResource("sotningsprotokoll".getBytes())).filename("protokoll.pdf");
+		}
+		if (withIntyg) {
+			builder.part("utbildningsintyg", new ByteArrayResource("utbildningsintyg".getBytes())).filename("intyg.pdf");
 		}
 		return builder;
 	}
 
 	@Test
 	void submitApplicationCreated() {
-		when(serviceMock.submit(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(EgensotningApplication.class), anyList()))
+		when(serviceMock.submit(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(EgensotningApplication.class), any(MultipartFile.class), any(MultipartFile.class)))
 			.thenReturn("11111111-1111-1111-1111-111111111111");
 
 		webTestClient.post()
 			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.contentType(MULTIPART_FORM_DATA)
-			.body(fromMultipartData(body(validApplication(), true).build()))
+			.body(fromMultipartData(body(validApplication(), true, true).build()))
 			.exchange()
 			.expectStatus().isCreated();
 
-		verify(serviceMock).submit(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(EgensotningApplication.class), anyList());
+		verify(serviceMock).submit(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(EgensotningApplication.class), any(MultipartFile.class), any(MultipartFile.class));
 	}
 
 	@Test
-	void submitApplicationWithoutFileIsBadRequest() {
+	void submitApplicationMissingSotningsprotokollIsBadRequest() {
 		webTestClient.post()
 			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.contentType(MULTIPART_FORM_DATA)
-			.body(fromMultipartData(body(validApplication(), false).build()))
+			.body(fromMultipartData(body(validApplication(), false, true).build()))
+			.exchange()
+			.expectStatus().isBadRequest();
+
+		verifyNoInteractions(serviceMock);
+	}
+
+	@Test
+	void submitApplicationMissingUtbildningsintygIsBadRequest() {
+		webTestClient.post()
+			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.contentType(MULTIPART_FORM_DATA)
+			.body(fromMultipartData(body(validApplication(), true, false).build()))
+			.exchange()
+			.expectStatus().isBadRequest();
+
+		verifyNoInteractions(serviceMock);
+	}
+
+	@Test
+	void submitApplicationMissingBothBilagorIsBadRequest() {
+		webTestClient.post()
+			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.contentType(MULTIPART_FORM_DATA)
+			.body(fromMultipartData(body(validApplication(), false, false).build()))
 			.exchange()
 			.expectStatus().isBadRequest();
 
@@ -93,7 +120,22 @@ class EgensotningApplicationResourceTest {
 		webTestClient.post()
 			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.contentType(MULTIPART_FORM_DATA)
-			.body(fromMultipartData(body(EgensotningApplication.create(), true).build()))
+			.body(fromMultipartData(body(EgensotningApplication.create(), true, true).build()))
+			.exchange()
+			.expectStatus().isBadRequest();
+
+		verifyNoInteractions(serviceMock);
+	}
+
+	@Test
+	void submitApplicationWithInvalidPersonnummerIsBadRequest() {
+		final var application = validApplication();
+		application.setPersonnummer("123"); // ogiltigt personnummer-format
+
+		webTestClient.post()
+			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.contentType(MULTIPART_FORM_DATA)
+			.body(fromMultipartData(body(application, true, true).build()))
 			.exchange()
 			.expectStatus().isBadRequest();
 

@@ -45,6 +45,10 @@ public class EgensotningModuleConfig {
 	public static final String ROLE_APPLICANT = "APPLICANT";
 	public static final String ROLE_BSK = "BSK";
 
+	// Bilaga-kategorier — en egensotning-ansökan kräver exakt dessa två dokument.
+	public static final String CATEGORY_SOTNINGSPROTOKOLL = "SOTNINGSPROTOKOLL";
+	public static final String CATEGORY_UTBILDNINGSINTYG = "UTBILDNINGSINTYG";
+
 	@Bean
 	ErrandTypeContribution egensotningType() {
 		return ErrandTypeContribution.builder(TYPE_SLUG)

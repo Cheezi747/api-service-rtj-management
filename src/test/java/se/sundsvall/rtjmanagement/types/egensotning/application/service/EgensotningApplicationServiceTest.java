@@ -50,6 +50,14 @@ class EgensotningApplicationServiceTest {
 	@InjectMocks
 	private EgensotningApplicationService service;
 
+	private static MultipartFile protokoll() {
+		return new MockMultipartFile("sotningsprotokoll", "protokoll.pdf", "application/pdf", "data".getBytes());
+	}
+
+	private static MultipartFile intyg() {
+		return new MockMultipartFile("utbildningsintyg", "intyg.pdf", "application/pdf", "data".getBytes());
+	}
+
 	private static EgensotningApplication sampleApplication() {
 		final var application = EgensotningApplication.create();
 		application.setApplicantEmail("anna@example.se");
@@ -67,14 +75,15 @@ class EgensotningApplicationServiceTest {
 	@Test
 	void submitCreatesEverythingAndStartsProcessLast() {
 		when(errandServiceMock.createErrand(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(Errand.class))).thenReturn(ERRAND_ID);
-		final List<MultipartFile> files = List.of(new MockMultipartFile("files", "intyg.pdf", "application/pdf", "data".getBytes()));
 
-		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, sampleApplication(), files);
+		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, sampleApplication(), protokoll(), intyg());
 
 		assertThat(result).isEqualTo(ERRAND_ID);
 		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(EgensotningDetails.class));
 		verify(sotningsobjektServiceMock, times(2)).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(Sotningsobjekt.class));
-		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("OTHER"));
+		// Each bilaga stored with its specific category
+		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("SOTNINGSPROTOKOLL"));
+		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("UTBILDNINGSINTYG"));
 
 		final var stakeholderCaptor = ArgumentCaptor.forClass(Stakeholder.class);
 		verify(stakeholderServiceMock).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), stakeholderCaptor.capture());
@@ -85,21 +94,21 @@ class EgensotningApplicationServiceTest {
 		// Process must start LAST, after the errand + attachments are persisted
 		final var ordered = inOrder(errandServiceMock, attachmentServiceMock);
 		ordered.verify(errandServiceMock).createErrand(any(), any(), any());
-		ordered.verify(attachmentServiceMock).createAttachment(any(), any(), any(), any(), any());
+		ordered.verify(attachmentServiceMock, times(2)).createAttachment(any(), any(), any(), any(), any());
 		ordered.verify(errandServiceMock).startProcess(any(), any(), any(), any(), any());
 
 		verify(errandServiceMock).startProcess(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, PROCESS_NAME, null);
 	}
 
 	@Test
-	void submitWithNullFilesAndNullObjektDoesNotFail() {
+	void submitWithNullObjektDoesNotFail() {
 		final var application = EgensotningApplication.create();
 		application.setApplicantEmail("a@b.c");
 		application.setPersonnummer("198501010000");
 		application.setFastighetsbeteckning("Fast 1:1");
 		when(errandServiceMock.createErrand(any(), any(), any())).thenReturn(ERRAND_ID);
 
-		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, application, null);
+		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, application, protokoll(), intyg());
 
 		assertThat(result).isEqualTo(ERRAND_ID);
 		verify(errandServiceMock).startProcess(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, PROCESS_NAME, null);
