@@ -1,6 +1,7 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.service;
 
 import generated.se.sundsvall.templating.RenderRequest;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -136,5 +137,71 @@ class EgensotningDecisionListenerTest {
 		assertThatNoException().isThrownBy(() -> listener.on(event));
 
 		verify(attachmentServiceMock, never()).createAttachment(any(), any(), any(), any(byte[].class), any(), any(), any());
+	}
+
+	@Test
+	void skipsWhenDecisionPdfAlreadyExists() {
+		final var event = new DecisionRecorded(DECISION_ID, ERRAND_ID, "EGENSOTNING", "APPROVED", "x", "operaton", OffsetDateTime.now());
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withMunicipalityId(MUNICIPALITY_ID).withNamespace(NAMESPACE);
+		when(errandRepositoryMock.findById(ERRAND_ID)).thenReturn(Optional.of(errand));
+		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(EgensotningDetailsEntity.create()));
+		when(attachmentServiceMock.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		listener.on(event);
+
+		// Idempotens-grinden slår till: inget nytt beslutsdokument skapas och ingen rendering sker
+		// (details läses + ev. giltighetstid sätts före grinden, oavsett vem som producerat beslutet).
+		verifyNoInteractions(sotningsobjektRepositoryMock, stakeholderServiceMock, templatingMapperMock, templatingIntegrationMock);
+		verify(attachmentServiceMock, never()).createAttachment(any(), any(), any(), any(byte[].class), any(), any(), any());
+	}
+
+	@Test
+	void timeLimitsApprovedDecision() {
+		final var event = new DecisionRecorded(DECISION_ID, ERRAND_ID, "EGENSOTNING", "APPROVED", "Godkänd.", "operaton", OffsetDateTime.now());
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withMunicipalityId(MUNICIPALITY_ID).withNamespace(NAMESPACE);
+		final var details = EgensotningDetailsEntity.create().withErrandId(ERRAND_ID);
+		when(errandRepositoryMock.findById(ERRAND_ID)).thenReturn(Optional.of(errand));
+		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details));
+		// Befintlig PDF kortsluter renderingen så att testet isolerar giltighetslogiken.
+		when(attachmentServiceMock.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		listener.on(event);
+
+		assertThat(details.getValidFrom()).isEqualTo(LocalDate.now());
+		assertThat(details.getValidUntil()).isEqualTo(EgensotningValidityCalculator.computeValidUntil(details.getValidFrom()));
+		assertThat(details.getReminderSentAt()).isNull();
+		verify(egensotningDetailsRepositoryMock).save(details);
+	}
+
+	@Test
+	void doesNotTimeLimitRejectedDecision() {
+		final var event = new DecisionRecorded(DECISION_ID, ERRAND_ID, "EGENSOTNING", "REJECTED", "Avslag.", "bsk01", OffsetDateTime.now());
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withMunicipalityId(MUNICIPALITY_ID).withNamespace(NAMESPACE);
+		final var details = EgensotningDetailsEntity.create().withErrandId(ERRAND_ID);
+		when(errandRepositoryMock.findById(ERRAND_ID)).thenReturn(Optional.of(errand));
+		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details));
+		when(attachmentServiceMock.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		listener.on(event);
+
+		assertThat(details.getValidFrom()).isNull();
+		assertThat(details.getValidUntil()).isNull();
+		verify(egensotningDetailsRepositoryMock, never()).save(any());
+	}
+
+	@Test
+	void doesNotReTimeLimitAlreadyValidDecision() {
+		final var event = new DecisionRecorded(DECISION_ID, ERRAND_ID, "EGENSOTNING", "APPROVED", "Godkänd.", "operaton", OffsetDateTime.now());
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withMunicipalityId(MUNICIPALITY_ID).withNamespace(NAMESPACE);
+		final var existing = LocalDate.of(2030, 3, 1);
+		final var details = EgensotningDetailsEntity.create().withErrandId(ERRAND_ID).withValidUntil(existing);
+		when(errandRepositoryMock.findById(ERRAND_ID)).thenReturn(Optional.of(errand));
+		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details));
+		when(attachmentServiceMock.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		listener.on(event);
+
+		assertThat(details.getValidUntil()).isEqualTo(existing);
+		verify(egensotningDetailsRepositoryMock, never()).save(any());
 	}
 }

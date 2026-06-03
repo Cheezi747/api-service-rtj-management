@@ -89,6 +89,16 @@ class PermitResourceTest {
 	}
 
 	@Test
+	void revokeAllPermitsNoContent() {
+		webTestClient.post()
+			.uri(uri -> uri.path(BASE + "/revoke").build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "errandId", ERRAND_ID)))
+			.exchange()
+			.expectStatus().isNoContent();
+
+		verify(serviceMock).revokeAllForErrand(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+	}
+
+	@Test
 	void deletePermitNoContent() {
 		webTestClient.delete()
 			.uri(uri -> uri.path(BASE + "/{permitId}").build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "errandId", ERRAND_ID, "permitId", PERMIT_ID)))

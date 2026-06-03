@@ -21,6 +21,9 @@ public final class EgensotningDetailsMapper {
 				.withLastOutcome(e.getLastOutcome())
 				.withManualReviewReason(e.getManualReviewReason())
 				.withLastVerifiedAt(e.getLastVerifiedAt())
+				.withValidFrom(e.getValidFrom())
+				.withValidUntil(e.getValidUntil())
+				.withReminderSentAt(e.getReminderSentAt())
 				.withCreated(e.getCreated())
 				.withModified(e.getModified()))
 			.orElse(null);

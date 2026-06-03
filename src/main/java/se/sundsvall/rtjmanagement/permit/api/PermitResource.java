@@ -119,6 +119,20 @@ class PermitResource {
 		return noContent().header(CONTENT_TYPE, ALL_VALUE).build();
 	}
 
+	@PostMapping(path = "/revoke", produces = ALL_VALUE)
+	@Operation(summary = "Återkalla alla tillstånd på ärendet (20 § LBE)", responses = {
+		@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
+	ResponseEntity<Void> revokeAllPermits(
+		@Parameter(name = "municipalityId", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", example = "BRANDFARLIG_VARA") @Pattern(regexp = NAMESPACE_REGEXP, message = NAMESPACE_VALIDATION_MESSAGE) @PathVariable final String namespace,
+		@Parameter(name = "errandId") @ValidUuid @PathVariable final String errandId) {
+
+		service.revokeAllForErrand(municipalityId, namespace, errandId);
+		return noContent().header(CONTENT_TYPE, ALL_VALUE).build();
+	}
+
 	@DeleteMapping(path = "/{permitId}", produces = ALL_VALUE)
 	@Operation(summary = "Ta bort tillstånd", responses = {
 		@ApiResponse(responseCode = "204", description = "Successful operation", useReturnTypeSchema = true),

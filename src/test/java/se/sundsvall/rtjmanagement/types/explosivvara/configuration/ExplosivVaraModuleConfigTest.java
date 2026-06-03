@@ -17,6 +17,7 @@ import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.Explos
 import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.ExplosivVaraModuleConfig.STATUS_INSPECTION_SCHEDULED;
 import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.ExplosivVaraModuleConfig.STATUS_REGISTERED;
 import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.ExplosivVaraModuleConfig.STATUS_REJECTED;
+import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.ExplosivVaraModuleConfig.STATUS_REVOKED;
 import static se.sundsvall.rtjmanagement.types.explosivvara.configuration.ExplosivVaraModuleConfig.TYPE_SLUG;
 
 class ExplosivVaraModuleConfigTest {
@@ -30,7 +31,7 @@ class ExplosivVaraModuleConfigTest {
 		assertThat(type.typeSlug()).isEqualTo(TYPE_SLUG);
 		assertThat(type.displayName()).isEqualTo("Ansökan om tillstånd för explosiv vara");
 		assertThat(type.allowedStatuses()).contains(STATUS_REGISTERED, STATUS_AWAITING_POLICE_STATEMENT, STATUS_AWAITING_SUPPLEMENTATION,
-			STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED);
+			STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED, STATUS_REVOKED);
 	}
 
 	@Test
@@ -44,6 +45,7 @@ class ExplosivVaraModuleConfigTest {
 		assertThat(type.isValidTransition(STATUS_AWAITING_POLICE_STATEMENT, STATUS_DECIDED)).isTrue();
 		assertThat(type.isValidTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED)).isTrue();
 		assertThat(type.isValidTransition(STATUS_INSPECTION_SCHEDULED, STATUS_REJECTED)).isTrue();
+		assertThat(type.isValidTransition(STATUS_DECIDED, STATUS_REVOKED)).isTrue();
 
 		// A nonsensical transition is rejected
 		assertThat(type.isValidTransition(STATUS_DECIDED, STATUS_REGISTERED)).isFalse();

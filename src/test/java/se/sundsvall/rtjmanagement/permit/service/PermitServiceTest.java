@@ -133,6 +133,31 @@ class PermitServiceTest {
 	}
 
 	@Test
+	void revokeAllForErrandRevokesOnlyActiveOnes() {
+		stubErrand();
+		final var active = PermitEntity.create().withId("p1").withStatus("ACTIVE");
+		final var alreadyRevoked = PermitEntity.create().withId("p2").withStatus("REVOKED");
+		when(permitRepositoryMock.findByErrandIdOrderByCreatedDesc(ERRAND_ID)).thenReturn(List.of(active, alreadyRevoked));
+
+		service.revokeAllForErrand(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		// Only the active permit is saved (the already-revoked one is skipped)
+		final var captor = ArgumentCaptor.forClass(PermitEntity.class);
+		verify(permitRepositoryMock).save(captor.capture());
+		assertThat(captor.getValue().getId()).isEqualTo("p1");
+		assertThat(captor.getValue().getStatus()).isEqualTo("REVOKED");
+	}
+
+	@Test
+	void revokeAllForErrandErrandMissingThrowsNotFound() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.empty());
+
+		assertThatThrownBy(() -> service.revokeAllForErrand(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
+	}
+
+	@Test
 	void deleteRemovesPermit() {
 		stubErrand();
 		final var entity = PermitEntity.create().withId(PERMIT_ID);

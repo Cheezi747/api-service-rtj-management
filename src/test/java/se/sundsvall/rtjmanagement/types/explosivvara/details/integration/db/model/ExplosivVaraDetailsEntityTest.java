@@ -47,6 +47,7 @@ class ExplosivVaraDetailsEntityTest {
 			.withId(1L)
 			.withErrandId("errand")
 			.withTypAvHantering("USE")
+			.withAnlaggningTyp("NEW")
 			.withProxy(true)
 			.withFastighetsbeteckning("Fast 1:1")
 			.withHandlingLocationAddress("Gatan 1")
@@ -59,6 +60,7 @@ class ExplosivVaraDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getId()).isEqualTo(1L);
 		org.assertj.core.api.Assertions.assertThat(entity.getErrandId()).isEqualTo("errand");
 		org.assertj.core.api.Assertions.assertThat(entity.getTypAvHantering()).isEqualTo("USE");
+		org.assertj.core.api.Assertions.assertThat(entity.getAnlaggningTyp()).isEqualTo("NEW");
 		org.assertj.core.api.Assertions.assertThat(entity.isProxy()).isTrue();
 		org.assertj.core.api.Assertions.assertThat(entity.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		org.assertj.core.api.Assertions.assertThat(entity.getHandlingLocationAddress()).isEqualTo("Gatan 1");

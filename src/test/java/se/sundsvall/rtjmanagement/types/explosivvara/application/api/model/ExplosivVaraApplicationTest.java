@@ -29,6 +29,7 @@ class ExplosivVaraApplicationTest {
 		application.setContactPersonEmail("anna@foretaget.se");
 		application.setContactPersonPhone("+46701234567");
 		application.setTypAvHantering("STORAGE");
+		application.setAnlaggningTyp("EXISTING");
 		application.setProxy(true);
 		application.setFastighetsbeteckning("Sundsvall Stenstaden 1:23");
 		application.setHandlingLocationAddress("Storgatan 5");
@@ -52,6 +53,7 @@ class ExplosivVaraApplicationTest {
 		assertThat(application.getContactPersonEmail()).isEqualTo("anna@foretaget.se");
 		assertThat(application.getContactPersonPhone()).isEqualTo("+46701234567");
 		assertThat(application.getTypAvHantering()).isEqualTo("STORAGE");
+		assertThat(application.getAnlaggningTyp()).isEqualTo("EXISTING");
 		assertThat(application.isProxy()).isTrue();
 		assertThat(application.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(application.getHandlingLocationAddress()).isEqualTo("Storgatan 5");
@@ -68,6 +70,7 @@ class ExplosivVaraApplicationTest {
 			.withApplicantEmail("kontakt@foretaget.se")
 			.withOrganizationNumber("5560123456")
 			.withCompanyName("Sprängbolaget AB")
+			.withAnlaggningTyp("NEW")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProxy(true)
 			.withProducts(products)
@@ -76,6 +79,7 @@ class ExplosivVaraApplicationTest {
 			.withApplicantEmail("kontakt@foretaget.se")
 			.withOrganizationNumber("5560123456")
 			.withCompanyName("Sprängbolaget AB")
+			.withAnlaggningTyp("NEW")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProxy(true)
 			.withProducts(products)

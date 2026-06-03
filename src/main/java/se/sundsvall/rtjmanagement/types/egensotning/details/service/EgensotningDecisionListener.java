@@ -1,5 +1,7 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
 import se.sundsvall.rtjmanagement.shared.DecisionRecorded;
 import se.sundsvall.rtjmanagement.stakeholders.service.StakeholderService;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.EgensotningDetailsRepository;
+import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.model.EgensotningDetailsEntity;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.templating.TemplatingIntegration;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.templating.TemplatingMapper;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.integration.db.SotningsobjektRepository;
@@ -33,6 +36,7 @@ import static se.sundsvall.rtjmanagement.types.egensotning.configuration.Egensot
 class EgensotningDecisionListener {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EgensotningDecisionListener.class);
+	private static final String OUTCOME_APPROVED = "APPROVED";
 
 	private final ErrandRepository errandRepository;
 	private final EgensotningDetailsRepository egensotningDetailsRepository;
@@ -65,7 +69,20 @@ class EgensotningDecisionListener {
 				LOG.warn("Egensotning decision {} references missing errand {} — no decision PDF stored", event.decisionId(), event.errandId());
 				return;
 			}
+
 			final var details = egensotningDetailsRepository.findByErrandId(event.errandId()).orElse(null);
+			// Tidsbegränsa godkända beslut (sex år) innan ev. tidig retur på befintlig PDF — giltigheten
+			// ska sättas oavsett vem som producerat beslutsdokumentet.
+			setValidityIfApproved(event, details);
+
+			// Idempotens: skapa inte ett nytt beslutsdokument om ärendet redan har ett (t.ex. en
+			// handläggare har under manuell hantering laddat upp eller justerat ett eget). Den
+			// befintliga PDF:en behålls och används för utskicket.
+			if (attachmentService.hasAttachmentOfCategory(event.errandId(), CATEGORY_DECISION)) {
+				LOG.info("Errand {} already has a decision PDF — keeping the existing one, skipping generation", event.errandId());
+				return;
+			}
+
 			final var sotningsobjekt = sotningsobjektRepository.findByErrandIdOrderByTypAscFabrikatAsc(event.errandId());
 			final var applicant = stakeholderService.readAll(errand.getMunicipalityId(), errand.getNamespace(), event.errandId()).stream()
 				.filter(stakeholder -> ROLE_APPLICANT.equals(stakeholder.getRole()))
@@ -82,5 +99,22 @@ class EgensotningDecisionListener {
 		} catch (final RuntimeException e) {
 			LOG.error("Failed to render/store egensotning decision PDF for errand {} (decision {})", event.errandId(), event.decisionId(), e);
 		}
+	}
+
+	/**
+	 * Time-limits an approved egensotning decision to six years (from beslutsdatum, framflyttat till
+	 * nästa fasta datum). Runs only for APPROVAL decisions and at most once per details row (idempotent
+	 * on {@code validUntil}); REJECTION-beslut får ingen giltighetstid.
+	 */
+	private void setValidityIfApproved(final DecisionRecorded event, final EgensotningDetailsEntity details) {
+		if (details == null || !OUTCOME_APPROVED.equals(event.outcome()) || details.getValidUntil() != null) {
+			return;
+		}
+		final var validFrom = LocalDate.now(ZoneId.systemDefault());
+		details.setValidFrom(validFrom);
+		details.setValidUntil(EgensotningValidityCalculator.computeValidUntil(validFrom));
+		details.setReminderSentAt(null);
+		egensotningDetailsRepository.save(details);
+		LOG.info("Egensotning decision {} on errand {} time-limited: valid {} – {}", event.decisionId(), event.errandId(), validFrom, details.getValidUntil());
 	}
 }

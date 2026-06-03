@@ -29,6 +29,8 @@ import se.sundsvall.rtjmanagement.stakeholders.service.StakeholderRoleContributi
  *
  *   INSPECTION_SCHEDULED ─┬─▶ DECIDED        (tillsyn godkänd → tillstånd)
  *                         └─▶ REJECTED       (tillsyn underkänd → avslag)
+ *
+ *   DECIDED ──▶ REVOKED   (återkallande enligt 20 § LBE)
  * </pre>
  *
  * Stakeholder roles (alla type-scoped):
@@ -59,6 +61,7 @@ public class ExplosivVaraModuleConfig {
 	public static final String STATUS_INSPECTION_SCHEDULED = "INSPECTION_SCHEDULED";
 	public static final String STATUS_DECIDED = "DECIDED";
 	public static final String STATUS_REJECTED = "REJECTED";
+	public static final String STATUS_REVOKED = "REVOKED";
 
 	public static final String ROLE_APPLICANT = "APPLICANT";
 	public static final String ROLE_CONTACT_PERSON = "CONTACT_PERSON";
@@ -76,6 +79,7 @@ public class ExplosivVaraModuleConfig {
 			.allowedTransition(STATUS_AWAITING_POLICE_STATEMENT, STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED)
 			.allowedTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED)
 			.allowedTransition(STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED)
+			.allowedTransition(STATUS_DECIDED, STATUS_REVOKED)
 			.build();
 	}
 

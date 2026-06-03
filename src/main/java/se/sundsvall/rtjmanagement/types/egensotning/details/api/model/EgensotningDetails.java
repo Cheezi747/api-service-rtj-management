@@ -3,6 +3,7 @@ package se.sundsvall.rtjmanagement.types.egensotning.details.api.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import se.sundsvall.dept44.common.validators.annotation.ValidPersonalNumber;
@@ -49,6 +50,18 @@ public class EgensotningDetails {
 	@Schema(description = "När verifieringen senast kördes", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private OffsetDateTime lastVerifiedAt;
+
+	@Schema(description = "Beslutets giltighet börjar (sätts vid godkännande)", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private LocalDate validFrom;
+
+	@Schema(description = "Beslutets giltighet upphör — sex år från beslutsdatum, framflyttat till nästa fasta datum (1 mar/jun/sep/dec)", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private LocalDate validUntil;
+
+	@Schema(description = "När påminnelse om utgång senast skickades (null tills den gått ut)", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private OffsetDateTime reminderSentAt;
 
 	@Schema(description = "Created timestamp", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
@@ -179,6 +192,45 @@ public class EgensotningDetails {
 		return this;
 	}
 
+	public LocalDate getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(final LocalDate v) {
+		this.validFrom = v;
+	}
+
+	public EgensotningDetails withValidFrom(final LocalDate v) {
+		this.validFrom = v;
+		return this;
+	}
+
+	public LocalDate getValidUntil() {
+		return validUntil;
+	}
+
+	public void setValidUntil(final LocalDate v) {
+		this.validUntil = v;
+	}
+
+	public EgensotningDetails withValidUntil(final LocalDate v) {
+		this.validUntil = v;
+		return this;
+	}
+
+	public OffsetDateTime getReminderSentAt() {
+		return reminderSentAt;
+	}
+
+	public void setReminderSentAt(final OffsetDateTime v) {
+		this.reminderSentAt = v;
+	}
+
+	public EgensotningDetails withReminderSentAt(final OffsetDateTime v) {
+		this.reminderSentAt = v;
+		return this;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -214,14 +266,15 @@ public class EgensotningDetails {
 			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(bilagaPresent, that.bilagaPresent)
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
-			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(created, that.created)
-			&& Objects.equals(modified, that.modified);
+			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
+			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
+			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, bilagaPresent, registeredAtProperty,
-			reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, created, modified);
+			reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom, validUntil, reminderSentAt, created, modified);
 	}
 
 	@Override
@@ -229,6 +282,7 @@ public class EgensotningDetails {
 		return "EgensotningDetails{fastighetsbeteckning='" + fastighetsbeteckning + "', propertyAddress='" + propertyAddress
 			+ "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
 			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', lastVerifiedAt=" + lastVerifiedAt
+			+ ", validFrom=" + validFrom + ", validUntil=" + validUntil + ", reminderSentAt=" + reminderSentAt
 			+ ", created=" + created + ", modified=" + modified + '}';
 	}
 }

@@ -13,6 +13,7 @@ public final class BrandfarligVaraDetailsMapper {
 		return ofNullable(entity)
 			.map(e -> BrandfarligVaraDetails.create()
 				.withVerksamhetstyp(e.getVerksamhetstyp())
+				.withAnlaggningTyp(e.getAnlaggningTyp())
 				.withProxy(e.isProxy())
 				.withFastighetsbeteckning(e.getFastighetsbeteckning())
 				.withHandlingLocationAddress(e.getHandlingLocationAddress())
@@ -28,6 +29,7 @@ public final class BrandfarligVaraDetailsMapper {
 			.map(d -> BrandfarligVaraDetailsEntity.create()
 				.withErrandId(errandId)
 				.withVerksamhetstyp(d.getVerksamhetstyp())
+				.withAnlaggningTyp(d.getAnlaggningTyp())
 				.withProxy(d.isProxy())
 				.withFastighetsbeteckning(d.getFastighetsbeteckning())
 				.withHandlingLocationAddress(d.getHandlingLocationAddress())
@@ -44,6 +46,7 @@ public final class BrandfarligVaraDetailsMapper {
 			return target;
 		}
 		ofNullable(patch.getVerksamhetstyp()).ifPresent(target::setVerksamhetstyp);
+		ofNullable(patch.getAnlaggningTyp()).ifPresent(target::setAnlaggningTyp);
 		target.setProxy(patch.isProxy());
 		ofNullable(patch.getFastighetsbeteckning()).ifPresent(target::setFastighetsbeteckning);
 		ofNullable(patch.getHandlingLocationAddress()).ifPresent(target::setHandlingLocationAddress);

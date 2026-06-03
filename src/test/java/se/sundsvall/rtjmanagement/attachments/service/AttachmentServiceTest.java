@@ -169,4 +169,11 @@ class AttachmentServiceTest {
 			.isInstanceOf(ThrowableProblem.class)
 			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
 	}
+
+	@Test
+	void hasAttachmentOfCategoryDelegatesToRepository() {
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		assertThat(service.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).isTrue();
+	}
 }

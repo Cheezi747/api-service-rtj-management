@@ -104,6 +104,7 @@ public class BrandfarligVaraApplicationService {
 	private static BrandfarligVaraDetails toDetails(final BrandfarligVaraApplication application) {
 		return BrandfarligVaraDetails.create()
 			.withVerksamhetstyp(application.getVerksamhetstyp())
+			.withAnlaggningTyp(application.getAnlaggningTyp())
 			.withProxy(application.isProxy())
 			.withFastighetsbeteckning(application.getFastighetsbeteckning())
 			.withHandlingLocationAddress(application.getHandlingLocationAddress())

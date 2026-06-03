@@ -31,6 +31,13 @@ class EgensotningDecisionTextBuilderTest {
 	}
 
 	@Test
+	void villkorStatesSixYearValidityNotTillsvidare() {
+		final var text = EgensotningDecisionTextBuilder.buildApprovalDescription(details(), List.of());
+
+		assertThat(text).contains("sex (6) år").contains("förnyas").doesNotContain("gäller tillsvidare");
+	}
+
+	@Test
 	void noObjektNotesNone() {
 		final var text = EgensotningDecisionTextBuilder.buildApprovalDescription(details(), List.of());
 

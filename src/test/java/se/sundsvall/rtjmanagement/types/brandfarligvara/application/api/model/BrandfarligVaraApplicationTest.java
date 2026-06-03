@@ -29,6 +29,7 @@ class BrandfarligVaraApplicationTest {
 		application.setContactPersonEmail("anna@foretaget.se");
 		application.setContactPersonPhone("+46701234567");
 		application.setVerksamhetstyp("RESTAURANT");
+		application.setAnlaggningTyp("EXISTING");
 		application.setProxy(true);
 		application.setFastighetsbeteckning("Sundsvall Stenstaden 1:23");
 		application.setHandlingLocationAddress("Storgatan 5");
@@ -52,6 +53,7 @@ class BrandfarligVaraApplicationTest {
 		assertThat(application.getContactPersonEmail()).isEqualTo("anna@foretaget.se");
 		assertThat(application.getContactPersonPhone()).isEqualTo("+46701234567");
 		assertThat(application.getVerksamhetstyp()).isEqualTo("RESTAURANT");
+		assertThat(application.getAnlaggningTyp()).isEqualTo("EXISTING");
 		assertThat(application.isProxy()).isTrue();
 		assertThat(application.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(application.getHandlingLocationAddress()).isEqualTo("Storgatan 5");
@@ -68,6 +70,7 @@ class BrandfarligVaraApplicationTest {
 			.withApplicantEmail("kontakt@foretaget.se")
 			.withOrganizationNumber("5560123456")
 			.withCompanyName("Restaurang Ankaret AB")
+			.withAnlaggningTyp("EXISTING")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProxy(true)
 			.withProducts(products)
@@ -76,6 +79,7 @@ class BrandfarligVaraApplicationTest {
 			.withApplicantEmail("kontakt@foretaget.se")
 			.withOrganizationNumber("5560123456")
 			.withCompanyName("Restaurang Ankaret AB")
+			.withAnlaggningTyp("EXISTING")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProxy(true)
 			.withProducts(products)

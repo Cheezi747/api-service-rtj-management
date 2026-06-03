@@ -34,6 +34,9 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 	@Column(name = "verksamhetstyp", length = 64)
 	private String verksamhetstyp;
 
+	@Column(name = "anlaggning_typ", length = 16)
+	private String anlaggningTyp;
+
 	@Column(name = "is_proxy", nullable = false)
 	private boolean isProxy;
 
@@ -71,6 +74,10 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 
 	public String getVerksamhetstyp() {
 		return verksamhetstyp;
+	}
+
+	public String getAnlaggningTyp() {
+		return anlaggningTyp;
 	}
 
 	public boolean isProxy() {
@@ -111,6 +118,10 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 
 	public void setVerksamhetstyp(final String v) {
 		this.verksamhetstyp = v;
+	}
+
+	public void setAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
 	}
 
 	public void setProxy(final boolean v) {
@@ -158,6 +169,11 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 		return this;
 	}
 
+	public BrandfarligVaraDetailsEntity withAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
+		return this;
+	}
+
 	public BrandfarligVaraDetailsEntity withProxy(final boolean v) {
 		this.isProxy = v;
 		return this;
@@ -199,7 +215,8 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 			return false;
 		final BrandfarligVaraDetailsEntity that = (BrandfarligVaraDetailsEntity) o;
 		return isProxy == that.isProxy && Objects.equals(id, that.id) && Objects.equals(errandId, that.errandId)
-			&& Objects.equals(verksamhetstyp, that.verksamhetstyp) && Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
+			&& Objects.equals(verksamhetstyp, that.verksamhetstyp) && Objects.equals(anlaggningTyp, that.anlaggningTyp)
+			&& Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
 			&& Objects.equals(handlingLocationAddress, that.handlingLocationAddress)
 			&& Objects.equals(handlingLocationZipCode, that.handlingLocationZipCode)
 			&& Objects.equals(handlingLocationCity, that.handlingLocationCity)
@@ -208,14 +225,14 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, errandId, verksamhetstyp, isProxy, fastighetsbeteckning,
+		return Objects.hash(id, errandId, verksamhetstyp, anlaggningTyp, isProxy, fastighetsbeteckning,
 			handlingLocationAddress, handlingLocationZipCode, handlingLocationCity, created, modified);
 	}
 
 	@Override
 	public String toString() {
 		return "BrandfarligVaraDetailsEntity{id=" + id + ", errandId='" + errandId + "', verksamhetstyp='" + verksamhetstyp
-			+ "', isProxy=" + isProxy + ", fastighetsbeteckning='" + fastighetsbeteckning
+			+ "', anlaggningTyp='" + anlaggningTyp + "', isProxy=" + isProxy + ", fastighetsbeteckning='" + fastighetsbeteckning
 			+ "', handlingLocation=" + handlingLocationAddress + " " + handlingLocationZipCode + " " + handlingLocationCity
 			+ ", created=" + created + ", modified=" + modified + '}';
 	}

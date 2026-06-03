@@ -105,6 +105,7 @@ public class ExplosivVaraApplicationService {
 	private static ExplosivVaraDetails toDetails(final ExplosivVaraApplication application) {
 		return ExplosivVaraDetails.create()
 			.withTypAvHantering(application.getTypAvHantering())
+			.withAnlaggningTyp(application.getAnlaggningTyp())
 			.withProxy(application.isProxy())
 			.withFastighetsbeteckning(application.getFastighetsbeteckning())
 			.withHandlingLocationAddress(application.getHandlingLocationAddress())

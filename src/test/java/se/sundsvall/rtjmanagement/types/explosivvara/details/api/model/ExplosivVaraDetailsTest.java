@@ -39,6 +39,7 @@ class ExplosivVaraDetailsTest {
 
 		final var result = ExplosivVaraDetails.create()
 			.withTypAvHantering("STORAGE")
+			.withAnlaggningTyp("NEW")
 			.withProxy(true)
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withHandlingLocationAddress("Storgatan 5")
@@ -49,6 +50,7 @@ class ExplosivVaraDetailsTest {
 
 		assertThat(result).hasNoNullFieldsOrProperties();
 		assertThat(result.getTypAvHantering()).isEqualTo("STORAGE");
+		assertThat(result.getAnlaggningTyp()).isEqualTo("NEW");
 		assertThat(result.isProxy()).isTrue();
 		assertThat(result.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(result.getHandlingLocationAddress()).isEqualTo("Storgatan 5");

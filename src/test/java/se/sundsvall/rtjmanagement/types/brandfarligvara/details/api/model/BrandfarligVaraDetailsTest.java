@@ -39,6 +39,7 @@ class BrandfarligVaraDetailsTest {
 
 		final var result = BrandfarligVaraDetails.create()
 			.withVerksamhetstyp("RESTAURANT")
+			.withAnlaggningTyp("EXISTING")
 			.withProxy(true)
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withHandlingLocationAddress("Storgatan 5")
@@ -49,6 +50,7 @@ class BrandfarligVaraDetailsTest {
 
 		assertThat(result).hasNoNullFieldsOrProperties();
 		assertThat(result.getVerksamhetstyp()).isEqualTo("RESTAURANT");
+		assertThat(result.getAnlaggningTyp()).isEqualTo("EXISTING");
 		assertThat(result.isProxy()).isTrue();
 		assertThat(result.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(result.getHandlingLocationAddress()).isEqualTo("Storgatan 5");

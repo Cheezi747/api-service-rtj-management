@@ -9,11 +9,13 @@ import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.Bra
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.ROLE_INSPECTION_OFFICER;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.ROLE_INVOICEE;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.ROLE_RESPONSIBLE_PERSON;
+import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_AWAITING_CONSULTATION;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_AWAITING_SUPPLEMENTATION;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_DECIDED;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_INSPECTION_SCHEDULED;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_REGISTERED;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_REJECTED;
+import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.STATUS_REVOKED;
 import static se.sundsvall.rtjmanagement.types.brandfarligvara.configuration.BrandfarligVaraModuleConfig.TYPE_SLUG;
 
 class BrandfarligVaraModuleConfigTest {
@@ -26,8 +28,8 @@ class BrandfarligVaraModuleConfigTest {
 
 		assertThat(type.typeSlug()).isEqualTo(TYPE_SLUG);
 		assertThat(type.displayName()).isEqualTo("Ansökan om tillstånd för brandfarlig vara");
-		assertThat(type.allowedStatuses()).contains(STATUS_REGISTERED, STATUS_AWAITING_SUPPLEMENTATION,
-			STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED);
+		assertThat(type.allowedStatuses()).contains(STATUS_REGISTERED, STATUS_AWAITING_CONSULTATION, STATUS_AWAITING_SUPPLEMENTATION,
+			STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED, STATUS_REVOKED);
 	}
 
 	@Test
@@ -35,10 +37,14 @@ class BrandfarligVaraModuleConfigTest {
 		final var type = config.brandfarligVaraType();
 
 		assertThat(type.isValidTransition(STATUS_REGISTERED, STATUS_DECIDED)).isTrue();
+		assertThat(type.isValidTransition(STATUS_REGISTERED, STATUS_AWAITING_CONSULTATION)).isTrue();
 		assertThat(type.isValidTransition(STATUS_REGISTERED, STATUS_AWAITING_SUPPLEMENTATION)).isTrue();
 		assertThat(type.isValidTransition(STATUS_REGISTERED, STATUS_INSPECTION_SCHEDULED)).isTrue();
+		assertThat(type.isValidTransition(STATUS_AWAITING_CONSULTATION, STATUS_DECIDED)).isTrue();
+		assertThat(type.isValidTransition(STATUS_AWAITING_CONSULTATION, STATUS_AWAITING_SUPPLEMENTATION)).isTrue();
 		assertThat(type.isValidTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED)).isTrue();
 		assertThat(type.isValidTransition(STATUS_INSPECTION_SCHEDULED, STATUS_REJECTED)).isTrue();
+		assertThat(type.isValidTransition(STATUS_DECIDED, STATUS_REVOKED)).isTrue();
 
 		// A nonsensical transition is rejected
 		assertThat(type.isValidTransition(STATUS_DECIDED, STATUS_REGISTERED)).isFalse();

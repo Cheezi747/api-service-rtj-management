@@ -1,6 +1,7 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.model;
 
 import com.google.code.beanmatchers.BeanMatchers;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +21,7 @@ class EgensotningDetailsEntityTest {
 	@BeforeAll
 	static void setup() {
 		BeanMatchers.registerValueGenerator(() -> now().plusDays(new Random().nextInt()), OffsetDateTime.class);
+		BeanMatchers.registerValueGenerator(() -> LocalDate.now().plusDays(new Random().nextInt(3650)), LocalDate.class);
 	}
 
 	@Test
@@ -44,6 +46,9 @@ class EgensotningDetailsEntityTest {
 	@Test
 	void testBuilderMethods() {
 		final var verifiedAt = now();
+		final var validFrom = LocalDate.now();
+		final var validUntil = LocalDate.now().plusYears(6);
+		final var reminderSentAt = now();
 		final var created = now();
 		final var modified = now();
 
@@ -59,6 +64,9 @@ class EgensotningDetailsEntityTest {
 			.withLastOutcome("NEEDS_SUPPLEMENT")
 			.withManualReviewReason("NOT_REGISTERED")
 			.withLastVerifiedAt(verifiedAt)
+			.withValidFrom(validFrom)
+			.withValidUntil(validUntil)
+			.withReminderSentAt(reminderSentAt)
 			.withCreated(created)
 			.withModified(modified);
 
@@ -74,6 +82,9 @@ class EgensotningDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getLastOutcome()).isEqualTo("NEEDS_SUPPLEMENT");
 		org.assertj.core.api.Assertions.assertThat(entity.getManualReviewReason()).isEqualTo("NOT_REGISTERED");
 		org.assertj.core.api.Assertions.assertThat(entity.getLastVerifiedAt()).isEqualTo(verifiedAt);
+		org.assertj.core.api.Assertions.assertThat(entity.getValidFrom()).isEqualTo(validFrom);
+		org.assertj.core.api.Assertions.assertThat(entity.getValidUntil()).isEqualTo(validUntil);
+		org.assertj.core.api.Assertions.assertThat(entity.getReminderSentAt()).isEqualTo(reminderSentAt);
 		org.assertj.core.api.Assertions.assertThat(entity.getCreated()).isEqualTo(created);
 		org.assertj.core.api.Assertions.assertThat(entity.getModified()).isEqualTo(modified);
 	}

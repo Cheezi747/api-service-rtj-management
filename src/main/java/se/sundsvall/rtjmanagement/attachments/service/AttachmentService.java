@@ -61,6 +61,15 @@ public class AttachmentService {
 		return toAttachmentList(attachmentRepository.findByErrandId(errandId));
 	}
 
+	/**
+	 * Whether the errand already has an attachment of the given category (e.g. a decision PDF).
+	 * Returns a plain boolean so callers in other modules need not reference the attachment model.
+	 */
+	@Transactional(readOnly = true)
+	public boolean hasAttachmentOfCategory(final String errandId, final String category) {
+		return attachmentRepository.existsByErrandIdAndCategory(errandId, category);
+	}
+
 	@Transactional(readOnly = true)
 	public Attachment readAttachment(final String municipalityId, final String namespace, final String errandId, final String attachmentId) {
 		return toAttachment(findAttachment(municipalityId, namespace, errandId, attachmentId));

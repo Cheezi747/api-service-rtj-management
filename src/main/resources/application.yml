@@ -39,6 +39,9 @@ spring:
           templating:
             authorization-grant-type: client_credentials
             provider: templating
+          messaging:
+            authorization-grant-type: client_credentials
+            provider: messaging
 #========================================
 # Integration settings
 #========================================
@@ -53,6 +56,9 @@ integration:
     connect-timeout: 5
     read-timeout: 30
     template-identifier: egensotning-beslut
+  messaging:
+    connect-timeout: 5
+    read-timeout: 30
 #========================================
 # Notification settings
 #========================================
@@ -64,3 +70,9 @@ scheduler:
     name: notification-cleanup
     shedlock-lock-at-most-for: PT5M
     maximum-execution-time: PT5M
+  egensotning-expiry-reminder:
+    cron: '0 0 3 * * *'
+    name: egensotning-expiry-reminder
+    shedlock-lock-at-most-for: PT5M
+    maximum-execution-time: PT10M
+    lead-time-days: 90

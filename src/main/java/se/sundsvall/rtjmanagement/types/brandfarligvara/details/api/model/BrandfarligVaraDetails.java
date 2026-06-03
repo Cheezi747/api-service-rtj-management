@@ -22,6 +22,14 @@ public class BrandfarligVaraDetails {
 	}, nullable = true)
 	private String verksamhetstyp;
 
+	@Schema(description = "Anläggningstyp — befintlig eller ny anläggning", examples = "EXISTING", allowableValues = {
+		"EXISTING", "NEW"
+	})
+	@OneOf(value = {
+		"EXISTING", "NEW"
+	}, nullable = true)
+	private String anlaggningTyp;
+
 	@Schema(description = "True if the applicant is acting as a proxy (ombud) for another party. When true, an attachment with category=DELEGATION (fullmakt) is expected.",
 		examples = "false",
 		defaultValue = "false")
@@ -65,6 +73,19 @@ public class BrandfarligVaraDetails {
 
 	public BrandfarligVaraDetails withVerksamhetstyp(final String v) {
 		this.verksamhetstyp = v;
+		return this;
+	}
+
+	public String getAnlaggningTyp() {
+		return anlaggningTyp;
+	}
+
+	public void setAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
+	}
+
+	public BrandfarligVaraDetails withAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
 		return this;
 	}
 
@@ -165,6 +186,7 @@ public class BrandfarligVaraDetails {
 			return false;
 		final BrandfarligVaraDetails that = (BrandfarligVaraDetails) o;
 		return isProxy == that.isProxy && Objects.equals(verksamhetstyp, that.verksamhetstyp)
+			&& Objects.equals(anlaggningTyp, that.anlaggningTyp)
 			&& Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
 			&& Objects.equals(handlingLocationAddress, that.handlingLocationAddress)
 			&& Objects.equals(handlingLocationZipCode, that.handlingLocationZipCode)
@@ -174,13 +196,13 @@ public class BrandfarligVaraDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(verksamhetstyp, isProxy, fastighetsbeteckning, handlingLocationAddress,
+		return Objects.hash(verksamhetstyp, anlaggningTyp, isProxy, fastighetsbeteckning, handlingLocationAddress,
 			handlingLocationZipCode, handlingLocationCity, created, modified);
 	}
 
 	@Override
 	public String toString() {
-		return "BrandfarligVaraDetails{verksamhetstyp='" + verksamhetstyp + "', proxy=" + isProxy
+		return "BrandfarligVaraDetails{verksamhetstyp='" + verksamhetstyp + "', anlaggningTyp='" + anlaggningTyp + "', proxy=" + isProxy
 			+ ", fastighetsbeteckning='" + fastighetsbeteckning + "', handlingLocationAddress='" + handlingLocationAddress
 			+ "', handlingLocationZipCode='" + handlingLocationZipCode + "', handlingLocationCity='" + handlingLocationCity
 			+ "', created=" + created + ", modified=" + modified + '}';

@@ -63,6 +63,7 @@ class ExplosivVaraApplicationServiceTest {
 			.withContactPersonEmail("anna@foretaget.se")
 			.withContactPersonPhone("+46701234567")
 			.withTypAvHantering("STORAGE")
+			.withAnlaggningTyp("EXISTING")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProducts(List.of(
 				ExplosivGoodsProduct.create().withHazardClass("1.1").withProductName("Dynamit"),
@@ -80,7 +81,10 @@ class ExplosivVaraApplicationServiceTest {
 		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, sampleApplication(), files);
 
 		assertThat(result).isEqualTo(ERRAND_ID);
-		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(ExplosivVaraDetails.class));
+		final var detailsCaptor = ArgumentCaptor.forClass(ExplosivVaraDetails.class);
+		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), detailsCaptor.capture());
+		assertThat(detailsCaptor.getValue().getAnlaggningTyp()).isEqualTo("EXISTING");
+		assertThat(detailsCaptor.getValue().getTypAvHantering()).isEqualTo("STORAGE");
 		verify(explosivGoodsServiceMock, times(2)).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(ExplosivGoodsProduct.class));
 		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("OTHER"));
 

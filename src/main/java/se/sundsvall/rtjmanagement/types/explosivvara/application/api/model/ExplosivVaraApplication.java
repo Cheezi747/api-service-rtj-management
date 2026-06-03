@@ -82,6 +82,14 @@ public class ExplosivVaraApplication {
 	}, nullable = true)
 	private String typAvHantering;
 
+	@Schema(description = "Anläggningstyp — befintlig eller ny anläggning", examples = "EXISTING", allowableValues = {
+		"EXISTING", "NEW"
+	})
+	@OneOf(value = {
+		"EXISTING", "NEW"
+	}, nullable = true)
+	private String anlaggningTyp;
+
 	@Schema(description = "True om sökanden agerar som ombud. När true förväntas en bilaga med category=DELEGATION (fullmakt).", examples = "false", defaultValue = "false")
 	private boolean isProxy;
 
@@ -311,6 +319,19 @@ public class ExplosivVaraApplication {
 		return this;
 	}
 
+	public String getAnlaggningTyp() {
+		return anlaggningTyp;
+	}
+
+	public void setAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
+	}
+
+	public ExplosivVaraApplication withAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
+		return this;
+	}
+
 	public boolean isProxy() {
 		return isProxy;
 	}
@@ -414,7 +435,8 @@ public class ExplosivVaraApplication {
 			&& Objects.equals(companyAddress, that.companyAddress) && Objects.equals(companyZipCode, that.companyZipCode)
 			&& Objects.equals(companyCity, that.companyCity) && Objects.equals(contactPersonName, that.contactPersonName)
 			&& Objects.equals(contactPersonEmail, that.contactPersonEmail) && Objects.equals(contactPersonPhone, that.contactPersonPhone)
-			&& Objects.equals(typAvHantering, that.typAvHantering) && Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
+			&& Objects.equals(typAvHantering, that.typAvHantering) && Objects.equals(anlaggningTyp, that.anlaggningTyp)
+			&& Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
 			&& Objects.equals(handlingLocationAddress, that.handlingLocationAddress) && Objects.equals(handlingLocationZipCode, that.handlingLocationZipCode)
 			&& Objects.equals(handlingLocationCity, that.handlingLocationCity) && Objects.equals(products, that.products)
 			&& Objects.equals(persons, that.persons);
@@ -424,7 +446,7 @@ public class ExplosivVaraApplication {
 	public int hashCode() {
 		return Objects.hash(title, description, priority, reporterUserId, assignedUserId, applicantEmail, organizationNumber,
 			companyName, companyAddress, companyZipCode, companyCity, contactPersonName, contactPersonEmail, contactPersonPhone,
-			typAvHantering, isProxy, fastighetsbeteckning, handlingLocationAddress, handlingLocationZipCode, handlingLocationCity,
+			typAvHantering, anlaggningTyp, isProxy, fastighetsbeteckning, handlingLocationAddress, handlingLocationZipCode, handlingLocationCity,
 			products, persons);
 	}
 

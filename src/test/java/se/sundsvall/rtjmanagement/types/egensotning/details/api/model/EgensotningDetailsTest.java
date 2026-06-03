@@ -1,5 +1,6 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.api.model;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,7 @@ class EgensotningDetailsTest {
 	@BeforeAll
 	static void setup() {
 		registerValueGenerator(() -> OffsetDateTime.now().plusDays(new Random().nextInt(1000)), OffsetDateTime.class);
+		registerValueGenerator(() -> LocalDate.now().plusDays(new Random().nextInt(1000)), LocalDate.class);
 	}
 
 	@Test
@@ -34,6 +36,9 @@ class EgensotningDetailsTest {
 	@Test
 	void testBuilderMethods() {
 		final var verifiedAt = OffsetDateTime.now();
+		final var validFrom = LocalDate.now();
+		final var validUntil = LocalDate.now().plusYears(6);
+		final var reminderSentAt = OffsetDateTime.now();
 		final var created = OffsetDateTime.now();
 		final var modified = OffsetDateTime.now();
 
@@ -47,6 +52,9 @@ class EgensotningDetailsTest {
 			.withLastOutcome("AUTO_APPROVE")
 			.withManualReviewReason("NOT_REGISTERED")
 			.withLastVerifiedAt(verifiedAt)
+			.withValidFrom(validFrom)
+			.withValidUntil(validUntil)
+			.withReminderSentAt(reminderSentAt)
 			.withCreated(created)
 			.withModified(modified);
 
@@ -60,6 +68,9 @@ class EgensotningDetailsTest {
 		assertThat(result.getLastOutcome()).isEqualTo("AUTO_APPROVE");
 		assertThat(result.getManualReviewReason()).isEqualTo("NOT_REGISTERED");
 		assertThat(result.getLastVerifiedAt()).isEqualTo(verifiedAt);
+		assertThat(result.getValidFrom()).isEqualTo(validFrom);
+		assertThat(result.getValidUntil()).isEqualTo(validUntil);
+		assertThat(result.getReminderSentAt()).isEqualTo(reminderSentAt);
 		assertThat(result.getCreated()).isEqualTo(created);
 		assertThat(result.getModified()).isEqualTo(modified);
 	}

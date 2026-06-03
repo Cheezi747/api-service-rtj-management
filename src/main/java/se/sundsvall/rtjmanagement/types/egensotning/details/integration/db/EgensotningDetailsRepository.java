@@ -1,6 +1,7 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.integration.db;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,11 @@ public interface EgensotningDetailsRepository extends JpaRepository<EgensotningD
 	 * to its errand status to classify the prior application.
 	 */
 	List<EgensotningDetailsEntity> findByPersonnummerAndErrandIdNot(String personnummer, String errandId);
+
+	/**
+	 * Approved egensotning decisions expiring within the reminder window [{@code from}, {@code to}]
+	 * that have not yet had a reminder sent — drives the expiry-reminder scheduler. A null
+	 * {@code validUntil} (decision not time-limited) is naturally excluded by the BETWEEN bound.
+	 */
+	List<EgensotningDetailsEntity> findByValidUntilBetweenAndReminderSentAtIsNull(LocalDate from, LocalDate to);
 }

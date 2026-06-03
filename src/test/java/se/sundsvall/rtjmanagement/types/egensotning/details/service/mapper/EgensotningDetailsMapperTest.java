@@ -1,5 +1,7 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.service.mapper;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import se.sundsvall.rtjmanagement.types.egensotning.details.api.model.EgensotningDetails;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.model.EgensotningDetailsEntity;
@@ -31,6 +33,9 @@ class EgensotningDetailsMapperTest {
 		assertThat(entity.getLastOutcome()).isNull();
 		assertThat(entity.getManualReviewReason()).isNull();
 		assertThat(entity.getLastVerifiedAt()).isNull();
+		assertThat(entity.getValidFrom()).isNull();
+		assertThat(entity.getValidUntil()).isNull();
+		assertThat(entity.getReminderSentAt()).isNull();
 	}
 
 	@Test
@@ -40,13 +45,19 @@ class EgensotningDetailsMapperTest {
 
 	@Test
 	void toDetailsMapsAllFields() {
+		final var validFrom = LocalDate.of(2026, 6, 3);
+		final var validUntil = LocalDate.of(2032, 6, 1);
+		final var reminderSentAt = OffsetDateTime.parse("2032-03-01T00:00:00Z");
 		final var entity = EgensotningDetailsMapper.toEntity(frontendDetails(), "errand-1")
 			.withId(7L)
 			.withBilagaPresent(true)
 			.withRegisteredAtProperty(false)
 			.withReapplicationOk(true)
 			.withLastOutcome("NEEDS_MANUAL_REVIEW")
-			.withManualReviewReason("NOT_REGISTERED");
+			.withManualReviewReason("NOT_REGISTERED")
+			.withValidFrom(validFrom)
+			.withValidUntil(validUntil)
+			.withReminderSentAt(reminderSentAt);
 
 		final var dto = EgensotningDetailsMapper.toDetails(entity);
 
@@ -59,6 +70,9 @@ class EgensotningDetailsMapperTest {
 		assertThat(dto.getReapplicationOk()).isTrue();
 		assertThat(dto.getLastOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
 		assertThat(dto.getManualReviewReason()).isEqualTo("NOT_REGISTERED");
+		assertThat(dto.getValidFrom()).isEqualTo(validFrom);
+		assertThat(dto.getValidUntil()).isEqualTo(validUntil);
+		assertThat(dto.getReminderSentAt()).isEqualTo(reminderSentAt);
 	}
 
 	@Test

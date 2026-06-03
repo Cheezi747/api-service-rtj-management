@@ -11,12 +11,20 @@ integration:
     url: http://citizen.url
   templating:
     url: http://templating.url
+  messaging:
+    url: http://messaging.url
 scheduler:
   notification-cleanup:
     cron: '-'
     name: notification-cleanup
     shedlock-lock-at-most-for: PT5M
     maximum-execution-time: PT5M
+  egensotning-expiry-reminder:
+    cron: '-'
+    name: egensotning-expiry-reminder
+    shedlock-lock-at-most-for: PT5M
+    maximum-execution-time: PT10M
+    lead-time-days: 90
 spring:
   cache:
     type: none
@@ -40,6 +48,8 @@ spring:
             token-uri: http://token.url
           templating:
             token-uri: http://token.url
+          messaging:
+            token-uri: http://token.url
         registration:
           operaton:
             client-id: the-client-id
@@ -48,5 +58,8 @@ spring:
             client-id: the-client-id
             client-secret: the-client-secret
           templating:
+            client-id: the-client-id
+            client-secret: the-client-secret
+          messaging:
             client-id: the-client-id
             client-secret: the-client-secret

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.TimeZoneStorage;
@@ -66,6 +67,16 @@ public class EgensotningDetailsEntity implements Auditable {
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime lastVerifiedAt;
 
+	@Column(name = "valid_from")
+	private LocalDate validFrom;
+
+	@Column(name = "valid_until")
+	private LocalDate validUntil;
+
+	@Column(name = "reminder_sent_at")
+	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
+	private OffsetDateTime reminderSentAt;
+
 	@Column(name = "created")
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime created;
@@ -122,6 +133,18 @@ public class EgensotningDetailsEntity implements Auditable {
 		return lastVerifiedAt;
 	}
 
+	public LocalDate getValidFrom() {
+		return validFrom;
+	}
+
+	public LocalDate getValidUntil() {
+		return validUntil;
+	}
+
+	public OffsetDateTime getReminderSentAt() {
+		return reminderSentAt;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -172,6 +195,18 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	public void setLastVerifiedAt(final OffsetDateTime v) {
 		this.lastVerifiedAt = v;
+	}
+
+	public void setValidFrom(final LocalDate v) {
+		this.validFrom = v;
+	}
+
+	public void setValidUntil(final LocalDate v) {
+		this.validUntil = v;
+	}
+
+	public void setReminderSentAt(final OffsetDateTime v) {
+		this.reminderSentAt = v;
 	}
 
 	@Override
@@ -239,6 +274,21 @@ public class EgensotningDetailsEntity implements Auditable {
 		return this;
 	}
 
+	public EgensotningDetailsEntity withValidFrom(final LocalDate v) {
+		this.validFrom = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withValidUntil(final LocalDate v) {
+		this.validUntil = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withReminderSentAt(final OffsetDateTime v) {
+		this.reminderSentAt = v;
+		return this;
+	}
+
 	public EgensotningDetailsEntity withCreated(final OffsetDateTime v) {
 		this.created = v;
 		return this;
@@ -259,14 +309,16 @@ public class EgensotningDetailsEntity implements Auditable {
 			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(bilagaPresent, that.bilagaPresent)
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
-			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt)
+			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
+			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, errandId, personnummer, fastighetsbeteckning, propertyAddress, bilagaPresent,
-			registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, created, modified);
+			registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom, validUntil,
+			reminderSentAt, created, modified);
 	}
 
 	@Override
@@ -274,6 +326,7 @@ public class EgensotningDetailsEntity implements Auditable {
 		return "EgensotningDetailsEntity{id=" + id + ", errandId='" + errandId + "', fastighetsbeteckning='" + fastighetsbeteckning
 			+ "', propertyAddress='" + propertyAddress + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty
 			+ ", reapplicationOk=" + reapplicationOk + ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason
-			+ "', lastVerifiedAt=" + lastVerifiedAt + ", created=" + created + ", modified=" + modified + '}';
+			+ "', lastVerifiedAt=" + lastVerifiedAt + ", validFrom=" + validFrom + ", validUntil=" + validUntil
+			+ ", reminderSentAt=" + reminderSentAt + ", created=" + created + ", modified=" + modified + '}';
 	}
 }

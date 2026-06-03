@@ -10,6 +10,7 @@ class BrandfarligVaraDetailsMapperTest {
 	private static BrandfarligVaraDetails fullDetails() {
 		return BrandfarligVaraDetails.create()
 			.withVerksamhetstyp("RESTAURANT")
+			.withAnlaggningTyp("EXISTING")
 			.withProxy(true)
 			.withFastighetsbeteckning("Fast 1:1")
 			.withHandlingLocationAddress("Gatan 1")
@@ -24,6 +25,7 @@ class BrandfarligVaraDetailsMapperTest {
 		assertThat(entity).isNotNull();
 		assertThat(entity.getErrandId()).isEqualTo("errand-1");
 		assertThat(entity.getVerksamhetstyp()).isEqualTo("RESTAURANT");
+		assertThat(entity.getAnlaggningTyp()).isEqualTo("EXISTING");
 		assertThat(entity.isProxy()).isTrue();
 		assertThat(entity.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		assertThat(entity.getHandlingLocationAddress()).isEqualTo("Gatan 1");
@@ -44,6 +46,7 @@ class BrandfarligVaraDetailsMapperTest {
 
 		assertThat(dto).isNotNull();
 		assertThat(dto.getVerksamhetstyp()).isEqualTo("RESTAURANT");
+		assertThat(dto.getAnlaggningTyp()).isEqualTo("EXISTING");
 		assertThat(dto.isProxy()).isTrue();
 		assertThat(dto.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		assertThat(dto.getHandlingLocationAddress()).isEqualTo("Gatan 1");
@@ -61,11 +64,13 @@ class BrandfarligVaraDetailsMapperTest {
 		final var target = BrandfarligVaraDetailsMapper.toEntity(fullDetails(), "errand-1");
 		final var patch = BrandfarligVaraDetails.create()
 			.withVerksamhetstyp("OTHER")
+			.withAnlaggningTyp("NEW")
 			.withHandlingLocationCity("Timrå");
 
 		BrandfarligVaraDetailsMapper.applyPatch(target, patch);
 
 		assertThat(target.getVerksamhetstyp()).isEqualTo("OTHER");
+		assertThat(target.getAnlaggningTyp()).isEqualTo("NEW");
 		assertThat(target.getHandlingLocationCity()).isEqualTo("Timrå");
 		// Untouched fields keep their original values
 		assertThat(target.getFastighetsbeteckning()).isEqualTo("Fast 1:1");

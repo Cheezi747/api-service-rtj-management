@@ -74,6 +74,20 @@ public class PermitService {
 		permitRepository.save(entity);
 	}
 
+	/**
+	 * Återkallar alla tillstånd på ett ärende enligt 20 § LBE (ärende-nivå) — sätter status REVOKED på
+	 * varje tillstånd vars status inte redan är REVOKED.
+	 */
+	public void revokeAllForErrand(final String municipalityId, final String namespace, final String errandId) {
+		ensureErrandExists(municipalityId, namespace, errandId);
+		permitRepository.findByErrandIdOrderByCreatedDesc(errandId).stream()
+			.filter(entity -> !STATUS_REVOKED.equals(entity.getStatus()))
+			.forEach(entity -> {
+				entity.setStatus(STATUS_REVOKED);
+				permitRepository.save(entity);
+			});
+	}
+
 	public void delete(final String municipalityId, final String namespace, final String errandId, final String permitId) {
 		final var entity = findPermit(municipalityId, namespace, errandId, permitId);
 		permitRepository.delete(entity);

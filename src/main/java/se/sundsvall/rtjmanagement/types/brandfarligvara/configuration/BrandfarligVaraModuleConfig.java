@@ -13,9 +13,15 @@ import se.sundsvall.rtjmanagement.stakeholders.service.StakeholderRoleContributi
  *
  * <pre>
  *   REGISTERED ─┬─▶ DECIDED                      (happy path: granskning OK → tillstånd)
+ *               ├─▶ AWAITING_CONSULTATION        (remiss/samråd 14 § FBE skickas)
  *               ├─▶ AWAITING_SUPPLEMENTATION     (handläggare begär komplettering)
  *               ├─▶ INSPECTION_SCHEDULED         (tillsynsbesök behövs innan beslut)
  *               └─▶ REJECTED                     (direkt avslag — t.ex. ofullständig ansökan)
+ *
+ *   AWAITING_CONSULTATION ─┬─▶ AWAITING_SUPPLEMENTATION (komplettering behövs efter remissvar)
+ *                          ├─▶ INSPECTION_SCHEDULED     (tillsyn behövs)
+ *                          ├─▶ DECIDED                  (remissvar OK → tillstånd)
+ *                          └─▶ REJECTED                 (avslag efter remissvar)
  *
  *   AWAITING_SUPPLEMENTATION ─┬─▶ DECIDED              (komplettering räcker)
  *                             ├─▶ INSPECTION_SCHEDULED (komplettering räcker inte, tillsyn behövs)
@@ -23,6 +29,8 @@ import se.sundsvall.rtjmanagement.stakeholders.service.StakeholderRoleContributi
  *
  *   INSPECTION_SCHEDULED ─┬─▶ DECIDED        (tillsyn godkänd → tillstånd)
  *                         └─▶ REJECTED       (tillsyn underkänd → avslag)
+ *
+ *   DECIDED ──▶ REVOKED   (återkallande enligt 20 § LBE)
  * </pre>
  *
  * Stakeholder roles (alla type-scoped):
@@ -46,10 +54,12 @@ public class BrandfarligVaraModuleConfig {
 	public static final String TYPE_SLUG = "BRANDFARLIG_VARA";
 
 	public static final String STATUS_REGISTERED = "REGISTERED";
+	public static final String STATUS_AWAITING_CONSULTATION = "AWAITING_CONSULTATION";
 	public static final String STATUS_AWAITING_SUPPLEMENTATION = "AWAITING_SUPPLEMENTATION";
 	public static final String STATUS_INSPECTION_SCHEDULED = "INSPECTION_SCHEDULED";
 	public static final String STATUS_DECIDED = "DECIDED";
 	public static final String STATUS_REJECTED = "REJECTED";
+	public static final String STATUS_REVOKED = "REVOKED";
 
 	public static final String ROLE_APPLICANT = "APPLICANT";
 	public static final String ROLE_CONTACT_PERSON = "CONTACT_PERSON";
@@ -61,9 +71,11 @@ public class BrandfarligVaraModuleConfig {
 	ErrandTypeContribution brandfarligVaraType() {
 		return ErrandTypeContribution.builder(TYPE_SLUG)
 			.displayName("Ansökan om tillstånd för brandfarlig vara")
-			.allowedTransition(STATUS_REGISTERED, STATUS_DECIDED, STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED, STATUS_REJECTED)
+			.allowedTransition(STATUS_REGISTERED, STATUS_DECIDED, STATUS_AWAITING_CONSULTATION, STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED, STATUS_REJECTED)
+			.allowedTransition(STATUS_AWAITING_CONSULTATION, STATUS_AWAITING_SUPPLEMENTATION, STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED)
 			.allowedTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_DECIDED, STATUS_INSPECTION_SCHEDULED, STATUS_REJECTED)
 			.allowedTransition(STATUS_INSPECTION_SCHEDULED, STATUS_DECIDED, STATUS_REJECTED)
+			.allowedTransition(STATUS_DECIDED, STATUS_REVOKED)
 			.build();
 	}
 

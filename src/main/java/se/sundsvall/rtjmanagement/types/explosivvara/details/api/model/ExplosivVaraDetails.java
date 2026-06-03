@@ -22,6 +22,14 @@ public class ExplosivVaraDetails {
 	}, nullable = true)
 	private String typAvHantering;
 
+	@Schema(description = "Anläggningstyp — befintlig eller ny anläggning", examples = "EXISTING", allowableValues = {
+		"EXISTING", "NEW"
+	})
+	@OneOf(value = {
+		"EXISTING", "NEW"
+	}, nullable = true)
+	private String anlaggningTyp;
+
 	@Schema(description = "True if the applicant is acting as a proxy (ombud) for another party. When true, an attachment with category=DELEGATION (fullmakt) is expected.",
 		examples = "false",
 		defaultValue = "false")
@@ -65,6 +73,19 @@ public class ExplosivVaraDetails {
 
 	public ExplosivVaraDetails withTypAvHantering(final String v) {
 		this.typAvHantering = v;
+		return this;
+	}
+
+	public String getAnlaggningTyp() {
+		return anlaggningTyp;
+	}
+
+	public void setAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
+	}
+
+	public ExplosivVaraDetails withAnlaggningTyp(final String v) {
+		this.anlaggningTyp = v;
 		return this;
 	}
 
@@ -165,6 +186,7 @@ public class ExplosivVaraDetails {
 			return false;
 		final ExplosivVaraDetails that = (ExplosivVaraDetails) o;
 		return isProxy == that.isProxy && Objects.equals(typAvHantering, that.typAvHantering)
+			&& Objects.equals(anlaggningTyp, that.anlaggningTyp)
 			&& Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
 			&& Objects.equals(handlingLocationAddress, that.handlingLocationAddress)
 			&& Objects.equals(handlingLocationZipCode, that.handlingLocationZipCode)
@@ -174,13 +196,13 @@ public class ExplosivVaraDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(typAvHantering, isProxy, fastighetsbeteckning, handlingLocationAddress,
+		return Objects.hash(typAvHantering, anlaggningTyp, isProxy, fastighetsbeteckning, handlingLocationAddress,
 			handlingLocationZipCode, handlingLocationCity, created, modified);
 	}
 
 	@Override
 	public String toString() {
-		return "ExplosivVaraDetails{typAvHantering='" + typAvHantering + "', proxy=" + isProxy
+		return "ExplosivVaraDetails{typAvHantering='" + typAvHantering + "', anlaggningTyp='" + anlaggningTyp + "', proxy=" + isProxy
 			+ ", fastighetsbeteckning='" + fastighetsbeteckning + "', handlingLocationAddress='" + handlingLocationAddress
 			+ "', handlingLocationZipCode='" + handlingLocationZipCode + "', handlingLocationCity='" + handlingLocationCity
 			+ "', created=" + created + ", modified=" + modified + '}';

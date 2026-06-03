@@ -18,7 +18,7 @@ public final class EgensotningDecisionTextBuilder {
 
 	private static final String LAGSTOD = "Beslutet är fattat med stöd av 3 kap. 4 § andra stycket lagen (2003:778) om skydd mot olyckor (LSO).";
 	private static final String MOTIVERING = "Motivering: räddningstjänsten bedömer att rengöring (sotning) kan utföras på ett från brandskyddssynpunkt betryggande sätt och att sökanden har tillräcklig kunskap om anläggningens konstruktion och funktion.";
-	private static final String VILLKOR = "Villkor: (1) medgivandet gäller tillsvidare men kan återkallas om brandskyddskontroll visar brister, (2) utförda sotningar ska dokumenteras i en särskild liggare som kan visas vid brandskyddskontroll, (3) medgivandet upphör automatiskt vid ägarbyte av fastigheten.";
+	private static final String VILLKOR = "Villkor: (1) medgivandet gäller i sex (6) år från beslutsdatum och måste därefter förnyas genom ny ansökan, och kan återkallas dessförinnan om brandskyddskontroll visar brister, (2) utförda sotningar ska dokumenteras i en särskild liggare som kan visas vid brandskyddskontroll, (3) medgivandet upphör automatiskt vid ägarbyte av fastigheten.";
 	private static final String OVERKLAGANDE = "Detta beslut kan överklagas skriftligt till Länsstyrelsen i Västernorrlands län inom tre (3) veckor från delgivning; överklagandet skickas till Medelpads Räddningstjänstförbund.";
 
 	private EgensotningDecisionTextBuilder() {}

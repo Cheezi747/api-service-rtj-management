@@ -47,6 +47,7 @@ class BrandfarligVaraDetailsEntityTest {
 			.withId(1L)
 			.withErrandId("errand")
 			.withVerksamhetstyp("FUEL_STATION")
+			.withAnlaggningTyp("EXISTING")
 			.withProxy(true)
 			.withFastighetsbeteckning("Fast 1:1")
 			.withHandlingLocationAddress("Gatan 1")
@@ -59,6 +60,7 @@ class BrandfarligVaraDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getId()).isEqualTo(1L);
 		org.assertj.core.api.Assertions.assertThat(entity.getErrandId()).isEqualTo("errand");
 		org.assertj.core.api.Assertions.assertThat(entity.getVerksamhetstyp()).isEqualTo("FUEL_STATION");
+		org.assertj.core.api.Assertions.assertThat(entity.getAnlaggningTyp()).isEqualTo("EXISTING");
 		org.assertj.core.api.Assertions.assertThat(entity.isProxy()).isTrue();
 		org.assertj.core.api.Assertions.assertThat(entity.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		org.assertj.core.api.Assertions.assertThat(entity.getHandlingLocationAddress()).isEqualTo("Gatan 1");

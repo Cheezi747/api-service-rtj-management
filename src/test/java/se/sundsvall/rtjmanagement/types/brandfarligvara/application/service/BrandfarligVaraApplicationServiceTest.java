@@ -63,6 +63,7 @@ class BrandfarligVaraApplicationServiceTest {
 			.withContactPersonEmail("anna@foretaget.se")
 			.withContactPersonPhone("+46701234567")
 			.withVerksamhetstyp("RESTAURANT")
+			.withAnlaggningTyp("EXISTING")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withProducts(List.of(
 				HazardousGoodsProduct.create().withCategory("GAS").withProductName("Gasol"),
@@ -80,7 +81,10 @@ class BrandfarligVaraApplicationServiceTest {
 		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, sampleApplication(), files);
 
 		assertThat(result).isEqualTo(ERRAND_ID);
-		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(BrandfarligVaraDetails.class));
+		final var detailsCaptor = ArgumentCaptor.forClass(BrandfarligVaraDetails.class);
+		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), detailsCaptor.capture());
+		assertThat(detailsCaptor.getValue().getAnlaggningTyp()).isEqualTo("EXISTING");
+		assertThat(detailsCaptor.getValue().getVerksamhetstyp()).isEqualTo("RESTAURANT");
 		verify(hazardousGoodsServiceMock, times(2)).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(HazardousGoodsProduct.class));
 		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("OTHER"));
 

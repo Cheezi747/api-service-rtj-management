@@ -13,6 +13,7 @@ public final class ExplosivVaraDetailsMapper {
 		return ofNullable(entity)
 			.map(e -> ExplosivVaraDetails.create()
 				.withTypAvHantering(e.getTypAvHantering())
+				.withAnlaggningTyp(e.getAnlaggningTyp())
 				.withProxy(e.isProxy())
 				.withFastighetsbeteckning(e.getFastighetsbeteckning())
 				.withHandlingLocationAddress(e.getHandlingLocationAddress())
@@ -28,6 +29,7 @@ public final class ExplosivVaraDetailsMapper {
 			.map(d -> ExplosivVaraDetailsEntity.create()
 				.withErrandId(errandId)
 				.withTypAvHantering(d.getTypAvHantering())
+				.withAnlaggningTyp(d.getAnlaggningTyp())
 				.withProxy(d.isProxy())
 				.withFastighetsbeteckning(d.getFastighetsbeteckning())
 				.withHandlingLocationAddress(d.getHandlingLocationAddress())
@@ -44,6 +46,7 @@ public final class ExplosivVaraDetailsMapper {
 			return target;
 		}
 		ofNullable(patch.getTypAvHantering()).ifPresent(target::setTypAvHantering);
+		ofNullable(patch.getAnlaggningTyp()).ifPresent(target::setAnlaggningTyp);
 		target.setProxy(patch.isProxy());
 		ofNullable(patch.getFastighetsbeteckning()).ifPresent(target::setFastighetsbeteckning);
 		ofNullable(patch.getHandlingLocationAddress()).ifPresent(target::setHandlingLocationAddress);
