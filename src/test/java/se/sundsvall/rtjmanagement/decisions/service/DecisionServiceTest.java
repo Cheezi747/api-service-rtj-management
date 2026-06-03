@@ -15,6 +15,7 @@ import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import se.sundsvall.rtjmanagement.decisions.api.model.Decision;
 import se.sundsvall.rtjmanagement.decisions.integration.db.DecisionRepository;
 import se.sundsvall.rtjmanagement.decisions.integration.db.model.DecisionEntity;
+import se.sundsvall.rtjmanagement.shared.DecisionRecorded;
 import se.sundsvall.rtjmanagement.shared.NotificationRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,13 +61,24 @@ class DecisionServiceTest {
 
 		assertThat(id).isEqualTo(DECISION_ID);
 
-		final ArgumentCaptor<NotificationRequest> captor = ArgumentCaptor.forClass(NotificationRequest.class);
-		verify(eventPublisherMock, times(2)).publishEvent(captor.capture());
-		assertThat(captor.getAllValues()).extracting("ownerId").containsExactlyInAnyOrder("reporter", "assignee");
-		assertThat(captor.getAllValues()).allSatisfy(req -> {
+		// Two NotificationRequest events (reporter + assignee) plus one DecisionRecorded event.
+		final ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+		verify(eventPublisherMock, times(3)).publishEvent(captor.capture());
+
+		final var notifications = captor.getAllValues().stream()
+			.filter(NotificationRequest.class::isInstance).map(NotificationRequest.class::cast).toList();
+		assertThat(notifications).extracting("ownerId").containsExactlyInAnyOrder("reporter", "assignee");
+		assertThat(notifications).allSatisfy(req -> {
 			assertThat(req.type()).isEqualTo("CREATE");
 			assertThat(req.subType()).isEqualTo("DECISION");
 			assertThat(req.description()).contains("PAYMENT").contains("APPROVED");
+		});
+
+		final var recorded = captor.getAllValues().stream()
+			.filter(DecisionRecorded.class::isInstance).map(DecisionRecorded.class::cast).toList();
+		assertThat(recorded).singleElement().satisfies(event -> {
+			assertThat(event.decisionId()).isEqualTo(DECISION_ID);
+			assertThat(event.errandId()).isEqualTo(ERRAND_ID);
 		});
 	}
 
@@ -80,7 +92,9 @@ class DecisionServiceTest {
 
 		service.create(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, Decision.create().withDecisionType("X").withValue("Y"));
 
-		verify(eventPublisherMock, never()).publishEvent(any());
+		// No notification recipients, but the DecisionRecorded event is always published.
+		verify(eventPublisherMock, never()).publishEvent(any(NotificationRequest.class));
+		verify(eventPublisherMock, times(1)).publishEvent(any(DecisionRecorded.class));
 	}
 
 	@Test

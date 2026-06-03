@@ -72,8 +72,8 @@ class AttachmentResource {
 		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @Pattern(regexp = NAMESPACE_REGEXP, message = NAMESPACE_VALIDATION_MESSAGE) @PathVariable final String namespace,
 		@Parameter(name = "errandId", description = "Errand id") @ValidUuid @PathVariable final String errandId,
 		@NotNull @RequestPart("file") final MultipartFile file,
-		@Parameter(name = "category", description = "Optional purpose tag (DELEGATION / COMPETENCE / OTHER)") @RequestParam(required = false) @Nullable @OneOf(value = {
-			"DELEGATION", "COMPETENCE", "OTHER"
+		@Parameter(name = "category", description = "Optional purpose tag (DELEGATION / COMPETENCE / BRANDSKYDDSKONTROLL / UTBILDNINGSINTYG / DECISION / OTHER)") @RequestParam(required = false) @Nullable @OneOf(value = {
+			"DELEGATION", "COMPETENCE", "BRANDSKYDDSKONTROLL", "UTBILDNINGSINTYG", "DECISION", "OTHER"
 		}, nullable = true) final String category) {
 
 		final var attachmentId = service.createAttachment(municipalityId, namespace, errandId, file, category);

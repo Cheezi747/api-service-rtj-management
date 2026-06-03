@@ -9,6 +9,9 @@ integration:
     url: http://localhost:${wiremock.server.port:}/api-operaton
   citizen:
     url: http://localhost:${wiremock.server.port:}/api/v3/citizen
+  templating:
+    url: http://localhost:${wiremock.server.port:}/templating
+    template-identifier: egensotning-beslut
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
@@ -30,10 +33,15 @@ spring:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
           citizen:
             token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
+          templating:
+            token-uri: http://localhost:${wiremock.server.port:}/api-gateway/token
         registration:
           operaton:
             client-id: the-client-id
             client-secret: the-client-secret
           citizen:
+            client-id: the-client-id
+            client-secret: the-client-secret
+          templating:
             client-id: the-client-id
             client-secret: the-client-secret

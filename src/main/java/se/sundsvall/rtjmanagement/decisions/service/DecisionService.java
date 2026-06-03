@@ -12,6 +12,7 @@ import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import se.sundsvall.rtjmanagement.decisions.api.model.Decision;
 import se.sundsvall.rtjmanagement.decisions.integration.db.DecisionRepository;
 import se.sundsvall.rtjmanagement.decisions.integration.db.model.DecisionEntity;
+import se.sundsvall.rtjmanagement.shared.DecisionRecorded;
 import se.sundsvall.rtjmanagement.shared.NotificationRequest;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -41,6 +42,8 @@ public class DecisionService {
 		final var errand = findErrand(municipalityId, namespace, errandId);
 		final var saved = decisionRepository.save(toDecisionEntity(decision, errandId));
 		publishDecisionNotifications(municipalityId, namespace, errand, decision);
+		eventPublisher.publishEvent(new DecisionRecorded(
+			saved.getId(), errandId, errand.getTypeSlug(), saved.getValue(), saved.getDescription(), saved.getCreatedBy(), saved.getCreated()));
 		return saved.getId();
 	}
 

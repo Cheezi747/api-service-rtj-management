@@ -49,6 +49,9 @@ public class EgensotningModuleConfig {
 	public static final String CATEGORY_BRANDSKYDDSKONTROLL = "BRANDSKYDDSKONTROLL";
 	public static final String CATEGORY_UTBILDNINGSINTYG = "UTBILDNINGSINTYG";
 
+	// Kategori för det systemgenererade beslutet (PDF) som lagras på ärendet.
+	public static final String CATEGORY_DECISION = "DECISION";
+
 	@Bean
 	ErrandTypeContribution egensotningType() {
 		return ErrandTypeContribution.builder(TYPE_SLUG)

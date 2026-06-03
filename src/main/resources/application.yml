@@ -36,6 +36,9 @@ spring:
           citizen:
             authorization-grant-type: client_credentials
             provider: citizen
+          templating:
+            authorization-grant-type: client_credentials
+            provider: templating
 #========================================
 # Integration settings
 #========================================
@@ -46,6 +49,10 @@ integration:
   citizen:
     connect-timeout: 5
     read-timeout: 30
+  templating:
+    connect-timeout: 5
+    read-timeout: 30
+    template-identifier: egensotning-beslut
 #========================================
 # Notification settings
 #========================================

@@ -112,4 +112,36 @@ class AttachmentResourceTest {
 
 		verify(serviceMock).deleteAttachment(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, ATTACHMENT_ID);
 	}
+
+	@Test
+	void createAttachmentWithDecisionCategory() {
+		when(serviceMock.createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("DECISION"))).thenReturn(ATTACHMENT_ID);
+
+		final var builder = new MultipartBodyBuilder();
+		builder.part("file", "decision".getBytes()).filename("beslut.pdf");
+		final MultiValueMap<String, org.springframework.http.HttpEntity<?>> body = builder.build();
+
+		webTestClient.post()
+			.uri(uri -> uri.path(PATH).queryParam("category", "DECISION").build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "errandId", ERRAND_ID)))
+			.contentType(MULTIPART_FORM_DATA)
+			.bodyValue(body)
+			.exchange()
+			.expectStatus().isCreated();
+
+		verify(serviceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("DECISION"));
+	}
+
+	@Test
+	void createAttachmentWithInvalidCategoryReturnsBadRequest() {
+		final var builder = new MultipartBodyBuilder();
+		builder.part("file", "data".getBytes()).filename("f.txt");
+		final MultiValueMap<String, org.springframework.http.HttpEntity<?>> body = builder.build();
+
+		webTestClient.post()
+			.uri(uri -> uri.path(PATH).queryParam("category", "NONSENSE").build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "errandId", ERRAND_ID)))
+			.contentType(MULTIPART_FORM_DATA)
+			.bodyValue(body)
+			.exchange()
+			.expectStatus().isBadRequest();
+	}
 }

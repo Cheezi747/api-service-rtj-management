@@ -45,6 +45,16 @@ public class AttachmentService {
 		return saved.getId();
 	}
 
+	/**
+	 * Stores a system-generated file (e.g. a rendered decision PDF) as an attachment on the errand.
+	 */
+	public String createAttachment(final String municipalityId, final String namespace, final String errandId,
+		final byte[] content, final String fileName, final String mimeType, final String category) {
+		ensureErrandExists(municipalityId, namespace, errandId);
+		final var saved = attachmentRepository.save(toAttachmentEntity(errandId, namespace, municipalityId, content, fileName, mimeType, category));
+		return saved.getId();
+	}
+
 	@Transactional(readOnly = true)
 	public List<Attachment> readAttachments(final String municipalityId, final String namespace, final String errandId) {
 		ensureErrandExists(municipalityId, namespace, errandId);

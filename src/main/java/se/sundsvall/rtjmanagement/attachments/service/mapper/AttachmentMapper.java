@@ -52,6 +52,28 @@ public final class AttachmentMapper {
 		}
 	}
 
+	/**
+	 * Builds an attachment entity from in-memory bytes (e.g. a system-generated PDF) rather than an
+	 * uploaded {@link MultipartFile}. Used when the service itself produces the file content.
+	 */
+	public static AttachmentEntity toAttachmentEntity(final String errandId, final String namespace,
+		final String municipalityId, final byte[] content, final String fileName, final String mimeType, final String category) {
+
+		if (errandId == null || content == null) {
+			return null;
+		}
+		return AttachmentEntity.create()
+			.withErrandId(errandId)
+			.withNamespace(namespace)
+			.withMunicipalityId(municipalityId)
+			.withFileName(fileName)
+			.withMimeType(mimeType)
+			.withFileSize(content.length)
+			.withCategory(category)
+			.withAttachmentData(AttachmentDataEntity.create()
+				.withFile(Hibernate.getLobHelper().createBlob(content)));
+	}
+
 	public static List<Attachment> toAttachmentList(final List<AttachmentEntity> entities) {
 		return ofNullable(entities).orElse(emptyList()).stream()
 			.map(AttachmentMapper::toAttachment)

@@ -9,6 +9,8 @@ integration:
     url: http://operaton.url
   citizen:
     url: http://citizen.url
+  templating:
+    url: http://templating.url
 scheduler:
   notification-cleanup:
     cron: '-'
@@ -36,10 +38,15 @@ spring:
             token-uri: http://token.url
           citizen:
             token-uri: http://token.url
+          templating:
+            token-uri: http://token.url
         registration:
           operaton:
             client-id: the-client-id
             client-secret: the-client-secret
           citizen:
+            client-id: the-client-id
+            client-secret: the-client-secret
+          templating:
             client-id: the-client-id
             client-secret: the-client-secret

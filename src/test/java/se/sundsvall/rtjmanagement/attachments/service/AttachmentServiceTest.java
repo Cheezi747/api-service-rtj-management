@@ -150,4 +150,23 @@ class AttachmentServiceTest {
 		verify(response).addHeader("Content-Type", "text/plain");
 		verify(response).setContentLength(10);
 	}
+
+	@Test
+	void createAttachmentFromBytesSavesAndReturnsId() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(mock(ErrandEntity.class)));
+		when(attachmentRepositoryMock.save(any())).thenReturn(AttachmentEntity.create().withId(ATTACHMENT_ID));
+
+		final var id = service.createAttachment(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, "pdf".getBytes(), "beslut.pdf", "application/pdf", "DECISION");
+
+		assertThat(id).isEqualTo(ATTACHMENT_ID);
+	}
+
+	@Test
+	void createAttachmentFromBytesThrowsWhenErrandMissing() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.empty());
+
+		assertThatThrownBy(() -> service.createAttachment(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, "pdf".getBytes(), "beslut.pdf", "application/pdf", "DECISION"))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
+	}
 }
