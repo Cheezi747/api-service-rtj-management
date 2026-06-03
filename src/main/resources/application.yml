@@ -77,3 +77,8 @@ scheduler:
     shedlock-lock-at-most-for: PT5M
     maximum-execution-time: PT10M
     lead-time-days: 90
+  database-cleanup:
+    cron: '0 0 3 * * *'
+    name: database-cleanup
+    shedlock-lock-at-most-for: PT5M
+    maximum-execution-time: PT5M
