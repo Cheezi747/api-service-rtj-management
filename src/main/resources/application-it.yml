@@ -12,6 +12,7 @@ integration:
   templating:
     url: http://localhost:${wiremock.server.port:}/templating
     template-identifier: egensotning-beslut
+    mottagningsbevis-template-identifier: egensotning-mottagningsbevis
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver

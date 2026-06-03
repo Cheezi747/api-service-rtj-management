@@ -11,6 +11,7 @@ integration:
     url: http://citizen.url
   templating:
     url: http://templating.url
+    mottagningsbevis-template-identifier: egensotning-mottagningsbevis
   messaging:
     url: http://messaging.url
 scheduler:

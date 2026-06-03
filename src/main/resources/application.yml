@@ -56,6 +56,7 @@ integration:
     connect-timeout: 5
     read-timeout: 30
     template-identifier: egensotning-beslut
+    mottagningsbevis-template-identifier: egensotning-mottagningsbevis
   messaging:
     connect-timeout: 5
     read-timeout: 30
