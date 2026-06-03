@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_SOTNINGSPROTOKOLL;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_BRANDSKYDDSKONTROLL;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_DECIDED;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_REGISTERED;
@@ -88,7 +88,7 @@ class EgensotningVerificationServiceTest {
 
 	// Both required bilaga types present.
 	private void stubBilagorPresent() {
-		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_SOTNINGSPROTOKOLL)).thenReturn(true);
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_BRANDSKYDDSKONTROLL)).thenReturn(true);
 		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_UTBILDNINGSINTYG)).thenReturn(true);
 	}
 
@@ -145,10 +145,10 @@ class EgensotningVerificationServiceTest {
 	}
 
 	@Test
-	void onlySotningsprotokollNeedsSupplement() {
+	void onlyBrandskyddskontrollNeedsSupplement() {
 		// Only one of the two required bilaga types present → not complete.
 		stubErrandAndDetails();
-		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_SOTNINGSPROTOKOLL)).thenReturn(true);
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_BRANDSKYDDSKONTROLL)).thenReturn(true);
 		stubObjektPresent();
 		stubRegistered();
 		stubNoPriorApplications();

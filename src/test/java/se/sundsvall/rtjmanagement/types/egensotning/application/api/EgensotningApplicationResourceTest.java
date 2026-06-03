@@ -55,7 +55,7 @@ class EgensotningApplicationResourceTest {
 		final var builder = new MultipartBodyBuilder();
 		builder.part("application", application, APPLICATION_JSON);
 		if (withProtokoll) {
-			builder.part("sotningsprotokoll", new ByteArrayResource("sotningsprotokoll".getBytes())).filename("protokoll.pdf");
+			builder.part("brandskyddskontroll", new ByteArrayResource("brandskyddskontroll".getBytes())).filename("protokoll.pdf");
 		}
 		if (withIntyg) {
 			builder.part("utbildningsintyg", new ByteArrayResource("utbildningsintyg".getBytes())).filename("intyg.pdf");
@@ -79,7 +79,7 @@ class EgensotningApplicationResourceTest {
 	}
 
 	@Test
-	void submitApplicationMissingSotningsprotokollIsBadRequest() {
+	void submitApplicationMissingBrandskyddskontrollIsBadRequest() {
 		webTestClient.post()
 			.uri(uri -> uri.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.contentType(MULTIPART_FORM_DATA)

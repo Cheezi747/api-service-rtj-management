@@ -27,14 +27,14 @@ public class Attachment {
 	@Schema(description = "File size in bytes", examples = "1024", accessMode = READ_ONLY)
 	private Integer fileSize;
 
-	@Schema(description = "Optional category tag distinguishing the purpose of the upload (e.g. DELEGATION for fullmakt, COMPETENCE for föreståndar-bevis, SOTNINGSPROTOKOLL + UTBILDNINGSINTYG for egensotning, OTHER for general attachments).",
+	@Schema(description = "Optional category tag distinguishing the purpose of the upload (e.g. DELEGATION for fullmakt, COMPETENCE for föreståndar-bevis, BRANDSKYDDSKONTROLL + UTBILDNINGSINTYG for egensotning, OTHER for general attachments).",
 		examples = "DELEGATION",
 		allowableValues = {
-			"DELEGATION", "COMPETENCE", "SOTNINGSPROTOKOLL", "UTBILDNINGSINTYG", "OTHER"
+			"DELEGATION", "COMPETENCE", "BRANDSKYDDSKONTROLL", "UTBILDNINGSINTYG", "OTHER"
 		},
 		nullable = true)
 	@OneOf(value = {
-		"DELEGATION", "COMPETENCE", "SOTNINGSPROTOKOLL", "UTBILDNINGSINTYG", "OTHER"
+		"DELEGATION", "COMPETENCE", "BRANDSKYDDSKONTROLL", "UTBILDNINGSINTYG", "OTHER"
 	}, nullable = true)
 	private String category;
 

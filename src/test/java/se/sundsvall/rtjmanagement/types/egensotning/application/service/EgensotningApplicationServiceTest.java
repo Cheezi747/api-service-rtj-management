@@ -51,7 +51,7 @@ class EgensotningApplicationServiceTest {
 	private EgensotningApplicationService service;
 
 	private static MultipartFile protokoll() {
-		return new MockMultipartFile("sotningsprotokoll", "protokoll.pdf", "application/pdf", "data".getBytes());
+		return new MockMultipartFile("brandskyddskontroll", "protokoll.pdf", "application/pdf", "data".getBytes());
 	}
 
 	private static MultipartFile intyg() {
@@ -82,7 +82,7 @@ class EgensotningApplicationServiceTest {
 		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(EgensotningDetails.class));
 		verify(sotningsobjektServiceMock, times(2)).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(Sotningsobjekt.class));
 		// Each bilaga stored with its specific category
-		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("SOTNINGSPROTOKOLL"));
+		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("BRANDSKYDDSKONTROLL"));
 		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("UTBILDNINGSINTYG"));
 
 		final var stakeholderCaptor = ArgumentCaptor.forClass(Stakeholder.class);

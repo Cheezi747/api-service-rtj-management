@@ -75,7 +75,7 @@ public class EgensotningVerificationService {
 	public EgensotningVerificationResult verify(final String municipalityId, final String namespace, final String errandId) {
 		findErrandWithType(municipalityId, namespace, errandId);
 
-		final var bilagaPresent = attachmentRepository.existsByErrandIdAndCategory(errandId, EgensotningModuleConfig.CATEGORY_SOTNINGSPROTOKOLL)
+		final var bilagaPresent = attachmentRepository.existsByErrandIdAndCategory(errandId, EgensotningModuleConfig.CATEGORY_BRANDSKYDDSKONTROLL)
 			&& attachmentRepository.existsByErrandIdAndCategory(errandId, EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG);
 
 		final var detailsOpt = detailsRepository.findByErrandId(errandId);
@@ -107,7 +107,7 @@ public class EgensotningVerificationService {
 			outcome = OUTCOME_NEEDS_MANUAL_REVIEW;
 			manualReviewReason = reapplication.reason();
 		} else if (!bilagaPresent || !hasSotningsobjekt) {
-			// A complete application needs both required bilagor (sotningsprotokoll + utbildningsintyg) and
+			// A complete application needs both required bilagor (brandskyddskontroll + utbildningsintyg) and
 			// at least one sotningsobjekt (so the auto-issued beslut lists the objekt + intervall it covers).
 			outcome = OUTCOME_NEEDS_SUPPLEMENT;
 			manualReviewReason = null;

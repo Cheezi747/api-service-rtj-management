@@ -52,7 +52,7 @@ public class EgensotningApplicationService {
 	}
 
 	public String submit(final String municipalityId, final String namespace, final EgensotningApplication application,
-		final MultipartFile sotningsprotokoll, final MultipartFile utbildningsintyg) {
+		final MultipartFile brandskyddskontroll, final MultipartFile utbildningsintyg) {
 		// 1. Errand (utan processDefinitionName → processen startar INTE här)
 		final var errandId = errandService.createErrand(municipalityId, namespace, toErrand(application));
 
@@ -61,7 +61,7 @@ public class EgensotningApplicationService {
 		ofNullable(application.getSotningsobjekt()).orElseGet(List::of)
 			.forEach(objekt -> sotningsobjektService.create(municipalityId, namespace, errandId, objekt));
 		stakeholderService.create(municipalityId, namespace, errandId, toApplicantStakeholder(application));
-		attachmentService.createAttachment(municipalityId, namespace, errandId, sotningsprotokoll, EgensotningModuleConfig.CATEGORY_SOTNINGSPROTOKOLL);
+		attachmentService.createAttachment(municipalityId, namespace, errandId, brandskyddskontroll, EgensotningModuleConfig.CATEGORY_BRANDSKYDDSKONTROLL);
 		attachmentService.createAttachment(municipalityId, namespace, errandId, utbildningsintyg, EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG);
 
 		// 6. Starta processen sist — nu finns all data → verify kör på komplett ansökan
