@@ -10,7 +10,9 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.OffsetDateTime;
+import java.time.Year;
 import java.util.Objects;
+import java.util.UUID;
 import org.hibernate.annotations.TimeZoneStorage;
 import org.hibernate.annotations.UuidGenerator;
 import se.sundsvall.rtjmanagement.shared.Auditable;
@@ -111,7 +113,18 @@ public class ErrandEntity implements Auditable {
 	@PrePersist
 	@PreUpdate
 	void onCreateOrUpdate() {
+		if (errandNumber == null || errandNumber.isBlank()) {
+			errandNumber = generateErrandNumber();
+		}
 		touched = now(systemDefault()).truncatedTo(MILLIS);
+	}
+
+	/**
+	 * Human-readable, unique-enough errand reference: {@code RTJ-<year>-<8 hex>} (e.g.
+	 * {@code RTJ-2026-3F7A9C2B}). Assigned once at first persist when not already provided.
+	 */
+	private static String generateErrandNumber() {
+		return "RTJ-%d-%s".formatted(Year.now().getValue(), UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 	}
 
 	public String getId() {

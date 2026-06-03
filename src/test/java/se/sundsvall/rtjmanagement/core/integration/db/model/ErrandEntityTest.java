@@ -132,12 +132,22 @@ class ErrandEntityTest {
 	}
 
 	@Test
-	void onCreateOrUpdateSetsTouched() {
+	void onCreateOrUpdateSetsTouchedAndGeneratesErrandNumber() {
 		final var entity = new ErrandEntity().withStatus("status");
 
 		entity.onCreateOrUpdate();
 
 		assertThat(entity.getTouched()).isCloseTo(now(), within(1, SECONDS));
-		assertThat(entity).hasAllNullFieldsOrPropertiesExcept("touched", "status");
+		assertThat(entity.getErrandNumber()).matches("RTJ-\\d{4}-[0-9A-F]{8}");
+		assertThat(entity).hasAllNullFieldsOrPropertiesExcept("touched", "status", "errandNumber");
+	}
+
+	@Test
+	void onCreateOrUpdateKeepsProvidedErrandNumber() {
+		final var entity = new ErrandEntity().withErrandNumber("RTJ-2026-CUSTOM01");
+
+		entity.onCreateOrUpdate();
+
+		assertThat(entity.getErrandNumber()).isEqualTo("RTJ-2026-CUSTOM01");
 	}
 }
