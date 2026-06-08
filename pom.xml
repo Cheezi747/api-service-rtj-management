@@ -17,7 +17,7 @@
 		<!-- Modulith 2.x targets Spring Boot 4 (which dept44 8.x runs).
 				Verify the latest GA at https://spring.io/projects/spring-modulith
 				before bumping. -->
-		<spring-modulith.version>2.0.0</spring-modulith.version>
+		<spring-modulith.version>2.0.6</spring-modulith.version>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
 	</properties>
