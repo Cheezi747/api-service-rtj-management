@@ -49,6 +49,7 @@ class EgensotningDetailsEntityTest {
 		final var validFrom = LocalDate.now();
 		final var validUntil = LocalDate.now().plusYears(6);
 		final var reminderSentAt = now();
+		final var documentValidatedAt = now();
 		final var created = now();
 		final var modified = now();
 
@@ -67,6 +68,9 @@ class EgensotningDetailsEntityTest {
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)
 			.withReminderSentAt(reminderSentAt)
+			.withDocumentsValid(true)
+			.withDocumentValidationDetail("Dokumenten är giltiga")
+			.withDocumentValidatedAt(documentValidatedAt)
 			.withCreated(created)
 			.withModified(modified);
 
@@ -85,6 +89,9 @@ class EgensotningDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getValidFrom()).isEqualTo(validFrom);
 		org.assertj.core.api.Assertions.assertThat(entity.getValidUntil()).isEqualTo(validUntil);
 		org.assertj.core.api.Assertions.assertThat(entity.getReminderSentAt()).isEqualTo(reminderSentAt);
+		org.assertj.core.api.Assertions.assertThat(entity.getDocumentsValid()).isTrue();
+		org.assertj.core.api.Assertions.assertThat(entity.getDocumentValidationDetail()).isEqualTo("Dokumenten är giltiga");
+		org.assertj.core.api.Assertions.assertThat(entity.getDocumentValidatedAt()).isEqualTo(documentValidatedAt);
 		org.assertj.core.api.Assertions.assertThat(entity.getCreated()).isEqualTo(created);
 		org.assertj.core.api.Assertions.assertThat(entity.getModified()).isEqualTo(modified);
 	}

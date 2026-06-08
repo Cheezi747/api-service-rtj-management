@@ -60,6 +60,12 @@ integration:
   messaging:
     connect-timeout: 5
     read-timeout: 30
+  # Eneo (LLM) document validation. oauth2.*, assistants.{brandskyddskontroll,egensotning}, space-id
+  # and municipalities.<id>.{url,api-key} are environment-provided (Dokploy env vars / config/.env) —
+  # never committed here.
+  eneo:
+    connect-timeout-in-seconds: 5
+    read-timeout-in-seconds: 30
 #========================================
 # Notification settings
 #========================================

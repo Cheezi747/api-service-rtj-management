@@ -14,6 +14,19 @@ integration:
     mottagningsbevis-template-identifier: egensotning-mottagningsbevis
   messaging:
     url: http://messaging.url
+  eneo:
+    space-id: 00000000-0000-0000-0000-000000000000
+    assistants:
+      brandskyddskontroll: 00000000-0000-0000-0000-000000000001
+      egensotning: 00000000-0000-0000-0000-000000000002
+    oauth2:
+      token-url: http://token.url
+      client-id: the-client-id
+      client-secret: the-client-secret
+    municipalities:
+      2281:
+        url: http://eneo.url
+        api-key: the-api-key
 scheduler:
   notification-cleanup:
     cron: '-'

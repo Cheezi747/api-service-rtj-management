@@ -77,6 +77,16 @@ public class EgensotningDetailsEntity implements Auditable {
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime reminderSentAt;
 
+	@Column(name = "documents_valid")
+	private Boolean documentsValid;
+
+	@Column(name = "document_validation_detail", length = 2048)
+	private String documentValidationDetail;
+
+	@Column(name = "document_validated_at")
+	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
+	private OffsetDateTime documentValidatedAt;
+
 	@Column(name = "created")
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime created;
@@ -145,6 +155,18 @@ public class EgensotningDetailsEntity implements Auditable {
 		return reminderSentAt;
 	}
 
+	public Boolean getDocumentsValid() {
+		return documentsValid;
+	}
+
+	public String getDocumentValidationDetail() {
+		return documentValidationDetail;
+	}
+
+	public OffsetDateTime getDocumentValidatedAt() {
+		return documentValidatedAt;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -207,6 +229,18 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	public void setReminderSentAt(final OffsetDateTime v) {
 		this.reminderSentAt = v;
+	}
+
+	public void setDocumentsValid(final Boolean v) {
+		this.documentsValid = v;
+	}
+
+	public void setDocumentValidationDetail(final String v) {
+		this.documentValidationDetail = v;
+	}
+
+	public void setDocumentValidatedAt(final OffsetDateTime v) {
+		this.documentValidatedAt = v;
 	}
 
 	@Override
@@ -289,6 +323,21 @@ public class EgensotningDetailsEntity implements Auditable {
 		return this;
 	}
 
+	public EgensotningDetailsEntity withDocumentsValid(final Boolean v) {
+		this.documentsValid = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withDocumentValidationDetail(final String v) {
+		this.documentValidationDetail = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withDocumentValidatedAt(final OffsetDateTime v) {
+		this.documentValidatedAt = v;
+		return this;
+	}
+
 	public EgensotningDetailsEntity withCreated(final OffsetDateTime v) {
 		this.created = v;
 		return this;
@@ -311,6 +360,8 @@ public class EgensotningDetailsEntity implements Auditable {
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
 			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
+			&& Objects.equals(documentsValid, that.documentsValid) && Objects.equals(documentValidationDetail, that.documentValidationDetail)
+			&& Objects.equals(documentValidatedAt, that.documentValidatedAt)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
@@ -318,7 +369,7 @@ public class EgensotningDetailsEntity implements Auditable {
 	public int hashCode() {
 		return Objects.hash(id, errandId, personnummer, fastighetsbeteckning, propertyAddress, bilagaPresent,
 			registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom, validUntil,
-			reminderSentAt, created, modified);
+			reminderSentAt, documentsValid, documentValidationDetail, documentValidatedAt, created, modified);
 	}
 
 	@Override
@@ -327,6 +378,7 @@ public class EgensotningDetailsEntity implements Auditable {
 			+ "', propertyAddress='" + propertyAddress + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty
 			+ ", reapplicationOk=" + reapplicationOk + ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason
 			+ "', lastVerifiedAt=" + lastVerifiedAt + ", validFrom=" + validFrom + ", validUntil=" + validUntil
-			+ ", reminderSentAt=" + reminderSentAt + ", created=" + created + ", modified=" + modified + '}';
+			+ ", reminderSentAt=" + reminderSentAt + ", documentsValid=" + documentsValid + ", documentValidationDetail='" + documentValidationDetail
+			+ "', documentValidatedAt=" + documentValidatedAt + ", created=" + created + ", modified=" + modified + '}';
 	}
 }
