@@ -98,7 +98,7 @@ class EgensotningVerificationServiceTest {
 
 	private void stubRegistered() {
 		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
-		when(citizenClientMock.getCitizen(MUNICIPALITY_ID, GUID)).thenReturn(registeredCitizen());
+		when(citizenClientMock.getCitizen(GUID)).thenReturn(registeredCitizen());
 	}
 
 	private void stubNoPriorApplications() {
@@ -179,7 +179,7 @@ class EgensotningVerificationServiceTest {
 		stubBilagorPresent();
 		stubObjektPresent();
 		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
-		when(citizenClientMock.getCitizen(MUNICIPALITY_ID, GUID)).thenReturn(citizenAtOtherProperty());
+		when(citizenClientMock.getCitizen(GUID)).thenReturn(citizenAtOtherProperty());
 		stubNoPriorApplications();
 
 		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
@@ -272,7 +272,7 @@ class EgensotningVerificationServiceTest {
 		stubErrandAndDetails();
 		stubObjektPresent();
 		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
-		when(citizenClientMock.getCitizen(MUNICIPALITY_ID, GUID)).thenReturn(citizenAtOtherProperty());
+		when(citizenClientMock.getCitizen(GUID)).thenReturn(citizenAtOtherProperty());
 		stubNoPriorApplications();
 
 		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);

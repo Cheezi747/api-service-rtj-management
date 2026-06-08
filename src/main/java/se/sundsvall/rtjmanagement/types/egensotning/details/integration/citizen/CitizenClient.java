@@ -5,36 +5,46 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.citizen.configuration.CitizenConfiguration;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static se.sundsvall.rtjmanagement.types.egensotning.details.integration.citizen.configuration.CitizenConfiguration.CLIENT_ID;
 
+/**
+ * Client for the self-hosted <b>api-service-citizen v2</b> (Public-Service-as-a-Service), which the
+ * POC runs in place of the real Sundsvall citizen registry. Its base url ({@code integration.citizen.url})
+ * therefore ends in {@code /api/v2/citizen}. Note the v2 contract differs from the Sundsvallskommun v3
+ * API: there is no {@code municipalityId} path segment — it is a query parameter on the guid lookup,
+ * and the citizen-by-id lookup takes only the personId.
+ */
 @FeignClient(name = CLIENT_ID, url = "${integration.citizen.url}", configuration = CitizenConfiguration.class)
 @CircuitBreaker(name = CLIENT_ID)
 public interface CitizenClient {
 
 	/**
 	 * Resolve a citizen's personId (GUID) from their personnummer.
+	 * <p>
+	 * api-service-citizen v2: {@code GET /{personNumber}/guid?municipalityId=...}
 	 *
-	 * @param  municipalityId the id of the municipality
-	 * @param  personNumber   the applicant's personnummer
+	 * @param  municipalityId the id of the municipality (query parameter)
+	 * @param  personNumber   the applicant's personnummer (path variable)
 	 * @return                the citizen's personId (GUID), or {@code null} on 204 No Content
 	 */
-	@GetMapping(path = "/{municipalityId}/{personNumber}/guid", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{personNumber}/guid", produces = APPLICATION_JSON_VALUE)
 	String getGuid(
-		@PathVariable final String municipalityId,
+		@RequestParam("municipalityId") final String municipalityId,
 		@PathVariable final String personNumber);
 
 	/**
 	 * Fetch a citizen (incl. addresses) by personId.
+	 * <p>
+	 * api-service-citizen v2: {@code GET /{personId}}
 	 *
-	 * @param  municipalityId the id of the municipality
-	 * @param  personId       the citizen's personId (GUID)
-	 * @return                the citizen, or {@code null} on 204 No Content
+	 * @param  personId the citizen's personId (GUID)
+	 * @return          the citizen, or {@code null} on 204 No Content
 	 */
-	@GetMapping(path = "/{municipalityId}/{personId}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{personId}", produces = APPLICATION_JSON_VALUE)
 	CitizenExtended getCitizen(
-		@PathVariable final String municipalityId,
 		@PathVariable final String personId);
 }

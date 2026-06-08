@@ -148,7 +148,7 @@ public class EgensotningVerificationService {
 			if (personId == null || personId.isBlank()) {
 				return false;
 			}
-			final var citizen = citizenClient.getCitizen(municipalityId, personId);
+			final var citizen = citizenClient.getCitizen(personId);
 			return EgensotningCheckUtil.isRegisteredAtProperty(citizen, municipalityId, details.getFastighetsbeteckning());
 		} catch (final ClientProblem e) {
 			// Citizen rejected the lookup (4xx — unknown or malformed personnummer). Not a citizen outage;
