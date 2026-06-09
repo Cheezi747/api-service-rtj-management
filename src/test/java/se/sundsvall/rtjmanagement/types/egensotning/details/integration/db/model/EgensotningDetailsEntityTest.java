@@ -50,6 +50,7 @@ class EgensotningDetailsEntityTest {
 		final var validUntil = LocalDate.now().plusYears(6);
 		final var reminderSentAt = now();
 		final var documentValidatedAt = now();
+		final var revokedAt = now();
 		final var created = now();
 		final var modified = now();
 
@@ -75,6 +76,8 @@ class EgensotningDetailsEntityTest {
 			.withDocumentsValid(true)
 			.withDocumentValidationDetail("Dokumenten är giltiga")
 			.withDocumentValidatedAt(documentValidatedAt)
+			.withRevokedAt(revokedAt)
+			.withRevocationReason("ADDRESS_CHANGED")
 			.withCreated(created)
 			.withModified(modified);
 
@@ -100,6 +103,8 @@ class EgensotningDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getDocumentsValid()).isTrue();
 		org.assertj.core.api.Assertions.assertThat(entity.getDocumentValidationDetail()).isEqualTo("Dokumenten är giltiga");
 		org.assertj.core.api.Assertions.assertThat(entity.getDocumentValidatedAt()).isEqualTo(documentValidatedAt);
+		org.assertj.core.api.Assertions.assertThat(entity.getRevokedAt()).isEqualTo(revokedAt);
+		org.assertj.core.api.Assertions.assertThat(entity.getRevocationReason()).isEqualTo("ADDRESS_CHANGED");
 		org.assertj.core.api.Assertions.assertThat(entity.getCreated()).isEqualTo(created);
 		org.assertj.core.api.Assertions.assertThat(entity.getModified()).isEqualTo(modified);
 	}

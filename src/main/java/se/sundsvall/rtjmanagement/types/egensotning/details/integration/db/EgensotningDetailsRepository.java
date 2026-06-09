@@ -27,4 +27,11 @@ public interface EgensotningDetailsRepository extends JpaRepository<EgensotningD
 	 * {@code validUntil} (decision not time-limited) is naturally excluded by the BETWEEN bound.
 	 */
 	List<EgensotningDetailsEntity> findByValidUntilBetweenAndReminderSentAtIsNull(LocalDate from, LocalDate to);
+
+	/**
+	 * All egensotning details with an issued decision ({@code validFrom} set) — drives the
+	 * address-change monitor (R6). The scheduler resolves each errand's status and re-checks
+	 * folkbokföring, revoking only those still DECIDED whose applicant is no longer registered.
+	 */
+	List<EgensotningDetailsEntity> findByValidFromIsNotNull();
 }

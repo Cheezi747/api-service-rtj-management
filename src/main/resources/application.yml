@@ -65,6 +65,14 @@ integration:
   eneo:
     connect-timeout-in-seconds: 5
     read-timeout-in-seconds: 30
+  # Lantmäteriet registerbeteckning (I4) — distriktskontroll av fastighetsbeteckning. client-id/secret
+  # är hemligheter och sätts via miljö (Dokploy-env / config/.env), aldrig committade här.
+  lantmateriet:
+    oauth2-token-url: ${LANTMATERIET_OAUTH2_TOKEN_URL:https://api.lantmateriet.se/token}
+    oauth2-client-id: ${LANTMATERIET_OAUTH2_CLIENT_ID:override}
+    oauth2-client-secret: ${LANTMATERIET_OAUTH2_CLIENT_SECRET:override}
+    registerbeteckning:
+      url: ${LANTMATERIET_REGISTERBETECKNING_URL:https://api.lantmateriet.se/distribution/produkter/registerbeteckning/v5}
 #========================================
 # Egensotning domain settings
 #========================================
@@ -73,6 +81,9 @@ egensotning:
     # Antal år ett godkänt egensotningsmedgivande gäller (default 6). 0 = gäller tillsvidare
     # (inget utgångsdatum, inga förnyelsepåminnelser). Kan överstyras per miljö (EGENSOTNING_VALIDITY_YEARS).
     years: 6
+  # Tillåtna registerområden (förbundets kommuner) för egensotning. Tom lista = ingen begränsning.
+  # POC: lokal kontroll mot fastighetsbeteckningens inledande område; ersätts av Lantmäteri/WSO2-slagning.
+  allowed-districts: Sundsvall,Timrå,Ånge
 #========================================
 # Notification settings
 #========================================
@@ -90,6 +101,11 @@ scheduler:
     shedlock-lock-at-most-for: PT5M
     maximum-execution-time: PT10M
     lead-time-days: 90
+  egensotning-address-monitor:
+    cron: '0 0 4 * * *'
+    name: egensotning-address-monitor
+    shedlock-lock-at-most-for: PT10M
+    maximum-execution-time: PT30M
   database-cleanup:
     cron: '0 0 3 * * *'
     name: database-cleanup

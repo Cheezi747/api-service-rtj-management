@@ -27,6 +27,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.util.StringUtils.hasText;
+import static se.sundsvall.rtjmanagement.core.integration.db.specification.ErrandSpecification.withFreeText;
 import static se.sundsvall.rtjmanagement.core.integration.db.specification.ErrandSpecification.withNamespaceAndMunicipalityId;
 import static se.sundsvall.rtjmanagement.core.service.mapper.ErrandMapper.toErrand;
 import static se.sundsvall.rtjmanagement.core.service.mapper.ErrandMapper.toErrandEntity;
@@ -104,9 +105,12 @@ public class ErrandService {
 	}
 
 	@Transactional(readOnly = true)
-	public FindErrandsResponse findErrands(final String municipalityId, final String namespace, final Specification<ErrandEntity> filter, final Pageable pageable) {
+	public FindErrandsResponse findErrands(final String municipalityId, final String namespace, final Specification<ErrandEntity> filter,
+		final String q, final Pageable pageable) {
 		final var baseSpec = withNamespaceAndMunicipalityId(namespace, municipalityId);
-		final var combined = ofNullable(filter).map(baseSpec::and).orElse(baseSpec);
+		final var withFilter = ofNullable(filter).map(baseSpec::and).orElse(baseSpec);
+		// withFreeText is a no-op conjunction when q is blank, so it composes safely with the spring-filter.
+		final var combined = withFilter.and(withFreeText(q));
 		return toFindErrandsResponse(errandRepository.findAll(combined, pageable));
 	}
 

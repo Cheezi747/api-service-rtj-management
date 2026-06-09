@@ -39,6 +39,7 @@ class EgensotningDetailsTest {
 		final var validFrom = LocalDate.now();
 		final var validUntil = LocalDate.now().plusYears(6);
 		final var reminderSentAt = OffsetDateTime.now();
+		final var revokedAt = OffsetDateTime.now();
 		final var created = OffsetDateTime.now();
 		final var modified = OffsetDateTime.now();
 
@@ -59,6 +60,8 @@ class EgensotningDetailsTest {
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)
 			.withReminderSentAt(reminderSentAt)
+			.withRevokedAt(revokedAt)
+			.withRevocationReason("ADDRESS_CHANGED")
 			.withCreated(created)
 			.withModified(modified);
 
@@ -79,6 +82,8 @@ class EgensotningDetailsTest {
 		assertThat(result.getValidFrom()).isEqualTo(validFrom);
 		assertThat(result.getValidUntil()).isEqualTo(validUntil);
 		assertThat(result.getReminderSentAt()).isEqualTo(reminderSentAt);
+		assertThat(result.getRevokedAt()).isEqualTo(revokedAt);
+		assertThat(result.getRevocationReason()).isEqualTo("ADDRESS_CHANGED");
 		assertThat(result.getCreated()).isEqualTo(created);
 		assertThat(result.getModified()).isEqualTo(modified);
 	}

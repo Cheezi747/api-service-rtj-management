@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
@@ -109,9 +110,11 @@ class ErrandResource {
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/spring-filter/blob/85730f950a5f8623159cc0eb4d737555f9382bb7/README.md#syntax)",
 			example = "status:'NEW' and created>'2024-01-01T00:00:00.000+01:00'",
 			schema = @Schema(implementation = String.class)) @Nullable @Filter final Specification<ErrandEntity> filter,
+		@Parameter(name = "q", description = "Free-text search across errand number, title, description and applicant email (case-insensitive substring). Combines with the filter.", example = "RTJ-2026") @RequestParam(value = "q",
+			required = false) final String q,
 		@ParameterObject @PageableDefault(sort = "touched", direction = Sort.Direction.DESC) final Pageable pageable) {
 
-		return ok(service.findErrands(municipalityId, namespace, filter, pageable));
+		return ok(service.findErrands(municipalityId, namespace, filter, q, pageable));
 	}
 
 	@PatchMapping(path = "/{errandId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)

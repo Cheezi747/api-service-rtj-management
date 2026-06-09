@@ -41,6 +41,7 @@ public class EgensotningModuleConfig {
 	public static final String STATUS_UNDER_MANUAL_REVIEW = "UNDER_MANUAL_REVIEW";
 	public static final String STATUS_DECIDED = "DECIDED";
 	public static final String STATUS_REJECTED = "REJECTED";
+	public static final String STATUS_REVOKED = "REVOKED";
 
 	public static final String ROLE_APPLICANT = "APPLICANT";
 	public static final String ROLE_BSK = "BSK";
@@ -59,6 +60,7 @@ public class EgensotningModuleConfig {
 			.allowedTransition(STATUS_REGISTERED, STATUS_DECIDED, STATUS_AWAITING_SUPPLEMENTATION, STATUS_UNDER_MANUAL_REVIEW, STATUS_REJECTED)
 			.allowedTransition(STATUS_AWAITING_SUPPLEMENTATION, STATUS_DECIDED, STATUS_UNDER_MANUAL_REVIEW, STATUS_REJECTED)
 			.allowedTransition(STATUS_UNDER_MANUAL_REVIEW, STATUS_DECIDED, STATUS_REJECTED)
+			.allowedTransition(STATUS_DECIDED, STATUS_REVOKED)
 			.build();
 	}
 

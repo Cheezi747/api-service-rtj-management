@@ -7,6 +7,7 @@ import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_DECIDED;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_REJECTED;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_REVOKED;
 
 /**
  * Spärrar medborgar-/API-ändringar av ett egensotningsärende när det nått ett slutligt tillstånd.
@@ -21,7 +22,7 @@ import static se.sundsvall.rtjmanagement.types.egensotning.configuration.Egensot
  */
 public final class EgensotningMutationGuard {
 
-	private static final Set<String> LOCKED_STATUSES = Set.of(STATUS_DECIDED, STATUS_REJECTED);
+	private static final Set<String> LOCKED_STATUSES = Set.of(STATUS_DECIDED, STATUS_REJECTED, STATUS_REVOKED);
 	private static final String LOCKED_MESSAGE = "Errand '%s' is in status '%s' and can no longer be modified (the decision is final)";
 
 	private EgensotningMutationGuard() {}

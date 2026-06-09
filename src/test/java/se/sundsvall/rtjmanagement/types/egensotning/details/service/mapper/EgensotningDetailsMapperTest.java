@@ -56,6 +56,7 @@ class EgensotningDetailsMapperTest {
 		final var validFrom = LocalDate.of(2026, 6, 3);
 		final var validUntil = LocalDate.of(2032, 6, 1);
 		final var reminderSentAt = OffsetDateTime.parse("2032-03-01T00:00:00Z");
+		final var revokedAt = OffsetDateTime.parse("2027-01-15T08:00:00Z");
 		final var entity = EgensotningDetailsMapper.toEntity(frontendDetails(), "errand-1")
 			.withId(7L)
 			.withMotivering("Handläggarens motivering")
@@ -66,7 +67,9 @@ class EgensotningDetailsMapperTest {
 			.withManualReviewReason("NOT_REGISTERED")
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)
-			.withReminderSentAt(reminderSentAt);
+			.withReminderSentAt(reminderSentAt)
+			.withRevokedAt(revokedAt)
+			.withRevocationReason("ADDRESS_CHANGED");
 
 		final var dto = EgensotningDetailsMapper.toDetails(entity);
 
@@ -86,6 +89,8 @@ class EgensotningDetailsMapperTest {
 		assertThat(dto.getValidFrom()).isEqualTo(validFrom);
 		assertThat(dto.getValidUntil()).isEqualTo(validUntil);
 		assertThat(dto.getReminderSentAt()).isEqualTo(reminderSentAt);
+		assertThat(dto.getRevokedAt()).isEqualTo(revokedAt);
+		assertThat(dto.getRevocationReason()).isEqualTo("ADDRESS_CHANGED");
 	}
 
 	@Test

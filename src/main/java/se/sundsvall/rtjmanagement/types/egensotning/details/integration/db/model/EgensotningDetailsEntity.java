@@ -99,6 +99,13 @@ public class EgensotningDetailsEntity implements Auditable {
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime documentValidatedAt;
 
+	@Column(name = "revoked_at")
+	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
+	private OffsetDateTime revokedAt;
+
+	@Column(name = "revocation_reason", length = 2048)
+	private String revocationReason;
+
 	@Column(name = "created")
 	@TimeZoneStorage(TimeZoneStorageType.NORMALIZE)
 	private OffsetDateTime created;
@@ -195,6 +202,14 @@ public class EgensotningDetailsEntity implements Auditable {
 		return documentValidatedAt;
 	}
 
+	public OffsetDateTime getRevokedAt() {
+		return revokedAt;
+	}
+
+	public String getRevocationReason() {
+		return revocationReason;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -285,6 +300,14 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	public void setDocumentValidatedAt(final OffsetDateTime v) {
 		this.documentValidatedAt = v;
+	}
+
+	public void setRevokedAt(final OffsetDateTime v) {
+		this.revokedAt = v;
+	}
+
+	public void setRevocationReason(final String v) {
+		this.revocationReason = v;
 	}
 
 	@Override
@@ -402,6 +425,16 @@ public class EgensotningDetailsEntity implements Auditable {
 		return this;
 	}
 
+	public EgensotningDetailsEntity withRevokedAt(final OffsetDateTime v) {
+		this.revokedAt = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withRevocationReason(final String v) {
+		this.revocationReason = v;
+		return this;
+	}
+
 	public EgensotningDetailsEntity withCreated(final OffsetDateTime v) {
 		this.created = v;
 		return this;
@@ -427,7 +460,8 @@ public class EgensotningDetailsEntity implements Auditable {
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
 			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
 			&& Objects.equals(documentsValid, that.documentsValid) && Objects.equals(documentValidationDetail, that.documentValidationDetail)
-			&& Objects.equals(documentValidatedAt, that.documentValidatedAt)
+			&& Objects.equals(documentValidatedAt, that.documentValidatedAt) && Objects.equals(revokedAt, that.revokedAt)
+			&& Objects.equals(revocationReason, that.revocationReason)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
@@ -435,7 +469,8 @@ public class EgensotningDetailsEntity implements Auditable {
 	public int hashCode() {
 		return Objects.hash(id, errandId, personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation,
 			appliesForOtherProperty, motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason,
-			lastVerifiedAt, validFrom, validUntil, reminderSentAt, documentsValid, documentValidationDetail, documentValidatedAt, created, modified);
+			lastVerifiedAt, validFrom, validUntil, reminderSentAt, documentsValid, documentValidationDetail, documentValidatedAt,
+			revokedAt, revocationReason, created, modified);
 	}
 
 	@Override
@@ -447,6 +482,7 @@ public class EgensotningDetailsEntity implements Auditable {
 			+ ", reapplicationOk=" + reapplicationOk + ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason
 			+ "', lastVerifiedAt=" + lastVerifiedAt + ", validFrom=" + validFrom + ", validUntil=" + validUntil
 			+ ", reminderSentAt=" + reminderSentAt + ", documentsValid=" + documentsValid + ", documentValidationDetail='" + documentValidationDetail
-			+ "', documentValidatedAt=" + documentValidatedAt + ", created=" + created + ", modified=" + modified + '}';
+			+ "', documentValidatedAt=" + documentValidatedAt + ", revokedAt=" + revokedAt + ", revocationReason='" + revocationReason
+			+ "', created=" + created + ", modified=" + modified + '}';
 	}
 }

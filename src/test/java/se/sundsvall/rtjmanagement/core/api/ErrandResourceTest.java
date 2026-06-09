@@ -72,14 +72,26 @@ class ErrandResourceTest {
 
 	@Test
 	void findErrands() {
-		when(serviceMock.findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(), any())).thenReturn(FindErrandsResponse.create().withErrands(java.util.List.of(Errand.create())));
+		when(serviceMock.findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(), any(), any())).thenReturn(FindErrandsResponse.create().withErrands(java.util.List.of(Errand.create())));
 
 		webTestClient.get()
 			.uri(builder -> builder.path(PATH).build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.exchange()
 			.expectStatus().isOk();
 
-		verify(serviceMock).findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(Specification.class), any());
+		verify(serviceMock).findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(Specification.class), any(), any());
+	}
+
+	@Test
+	void findErrandsForwardsFreeText() {
+		when(serviceMock.findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(), eq("RTJ-2026"), any())).thenReturn(FindErrandsResponse.create());
+
+		webTestClient.get()
+			.uri(builder -> builder.path(PATH).queryParam("q", "RTJ-2026").build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.exchange()
+			.expectStatus().isOk();
+
+		verify(serviceMock).findErrands(eq(MUNICIPALITY_ID), eq(NAMESPACE), any(Specification.class), eq("RTJ-2026"), any());
 	}
 
 	@Test

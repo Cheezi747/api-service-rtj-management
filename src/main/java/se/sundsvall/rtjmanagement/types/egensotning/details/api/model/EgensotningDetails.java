@@ -77,6 +77,14 @@ public class EgensotningDetails {
 	@Null(groups = OnCreate.class)
 	private OffsetDateTime reminderSentAt;
 
+	@Schema(description = "När beslutet återkallades (null om gällande)", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private OffsetDateTime revokedAt;
+
+	@Schema(description = "Anledning till återkallelse, t.ex. ADDRESS_CHANGED eller BSK_FAILED", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private String revocationReason;
+
 	@Schema(description = "Created timestamp", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private OffsetDateTime created;
@@ -297,6 +305,32 @@ public class EgensotningDetails {
 		return this;
 	}
 
+	public OffsetDateTime getRevokedAt() {
+		return revokedAt;
+	}
+
+	public void setRevokedAt(final OffsetDateTime v) {
+		this.revokedAt = v;
+	}
+
+	public EgensotningDetails withRevokedAt(final OffsetDateTime v) {
+		this.revokedAt = v;
+		return this;
+	}
+
+	public String getRevocationReason() {
+		return revocationReason;
+	}
+
+	public void setRevocationReason(final String v) {
+		this.revocationReason = v;
+	}
+
+	public EgensotningDetails withRevocationReason(final String v) {
+		this.revocationReason = v;
+		return this;
+	}
+
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -336,6 +370,7 @@ public class EgensotningDetails {
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
 			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
+			&& Objects.equals(revokedAt, that.revokedAt) && Objects.equals(revocationReason, that.revocationReason)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
 	}
 
@@ -343,7 +378,7 @@ public class EgensotningDetails {
 	public int hashCode() {
 		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation, appliesForOtherProperty,
 			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom,
-			validUntil, reminderSentAt, created, modified);
+			validUntil, reminderSentAt, revokedAt, revocationReason, created, modified);
 	}
 
 	@Override
@@ -353,6 +388,6 @@ public class EgensotningDetails {
 			+ ", motivering='" + motivering + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
 			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', lastVerifiedAt=" + lastVerifiedAt
 			+ ", validFrom=" + validFrom + ", validUntil=" + validUntil + ", reminderSentAt=" + reminderSentAt
-			+ ", created=" + created + ", modified=" + modified + '}';
+			+ ", revokedAt=" + revokedAt + ", revocationReason='" + revocationReason + "', created=" + created + ", modified=" + modified + '}';
 	}
 }

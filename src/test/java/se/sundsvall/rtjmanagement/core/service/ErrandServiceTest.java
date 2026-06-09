@@ -141,7 +141,7 @@ class ErrandServiceTest {
 			.thenReturn(new PageImpl<>(of(ErrandEntity.create().withId(ERRAND_ID))));
 
 		final Specification<ErrandEntity> extra = (root, _, cb) -> cb.equal(root.get("status"), "OPEN");
-		final var page = service.findErrands(MUNICIPALITY_ID, NAMESPACE, extra, PageRequest.of(0, 10));
+		final var page = service.findErrands(MUNICIPALITY_ID, NAMESPACE, extra, null, PageRequest.of(0, 10));
 
 		assertThat(page.getErrands()).hasSize(1);
 		assertThat(specCaptor.getValue()).isNotNull();
@@ -152,8 +152,18 @@ class ErrandServiceTest {
 		when(repositoryMock.findAll(any(Specification.class), any(PageRequest.class)))
 			.thenReturn(new PageImpl<>(of()));
 
-		final var page = service.findErrands(MUNICIPALITY_ID, NAMESPACE, null, PageRequest.of(0, 10));
+		final var page = service.findErrands(MUNICIPALITY_ID, NAMESPACE, null, null, PageRequest.of(0, 10));
 		assertThat(page.getErrands()).isEmpty();
+	}
+
+	@Test
+	void findErrandsAppliesFreeText() {
+		when(repositoryMock.findAll(any(Specification.class), any(PageRequest.class)))
+			.thenReturn(new PageImpl<>(of(ErrandEntity.create().withId(ERRAND_ID))));
+
+		final var page = service.findErrands(MUNICIPALITY_ID, NAMESPACE, null, "RTJ-2026", PageRequest.of(0, 10));
+
+		assertThat(page.getErrands()).hasSize(1);
 	}
 
 	@Test

@@ -40,19 +40,24 @@ public class EgensotningApplicationService {
 	private final SotningsobjektService sotningsobjektService;
 	private final StakeholderService stakeholderService;
 	private final AttachmentService attachmentService;
+	private final EgensotningPropertyValidator propertyValidator;
 
 	EgensotningApplicationService(final ErrandService errandService, final EgensotningDetailsService detailsService,
 		final SotningsobjektService sotningsobjektService, final StakeholderService stakeholderService,
-		final AttachmentService attachmentService) {
+		final AttachmentService attachmentService, final EgensotningPropertyValidator propertyValidator) {
 		this.errandService = errandService;
 		this.detailsService = detailsService;
 		this.sotningsobjektService = sotningsobjektService;
 		this.stakeholderService = stakeholderService;
 		this.attachmentService = attachmentService;
+		this.propertyValidator = propertyValidator;
 	}
 
 	public String submit(final String municipalityId, final String namespace, final EgensotningApplication application,
 		final MultipartFile brandskyddskontroll, final MultipartFile utbildningsintyg) {
+		// 0. Avvisa ansökningar för fastigheter utanför förbundets område (I4) innan något skapas.
+		propertyValidator.assertValid(application.getFastighetsbeteckning());
+
 		// 1. Errand (utan processDefinitionName → processen startar INTE här)
 		final var errandId = errandService.createErrand(municipalityId, namespace, toErrand(application));
 

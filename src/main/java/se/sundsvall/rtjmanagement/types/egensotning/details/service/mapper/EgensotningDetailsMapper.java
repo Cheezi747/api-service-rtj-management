@@ -28,6 +28,8 @@ public final class EgensotningDetailsMapper {
 				.withValidFrom(e.getValidFrom())
 				.withValidUntil(e.getValidUntil())
 				.withReminderSentAt(e.getReminderSentAt())
+				.withRevokedAt(e.getRevokedAt())
+				.withRevocationReason(e.getRevocationReason())
 				.withCreated(e.getCreated())
 				.withModified(e.getModified()))
 			.orElse(null);

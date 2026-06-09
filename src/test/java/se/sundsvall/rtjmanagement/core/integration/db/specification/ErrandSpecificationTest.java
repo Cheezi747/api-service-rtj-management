@@ -2,6 +2,7 @@ package se.sundsvall.rtjmanagement.core.integration.db.specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -12,6 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +40,12 @@ class ErrandSpecificationTest {
 
 	@Mock
 	private Predicate conjunctionMock;
+
+	@Mock
+	private Predicate orPredicateMock;
+
+	@Mock
+	private Expression<String> exprMock;
 
 	@Test
 	void withNamespaceAndMunicipalityIdBuildsAndPredicate() {
@@ -90,6 +100,38 @@ class ErrandSpecificationTest {
 
 		final var spec = ErrandSpecification.withTypeSlug(null);
 		final var result = spec.toPredicate(rootMock, queryMock, cbMock);
+
+		assertThat(result).isSameAs(conjunctionMock);
+	}
+
+	@Test
+	void withFreeTextBuildsCaseInsensitiveOrLikeWhenPresent() {
+		when(rootMock.get(anyString())).thenReturn(pathMock);
+		when(cbMock.lower(any())).thenReturn(exprMock);
+		when(cbMock.like(eq(exprMock), eq("%rtj-2026%"))).thenReturn(predicateMock);
+		when(cbMock.or(predicateMock, predicateMock, predicateMock, predicateMock)).thenReturn(orPredicateMock);
+
+		final var spec = ErrandSpecification.withFreeText("RTJ-2026");
+		final var result = spec.toPredicate(rootMock, queryMock, cbMock);
+
+		assertThat(result).isSameAs(orPredicateMock);
+		verify(cbMock).or(predicateMock, predicateMock, predicateMock, predicateMock);
+	}
+
+	@Test
+	void withFreeTextReturnsConjunctionWhenNull() {
+		when(cbMock.conjunction()).thenReturn(conjunctionMock);
+
+		final var result = ErrandSpecification.withFreeText(null).toPredicate(rootMock, queryMock, cbMock);
+
+		assertThat(result).isSameAs(conjunctionMock);
+	}
+
+	@Test
+	void withFreeTextReturnsConjunctionWhenBlank() {
+		when(cbMock.conjunction()).thenReturn(conjunctionMock);
+
+		final var result = ErrandSpecification.withFreeText("   ").toPredicate(rootMock, queryMock, cbMock);
 
 		assertThat(result).isSameAs(conjunctionMock);
 	}
