@@ -190,6 +190,22 @@ class EgensotningVerificationServiceTest {
 	}
 
 	@Test
+	void notRegisteredButClaimsOwnershipGivesOwnerNotRegisteredReason() {
+		// Sökanden är inte folkbokförd på fastigheten men har uppgett sig äga den (t.ex. sommarstuga) →
+		// manuell granskning med den mer specifika anledningen, så handläggaren ser ägar-underlaget.
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID)).thenReturn(Optional.of(egensotningErrand()));
+		when(detailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details().withOwnsProperty(true)));
+		when(citizenClientMock.getGuid(MUNICIPALITY_ID, PNR)).thenReturn(GUID);
+		when(citizenClientMock.getCitizen(GUID)).thenReturn(citizenAtOtherProperty());
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
+		assertThat(result.getRegisteredAtProperty()).isFalse();
+		assertThat(result.getManualReviewReason()).isEqualTo("OWNER_NOT_REGISTERED");
+	}
+
+	@Test
 	void citizenClientErrorTreatedAsNotRegistered() {
 		// Citizen 4xx (e.g. unknown/malformed personnummer) → ClientProblem → route to manual review, not crash.
 		stubErrandAndDetails();

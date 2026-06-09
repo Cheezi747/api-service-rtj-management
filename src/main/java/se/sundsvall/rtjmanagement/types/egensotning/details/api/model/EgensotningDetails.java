@@ -27,6 +27,20 @@ public class EgensotningDetails {
 	@Size(max = 255)
 	private String propertyAddress;
 
+	@Schema(description = "Om sökanden äger fastigheten ansökan gäller. Underlag för manuell granskning när sökanden inte är folkbokförd på fastigheten.", examples = "true")
+	private Boolean ownsProperty;
+
+	@Schema(description = "Motivering när sökanden inte äger fastigheten (t.ex. nyttjanderätt till annans fastighet)", examples = "Arrenderar fastigheten av ägaren sedan 2019.")
+	@Size(max = 2048)
+	private String ownershipMotivation;
+
+	@Schema(description = "Om ansökan gäller en annan fastighet än sökandens folkbokföringsadress (t.ex. sommarstuga)", examples = "false")
+	private Boolean appliesForOtherProperty;
+
+	@Schema(description = "Beslutsmotivering. Kan redigeras av handläggaren vid manuell granskning; lämnas den tom används den förifyllda standardtexten.", examples = "Sökanden bedöms ha tillräcklig kunskap om anläggningen.")
+	@Size(max = 4096)
+	private String motivering;
+
 	@Schema(description = "Om en bilaga finns på ärendet (beräknad av verifieringssteget)", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private Boolean bilagaPresent;
@@ -111,6 +125,58 @@ public class EgensotningDetails {
 
 	public EgensotningDetails withPropertyAddress(final String v) {
 		this.propertyAddress = v;
+		return this;
+	}
+
+	public Boolean getOwnsProperty() {
+		return ownsProperty;
+	}
+
+	public void setOwnsProperty(final Boolean v) {
+		this.ownsProperty = v;
+	}
+
+	public EgensotningDetails withOwnsProperty(final Boolean v) {
+		this.ownsProperty = v;
+		return this;
+	}
+
+	public String getOwnershipMotivation() {
+		return ownershipMotivation;
+	}
+
+	public void setOwnershipMotivation(final String v) {
+		this.ownershipMotivation = v;
+	}
+
+	public EgensotningDetails withOwnershipMotivation(final String v) {
+		this.ownershipMotivation = v;
+		return this;
+	}
+
+	public Boolean getAppliesForOtherProperty() {
+		return appliesForOtherProperty;
+	}
+
+	public void setAppliesForOtherProperty(final Boolean v) {
+		this.appliesForOtherProperty = v;
+	}
+
+	public EgensotningDetails withAppliesForOtherProperty(final Boolean v) {
+		this.appliesForOtherProperty = v;
+		return this;
+	}
+
+	public String getMotivering() {
+		return motivering;
+	}
+
+	public void setMotivering(final String v) {
+		this.motivering = v;
+	}
+
+	public EgensotningDetails withMotivering(final String v) {
+		this.motivering = v;
 		return this;
 	}
 
@@ -263,7 +329,9 @@ public class EgensotningDetails {
 			return false;
 		final EgensotningDetails that = (EgensotningDetails) o;
 		return Objects.equals(personnummer, that.personnummer) && Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
-			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(bilagaPresent, that.bilagaPresent)
+			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(ownsProperty, that.ownsProperty)
+			&& Objects.equals(ownershipMotivation, that.ownershipMotivation) && Objects.equals(appliesForOtherProperty, that.appliesForOtherProperty)
+			&& Objects.equals(motivering, that.motivering) && Objects.equals(bilagaPresent, that.bilagaPresent)
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
@@ -273,14 +341,16 @@ public class EgensotningDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, bilagaPresent, registeredAtProperty,
-			reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom, validUntil, reminderSentAt, created, modified);
+		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation, appliesForOtherProperty,
+			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom,
+			validUntil, reminderSentAt, created, modified);
 	}
 
 	@Override
 	public String toString() {
 		return "EgensotningDetails{fastighetsbeteckning='" + fastighetsbeteckning + "', propertyAddress='" + propertyAddress
-			+ "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
+			+ "', ownsProperty=" + ownsProperty + ", ownershipMotivation='" + ownershipMotivation + "', appliesForOtherProperty=" + appliesForOtherProperty
+			+ ", motivering='" + motivering + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
 			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', lastVerifiedAt=" + lastVerifiedAt
 			+ ", validFrom=" + validFrom + ", validUntil=" + validUntil + ", reminderSentAt=" + reminderSentAt
 			+ ", created=" + created + ", modified=" + modified + '}';

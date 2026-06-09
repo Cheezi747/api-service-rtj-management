@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.dept44.problem.Problem;
@@ -57,8 +57,13 @@ class EgensotningDecisionListenerTest {
 	@Mock
 	private AttachmentService attachmentServiceMock;
 
-	@InjectMocks
 	private EgensotningDecisionListener listener;
+
+	@BeforeEach
+	void setUp() {
+		listener = new EgensotningDecisionListener(errandRepositoryMock, egensotningDetailsRepositoryMock, sotningsobjektRepositoryMock,
+			stakeholderServiceMock, templatingMapperMock, templatingIntegrationMock, attachmentServiceMock, 6);
+	}
 
 	@Test
 	void rendersAndStoresPdfForEgensotningDecision() {
@@ -73,7 +78,7 @@ class EgensotningDecisionListenerTest {
 		when(stakeholderServiceMock.readAll(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID)).thenReturn(List.of(
 			Stakeholder.create().withRole("BSK").withFirstName("Bertil"),
 			Stakeholder.create().withRole("APPLICANT").withFirstName("Test").withLastName("Testsson")));
-		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any())).thenReturn(request);
+		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any(), any())).thenReturn(request);
 		when(templatingIntegrationMock.renderPdf(MUNICIPALITY_ID, request)).thenReturn(pdf);
 
 		listener.on(event);
@@ -94,7 +99,7 @@ class EgensotningDecisionListenerTest {
 		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.empty());
 		when(sotningsobjektRepositoryMock.findByErrandIdOrderByTypAscFabrikatAsc(ERRAND_ID)).thenReturn(List.of());
 		when(stakeholderServiceMock.readAll(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID)).thenReturn(List.of());
-		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any())).thenReturn(request);
+		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any(), any())).thenReturn(request);
 		when(templatingIntegrationMock.renderPdf(MUNICIPALITY_ID, request)).thenReturn(pdf);
 
 		listener.on(event);
@@ -131,7 +136,7 @@ class EgensotningDecisionListenerTest {
 		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.empty());
 		when(sotningsobjektRepositoryMock.findByErrandIdOrderByTypAscFabrikatAsc(ERRAND_ID)).thenReturn(List.of());
 		when(stakeholderServiceMock.readAll(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID)).thenReturn(List.of());
-		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any())).thenReturn(new RenderRequest());
+		when(templatingMapperMock.toRenderRequest(any(), any(), any(), any(), any(), any())).thenReturn(new RenderRequest());
 		when(templatingIntegrationMock.renderPdf(any(), any())).thenThrow(Problem.valueOf(BAD_GATEWAY, "boom"));
 
 		assertThatNoException().isThrownBy(() -> listener.on(event));
@@ -168,8 +173,26 @@ class EgensotningDecisionListenerTest {
 		listener.on(event);
 
 		assertThat(details.getValidFrom()).isEqualTo(LocalDate.now());
-		assertThat(details.getValidUntil()).isEqualTo(EgensotningValidityCalculator.computeValidUntil(details.getValidFrom()));
+		assertThat(details.getValidUntil()).isEqualTo(EgensotningValidityCalculator.computeValidUntil(details.getValidFrom(), 6));
 		assertThat(details.getReminderSentAt()).isNull();
+		verify(egensotningDetailsRepositoryMock).save(details);
+	}
+
+	@Test
+	void leavesValidUntilNullWhenConfiguredTillsvidare() {
+		final var tillsvidareListener = new EgensotningDecisionListener(errandRepositoryMock, egensotningDetailsRepositoryMock,
+			sotningsobjektRepositoryMock, stakeholderServiceMock, templatingMapperMock, templatingIntegrationMock, attachmentServiceMock, 0);
+		final var event = new DecisionRecorded(DECISION_ID, ERRAND_ID, "EGENSOTNING", "APPROVED", "Godkänd.", "operaton", OffsetDateTime.now());
+		final var errand = ErrandEntity.create().withId(ERRAND_ID).withMunicipalityId(MUNICIPALITY_ID).withNamespace(NAMESPACE);
+		final var details = EgensotningDetailsEntity.create().withErrandId(ERRAND_ID);
+		when(errandRepositoryMock.findById(ERRAND_ID)).thenReturn(Optional.of(errand));
+		when(egensotningDetailsRepositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(details));
+		when(attachmentServiceMock.hasAttachmentOfCategory(ERRAND_ID, "DECISION")).thenReturn(true);
+
+		tillsvidareListener.on(event);
+
+		assertThat(details.getValidFrom()).isEqualTo(LocalDate.now());
+		assertThat(details.getValidUntil()).isNull();
 		verify(egensotningDetailsRepositoryMock).save(details);
 	}
 

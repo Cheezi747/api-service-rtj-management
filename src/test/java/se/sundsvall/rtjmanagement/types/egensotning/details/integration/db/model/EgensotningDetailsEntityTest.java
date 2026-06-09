@@ -59,6 +59,10 @@ class EgensotningDetailsEntityTest {
 			.withPersonnummer("199001011234")
 			.withFastighetsbeteckning("Fast 1:1")
 			.withPropertyAddress("Gatan 1")
+			.withOwnsProperty(true)
+			.withOwnershipMotivation("Arrenderar")
+			.withAppliesForOtherProperty(false)
+			.withMotivering("Egen motivering")
 			.withBilagaPresent(true)
 			.withRegisteredAtProperty(false)
 			.withReapplicationOk(true)
@@ -80,6 +84,10 @@ class EgensotningDetailsEntityTest {
 		org.assertj.core.api.Assertions.assertThat(entity.getPersonnummer()).isEqualTo("199001011234");
 		org.assertj.core.api.Assertions.assertThat(entity.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		org.assertj.core.api.Assertions.assertThat(entity.getPropertyAddress()).isEqualTo("Gatan 1");
+		org.assertj.core.api.Assertions.assertThat(entity.getOwnsProperty()).isTrue();
+		org.assertj.core.api.Assertions.assertThat(entity.getOwnershipMotivation()).isEqualTo("Arrenderar");
+		org.assertj.core.api.Assertions.assertThat(entity.getAppliesForOtherProperty()).isFalse();
+		org.assertj.core.api.Assertions.assertThat(entity.getMotivering()).isEqualTo("Egen motivering");
 		org.assertj.core.api.Assertions.assertThat(entity.getBilagaPresent()).isTrue();
 		org.assertj.core.api.Assertions.assertThat(entity.getRegisteredAtProperty()).isFalse();
 		org.assertj.core.api.Assertions.assertThat(entity.getReapplicationOk()).isTrue();

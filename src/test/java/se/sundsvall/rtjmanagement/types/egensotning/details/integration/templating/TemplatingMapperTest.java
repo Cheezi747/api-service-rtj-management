@@ -32,7 +32,9 @@ class TemplatingMapperTest {
 			.withBransleslag("Ved").withBranslemangd("3 m3").withSotningsintervallVeckor(52);
 		final var applicant = Stakeholder.create().withFirstName("Test").withLastName("Testsson").withExternalId("199001011234");
 
-		final var request = mapper.toRenderRequest(event, errand, details, List.of(objekt), applicant);
+		// decisionText kommer från den medskickade parametern (ombyggd från aktuella details),
+		// inte från den lagrade event.description() — skicka en annan sträng för att bevisa det.
+		final var request = mapper.toRenderRequest(event, errand, details, List.of(objekt), applicant, "Beslutstext från builder.");
 
 		assertThat(request.getIdentifier()).isEqualTo("egensotning-beslut");
 		final var parameters = request.getParameters();
@@ -42,7 +44,7 @@ class TemplatingMapperTest {
 			.containsEntry("decisionId", "dec-1")
 			.containsEntry("decisionDate", "2026-06-03")
 			.containsEntry("decidedBy", "operaton")
-			.containsEntry("decisionText", "Ansökan godkänd.")
+			.containsEntry("decisionText", "Beslutstext från builder.")
 			.containsEntry("errandNumber", "RTJ-2026-001")
 			.containsEntry("applicantEmail", "sokande@example.com")
 			.containsEntry("applicantName", "Test Testsson")
@@ -65,7 +67,7 @@ class TemplatingMapperTest {
 	void toRenderRequestRejectionWithoutApplicantOrObjekt() {
 		final var event = new DecisionRecorded("dec-2", "err-2", "EGENSOTNING", "REJECTED", null, "bsk01", null);
 
-		final var request = mapper.toRenderRequest(event, ErrandEntity.create(), null, List.of(), null);
+		final var request = mapper.toRenderRequest(event, ErrandEntity.create(), null, List.of(), null, null);
 
 		final var parameters = request.getParameters();
 		assertThat(parameters)
@@ -85,7 +87,7 @@ class TemplatingMapperTest {
 		final var event = new DecisionRecorded("dec-3", "err-3", "EGENSOTNING", "APPROVED", "x", "operaton", null);
 		final var applicant = Stakeholder.create().withOrganizationName("Acme AB").withExternalId("5560001234");
 
-		final var request = mapper.toRenderRequest(event, ErrandEntity.create(), null, null, applicant);
+		final var request = mapper.toRenderRequest(event, ErrandEntity.create(), null, null, applicant, "x");
 
 		assertThat(request.getParameters())
 			.containsEntry("applicantName", "Acme AB")

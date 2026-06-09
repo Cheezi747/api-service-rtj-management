@@ -21,7 +21,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_DECIDED;
 
 @ExtendWith(MockitoExtension.class)
 class EgensotningDetailsServiceTest {
@@ -95,6 +97,30 @@ class EgensotningDetailsServiceTest {
 			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
 
 		verify(repositoryMock, never()).save(any());
+	}
+
+	@Test
+	void upsertWhenDecidedThrowsConflict() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID))
+			.thenReturn(Optional.of(egensotningErrand().withStatus(STATUS_DECIDED)));
+
+		assertThatThrownBy(() -> service.upsert(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID, sampleDetails()))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasFieldOrPropertyWithValue("status", CONFLICT);
+
+		verify(repositoryMock, never()).save(any());
+	}
+
+	@Test
+	void deleteWhenDecidedThrowsConflict() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID))
+			.thenReturn(Optional.of(egensotningErrand().withStatus(STATUS_DECIDED)));
+
+		assertThatThrownBy(() -> service.delete(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasFieldOrPropertyWithValue("status", CONFLICT);
+
+		verify(repositoryMock, never()).deleteByErrandId(any());
 	}
 
 	@Test

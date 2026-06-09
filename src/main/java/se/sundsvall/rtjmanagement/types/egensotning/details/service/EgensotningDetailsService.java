@@ -6,6 +6,7 @@ import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig;
+import se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningMutationGuard;
 import se.sundsvall.rtjmanagement.types.egensotning.details.api.model.EgensotningDetails;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.EgensotningDetailsRepository;
 import se.sundsvall.rtjmanagement.types.egensotning.details.service.mapper.EgensotningDetailsMapper;
@@ -42,6 +43,7 @@ public class EgensotningDetailsService {
 	 */
 	public void upsert(final String municipalityId, final String namespace, final String errandId, final EgensotningDetails details) {
 		final var errand = findErrandWithType(municipalityId, namespace, errandId);
+		EgensotningMutationGuard.assertMutable(errand);
 		final var existing = repository.findByErrandId(errand.getId());
 		if (existing.isPresent()) {
 			applyPatch(existing.get(), details);
@@ -60,7 +62,7 @@ public class EgensotningDetailsService {
 	}
 
 	public void delete(final String municipalityId, final String namespace, final String errandId) {
-		findErrandWithType(municipalityId, namespace, errandId);
+		EgensotningMutationGuard.assertMutable(findErrandWithType(municipalityId, namespace, errandId));
 		repository.deleteByErrandId(errandId);
 	}
 

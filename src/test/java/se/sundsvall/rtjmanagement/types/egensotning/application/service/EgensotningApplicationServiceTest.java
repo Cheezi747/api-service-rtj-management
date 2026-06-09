@@ -63,6 +63,9 @@ class EgensotningApplicationServiceTest {
 		application.setApplicantEmail("anna@example.se");
 		application.setPersonnummer("198507231234");
 		application.setFastighetsbeteckning("Sundsvall Stenstaden 1:23");
+		application.setOwnsProperty(true);
+		application.setOwnershipMotivation("Arrenderar fastigheten");
+		application.setAppliesForOtherProperty(true);
 		application.setApplicantFirstName("Anna");
 		application.setApplicantLastName("Karlsson");
 		application.setApplicantPhone("+46701234567");
@@ -79,7 +82,12 @@ class EgensotningApplicationServiceTest {
 		final var result = service.submit(MUNICIPALITY_ID, NAMESPACE, sampleApplication(), protokoll(), intyg());
 
 		assertThat(result).isEqualTo(ERRAND_ID);
-		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(EgensotningDetails.class));
+		final var detailsCaptor = ArgumentCaptor.forClass(EgensotningDetails.class);
+		verify(detailsServiceMock).upsert(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), detailsCaptor.capture());
+		assertThat(detailsCaptor.getValue().getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
+		assertThat(detailsCaptor.getValue().getOwnsProperty()).isTrue();
+		assertThat(detailsCaptor.getValue().getOwnershipMotivation()).isEqualTo("Arrenderar fastigheten");
+		assertThat(detailsCaptor.getValue().getAppliesForOtherProperty()).isTrue();
 		verify(sotningsobjektServiceMock, times(2)).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(Sotningsobjekt.class));
 		// Each bilaga stored with its specific category
 		verify(attachmentServiceMock).createAttachment(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), any(MultipartFile.class), eq("BRANDSKYDDSKONTROLL"));

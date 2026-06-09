@@ -50,4 +50,61 @@ class EgensotningDecisionTextBuilderTest {
 
 		assertThat(text).contains("Ansökan om egensotning godkänd").contains("inga objekt angivna");
 	}
+
+	@Test
+	void approvalUsesDefaultMotiveringWhenNoneEdited() {
+		final var text = EgensotningDecisionTextBuilder.buildApprovalDescription(details(), List.of());
+
+		assertThat(text).contains("Motivering: räddningstjänsten bedömer att rengöring");
+	}
+
+	@Test
+	void approvalUsesEditedMotiveringWhenPresent() {
+		final var details = details().withMotivering("Sökanden är skorstensfejarmästare sedan 2005.");
+
+		final var text = EgensotningDecisionTextBuilder.buildApprovalDescription(details, List.of());
+
+		assertThat(text)
+			.contains("Motivering: Sökanden är skorstensfejarmästare sedan 2005.")
+			.doesNotContain("räddningstjänsten bedömer att rengöring");
+	}
+
+	@Test
+	void approvalBlankMotiveringFallsBackToDefault() {
+		final var details = details().withMotivering("   ");
+
+		final var text = EgensotningDecisionTextBuilder.buildApprovalDescription(details, List.of());
+
+		assertThat(text).contains("Motivering: räddningstjänsten bedömer att rengöring");
+	}
+
+	@Test
+	void rejectionIncludesLagstodMotiveringAndOverklagande() {
+		final var text = EgensotningDecisionTextBuilder.buildRejectionDescription(details(), List.of());
+
+		assertThat(text)
+			.contains("avslås efter manuell granskning")
+			.contains("Sundsvall Stenstaden 1:23")
+			.contains("3 kap. 4 §")
+			.contains("Motivering: räddningstjänsten bedömer efter manuell granskning")
+			.contains("Länsstyrelsen i Västernorrlands län");
+	}
+
+	@Test
+	void rejectionUsesEditedMotiveringWhenPresent() {
+		final var details = details().withMotivering("Bristande kunskap om anläggningen.");
+
+		final var text = EgensotningDecisionTextBuilder.buildRejectionDescription(details, List.of());
+
+		assertThat(text)
+			.contains("Motivering: Bristande kunskap om anläggningen.")
+			.doesNotContain("räddningstjänsten bedömer efter manuell granskning");
+	}
+
+	@Test
+	void rejectionNullDetailsDoesNotFail() {
+		final var text = EgensotningDecisionTextBuilder.buildRejectionDescription(null, null);
+
+		assertThat(text).contains("Ansökan om egensotning avslås").contains("Länsstyrelsen i Västernorrlands län");
+	}
 }

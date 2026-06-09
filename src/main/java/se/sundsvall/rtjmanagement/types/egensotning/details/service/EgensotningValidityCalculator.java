@@ -5,15 +5,14 @@ import java.time.LocalDate;
 /**
  * Computes an egensotning decision's {@code validUntil} from its {@code validFrom}.
  *
- * Ett egensotningsmedgivande är tidsbegränsat till <b>sex år</b> från beslutsdatum (ersätter den
- * tidigare "gäller tillsvidare"-praxisen). Slutdatumet ({@code validFrom + 6 år}) flyttas fram till
+ * Ett egensotningsmedgivande gäller i ett konfigurerbart antal år från beslutsdatum (default sex år,
+ * {@code egensotning.validity.years}). Slutdatumet ({@code validFrom + N år}) flyttas fram till
  * nästkommande fasta datum (1 mars, 1 juni, 1 september eller 1 december) så att
  * påminnelse-/förnyelseutskick kan batchas — samma upplägg som {@code PermitValidityCalculator}
- * i permit-modulen (medvetet en lokal kopia; modulerna är frikopplade).
+ * i permit-modulen (medvetet en lokal kopia; modulerna är frikopplade). {@code years <= 0} betyder
+ * "gäller tillsvidare" och ger inget utgångsdatum ({@code null}).
  */
 public final class EgensotningValidityCalculator {
-
-	static final int YEARS = 6;
 
 	private static final int[] FIXED_MONTHS = {
 		3, 6, 9, 12
@@ -21,8 +20,15 @@ public final class EgensotningValidityCalculator {
 
 	private EgensotningValidityCalculator() {}
 
-	public static LocalDate computeValidUntil(final LocalDate validFrom) {
-		return nextFixedDate(validFrom.plusYears(YEARS));
+	/**
+	 * Beräknar {@code validUntil} givet {@code validFrom} och giltighetstid i år. Returnerar
+	 * {@code null} när {@code years <= 0} (gäller tillsvidare — inget utgångsdatum).
+	 */
+	public static LocalDate computeValidUntil(final LocalDate validFrom, final int years) {
+		if (years <= 0) {
+			return null;
+		}
+		return nextFixedDate(validFrom.plusYears(years));
 	}
 
 	/**

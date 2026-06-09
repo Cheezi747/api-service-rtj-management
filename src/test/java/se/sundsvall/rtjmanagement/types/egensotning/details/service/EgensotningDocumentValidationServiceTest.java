@@ -4,7 +4,6 @@ import generated.eneo.AskResponse;
 import generated.eneo.FilePublic;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import javax.sql.rowset.serial.SerialBlob;
@@ -74,9 +73,9 @@ class EgensotningDocumentValidationServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		final var properties = new EneoProperties(
+		final var properties = new EneoProperties("http://eneo.url", "the-api-key",
 			new EneoProperties.Oauth2("http://token.url", "id", "secret", "client_credentials"),
-			new EneoProperties.Assistants(BRAND_ASSISTANT, EGEN_ASSISTANT), SPACE_ID, 5, 30, Map.of());
+			new EneoProperties.Assistants(BRAND_ASSISTANT, EGEN_ASSISTANT), SPACE_ID, 5, 30);
 		service = new EgensotningDocumentValidationService(errandRepositoryMock, detailsRepositoryMock,
 			attachmentRepositoryMock, stakeholderServiceMock, eneoIntegrationMock, properties);
 	}
@@ -108,11 +107,11 @@ class EgensotningDocumentValidationServiceTest {
 	}
 
 	private void stubUpload() {
-		when(eneoIntegrationMock.uploadFile(eq(MUNICIPALITY_ID), any(MultipartFile.class))).thenReturn(new FilePublic().id(FILE_ID));
+		when(eneoIntegrationMock.uploadFile(any(MultipartFile.class))).thenReturn(new FilePublic().id(FILE_ID));
 	}
 
 	private void stubAssistant(final UUID assistantId, final String answer) {
-		when(eneoIntegrationMock.askAssistant(eq(MUNICIPALITY_ID), eq(assistantId), any())).thenReturn(new AskResponse().answer(answer));
+		when(eneoIntegrationMock.askAssistant(eq(assistantId), any())).thenReturn(new AskResponse().answer(answer));
 	}
 
 	@Test
@@ -129,10 +128,10 @@ class EgensotningDocumentValidationServiceTest {
 		assertThat(result.getDocumentTypeOk()).isTrue();
 		assertThat(result.getIdentityMatch()).isTrue();
 		// each PDF goes to its own assistant — two uploads, two asks, two deletes
-		verify(eneoIntegrationMock, times(2)).uploadFile(eq(MUNICIPALITY_ID), any(MultipartFile.class));
-		verify(eneoIntegrationMock).askAssistant(eq(MUNICIPALITY_ID), eq(BRAND_ASSISTANT), any());
-		verify(eneoIntegrationMock).askAssistant(eq(MUNICIPALITY_ID), eq(EGEN_ASSISTANT), any());
-		verify(eneoIntegrationMock, times(2)).deleteFile(MUNICIPALITY_ID, FILE_ID);
+		verify(eneoIntegrationMock, times(2)).uploadFile(any(MultipartFile.class));
+		verify(eneoIntegrationMock).askAssistant(eq(BRAND_ASSISTANT), any());
+		verify(eneoIntegrationMock).askAssistant(eq(EGEN_ASSISTANT), any());
+		verify(eneoIntegrationMock, times(2)).deleteFile(FILE_ID);
 		verify(detailsRepositoryMock).save(any(EgensotningDetailsEntity.class));
 	}
 
@@ -169,7 +168,7 @@ class EgensotningDocumentValidationServiceTest {
 	void eneoUnavailableRoutesToManualReview() throws SQLException {
 		stubErrandDetailsAndAttachments();
 		stubApplicant();
-		when(eneoIntegrationMock.uploadFile(eq(MUNICIPALITY_ID), any(MultipartFile.class)))
+		when(eneoIntegrationMock.uploadFile(any(MultipartFile.class)))
 			.thenThrow(Problem.valueOf(BAD_GATEWAY, "Error uploading file to Eneo"));
 
 		final var result = service.validateDocuments(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
@@ -224,6 +223,6 @@ class EgensotningDocumentValidationServiceTest {
 		assertThatThrownBy(() -> service.validateDocuments(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID))
 			.isInstanceOf(ThrowableProblem.class)
 			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
-		verify(eneoIntegrationMock, never()).askAssistant(any(), any(), any());
+		verify(eneoIntegrationMock, never()).askAssistant(any(), any());
 	}
 }

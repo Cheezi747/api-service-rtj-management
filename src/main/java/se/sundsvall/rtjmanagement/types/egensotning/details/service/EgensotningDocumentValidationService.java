@@ -96,29 +96,30 @@ public class EgensotningDocumentValidationService {
 		final var applicantContext = buildApplicantContext(municipalityId, namespace, errandId, details);
 
 		// brandskyddskontroll PDF → brandskyddskontroll assistant; utbildningsintyg PDF → egensotning assistant.
-		final var brandResult = validateOne(municipalityId, eneoProperties.assistants().brandskyddskontroll(), DOC_BRANDSKYDDSKONTROLL, applicantContext, brandskyddskontroll.get());
-		final var utbResult = validateOne(municipalityId, eneoProperties.assistants().egensotning(), DOC_UTBILDNINGSINTYG, applicantContext, utbildningsintyg.get());
+		final var brandResult = validateOne(eneoProperties.assistants().brandskyddskontroll(), DOC_BRANDSKYDDSKONTROLL, applicantContext, brandskyddskontroll.get());
+		final var utbResult = validateOne(eneoProperties.assistants().egensotning(), DOC_UTBILDNINGSINTYG, applicantContext, utbildningsintyg.get());
 
 		return persist(details, combine(brandResult, utbResult));
 	}
 
-	private DocumentValidationResult validateOne(final String municipalityId, final UUID assistantId, final String documentLabel,
+	private DocumentValidationResult validateOne(final UUID assistantId, final String documentLabel,
 		final String applicantContext, final AttachmentEntity attachment) {
 		UUID uploadedFileId = null;
 		try {
 			final var file = new ByteArrayMultipartFile("upload_file", attachment.getFileName(), attachment.getMimeType(), readBytes(attachment));
-			uploadedFileId = eneoIntegration.uploadFile(municipalityId, file).getId();
+			uploadedFileId = eneoIntegration.uploadFile(file).getId();
 
 			final var request = new AskAssistant().question(buildPrompt(documentLabel, applicantContext)).files(List.of(uploadedFileId));
-			final var answer = eneoIntegration.askAssistant(municipalityId, assistantId, request).getAnswer();
+			final var answer = eneoIntegration.askAssistant(assistantId, request).getAnswer();
 
 			return parseVerdict(answer);
 		} catch (final ThrowableProblem e) {
 			// Eneo unreachable / upstream error — non-blocking, divert to manual review.
+			// The upstream cause is carried into the reason (handläggare-facing audit) for diagnosis.
 			LOG.warn("Eneo validation of {} failed: {}", documentLabel, e.getMessage());
-			return DocumentValidationResult.create().withValid(false).withReason(REASON_ENEO_UNAVAILABLE);
+			return DocumentValidationResult.create().withValid(false).withReason(REASON_ENEO_UNAVAILABLE + " [" + e.getMessage() + "]");
 		} finally {
-			Optional.ofNullable(uploadedFileId).ifPresent(fileId -> eneoIntegration.deleteFile(municipalityId, fileId));
+			Optional.ofNullable(uploadedFileId).ifPresent(eneoIntegration::deleteFile);
 		}
 	}
 

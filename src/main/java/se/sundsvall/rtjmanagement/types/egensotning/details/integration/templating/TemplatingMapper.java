@@ -35,7 +35,8 @@ public class TemplatingMapper {
 		final ErrandEntity errand,
 		final EgensotningDetailsEntity details,
 		final List<SotningsobjektEntity> sotningsobjekt,
-		final Stakeholder applicant) {
+		final Stakeholder applicant,
+		final String decisionText) {
 
 		final Map<String, Object> parameters = new LinkedHashMap<>();
 		parameters.put("approved", OUTCOME_APPROVED.equals(event.outcome()));
@@ -43,7 +44,7 @@ public class TemplatingMapper {
 		parameters.put("decisionId", nullToEmpty(event.decisionId()));
 		parameters.put("decisionDate", Optional.ofNullable(event.timestamp()).map(DATE_FORMATTER::format).orElse(""));
 		parameters.put("decidedBy", nullToEmpty(event.decidedBy()));
-		parameters.put("decisionText", nullToEmpty(event.description()));
+		parameters.put("decisionText", nullToEmpty(decisionText));
 		parameters.put("errandNumber", Optional.ofNullable(errand).map(ErrandEntity::getErrandNumber).orElse(""));
 		parameters.put("applicantEmail", Optional.ofNullable(errand).map(ErrandEntity::getApplicantEmail).orElse(""));
 		parameters.put("applicantName", applicantName(applicant));

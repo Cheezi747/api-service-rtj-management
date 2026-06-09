@@ -48,6 +48,18 @@ public class EgensotningDetailsEntity implements Auditable {
 	@Column(name = "property_address")
 	private String propertyAddress;
 
+	@Column(name = "owns_property")
+	private Boolean ownsProperty;
+
+	@Column(name = "ownership_motivation", length = 2048)
+	private String ownershipMotivation;
+
+	@Column(name = "applies_for_other_property")
+	private Boolean appliesForOtherProperty;
+
+	@Column(name = "motivering", length = 4096)
+	private String motivering;
+
 	@Column(name = "bilaga_present")
 	private Boolean bilagaPresent;
 
@@ -117,6 +129,22 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	public String getPropertyAddress() {
 		return propertyAddress;
+	}
+
+	public Boolean getOwnsProperty() {
+		return ownsProperty;
+	}
+
+	public String getOwnershipMotivation() {
+		return ownershipMotivation;
+	}
+
+	public Boolean getAppliesForOtherProperty() {
+		return appliesForOtherProperty;
+	}
+
+	public String getMotivering() {
+		return motivering;
 	}
 
 	public Boolean getBilagaPresent() {
@@ -193,6 +221,22 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	public void setPropertyAddress(final String v) {
 		this.propertyAddress = v;
+	}
+
+	public void setOwnsProperty(final Boolean v) {
+		this.ownsProperty = v;
+	}
+
+	public void setOwnershipMotivation(final String v) {
+		this.ownershipMotivation = v;
+	}
+
+	public void setAppliesForOtherProperty(final Boolean v) {
+		this.appliesForOtherProperty = v;
+	}
+
+	public void setMotivering(final String v) {
+		this.motivering = v;
 	}
 
 	public void setBilagaPresent(final Boolean v) {
@@ -278,6 +322,26 @@ public class EgensotningDetailsEntity implements Auditable {
 		return this;
 	}
 
+	public EgensotningDetailsEntity withOwnsProperty(final Boolean v) {
+		this.ownsProperty = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withOwnershipMotivation(final String v) {
+		this.ownershipMotivation = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withAppliesForOtherProperty(final Boolean v) {
+		this.appliesForOtherProperty = v;
+		return this;
+	}
+
+	public EgensotningDetailsEntity withMotivering(final String v) {
+		this.motivering = v;
+		return this;
+	}
+
 	public EgensotningDetailsEntity withBilagaPresent(final Boolean v) {
 		this.bilagaPresent = v;
 		return this;
@@ -355,7 +419,9 @@ public class EgensotningDetailsEntity implements Auditable {
 		final EgensotningDetailsEntity that = (EgensotningDetailsEntity) o;
 		return Objects.equals(id, that.id) && Objects.equals(errandId, that.errandId)
 			&& Objects.equals(personnummer, that.personnummer) && Objects.equals(fastighetsbeteckning, that.fastighetsbeteckning)
-			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(bilagaPresent, that.bilagaPresent)
+			&& Objects.equals(propertyAddress, that.propertyAddress) && Objects.equals(ownsProperty, that.ownsProperty)
+			&& Objects.equals(ownershipMotivation, that.ownershipMotivation) && Objects.equals(appliesForOtherProperty, that.appliesForOtherProperty)
+			&& Objects.equals(motivering, that.motivering) && Objects.equals(bilagaPresent, that.bilagaPresent)
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
@@ -367,15 +433,17 @@ public class EgensotningDetailsEntity implements Auditable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, errandId, personnummer, fastighetsbeteckning, propertyAddress, bilagaPresent,
-			registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom, validUntil,
-			reminderSentAt, documentsValid, documentValidationDetail, documentValidatedAt, created, modified);
+		return Objects.hash(id, errandId, personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation,
+			appliesForOtherProperty, motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason,
+			lastVerifiedAt, validFrom, validUntil, reminderSentAt, documentsValid, documentValidationDetail, documentValidatedAt, created, modified);
 	}
 
 	@Override
 	public String toString() {
 		return "EgensotningDetailsEntity{id=" + id + ", errandId='" + errandId + "', fastighetsbeteckning='" + fastighetsbeteckning
-			+ "', propertyAddress='" + propertyAddress + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty
+			+ "', propertyAddress='" + propertyAddress + "', ownsProperty=" + ownsProperty + ", ownershipMotivation='" + ownershipMotivation
+			+ "', appliesForOtherProperty=" + appliesForOtherProperty + ", motivering='" + motivering
+			+ "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty
 			+ ", reapplicationOk=" + reapplicationOk + ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason
 			+ "', lastVerifiedAt=" + lastVerifiedAt + ", validFrom=" + validFrom + ", validUntil=" + validUntil
 			+ ", reminderSentAt=" + reminderSentAt + ", documentsValid=" + documentsValid + ", documentValidationDetail='" + documentValidationDetail

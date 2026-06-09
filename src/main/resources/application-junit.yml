@@ -15,6 +15,8 @@ integration:
   messaging:
     url: http://messaging.url
   eneo:
+    url: http://eneo.url
+    api-key: the-api-key
     space-id: 00000000-0000-0000-0000-000000000000
     assistants:
       brandskyddskontroll: 00000000-0000-0000-0000-000000000001
@@ -23,10 +25,6 @@ integration:
       token-url: http://token.url
       client-id: the-client-id
       client-secret: the-client-secret
-    municipalities:
-      2281:
-        url: http://eneo.url
-        api-key: the-api-key
 scheduler:
   notification-cleanup:
     cron: '-'

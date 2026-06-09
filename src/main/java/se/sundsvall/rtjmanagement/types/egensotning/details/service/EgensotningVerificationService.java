@@ -49,6 +49,7 @@ public class EgensotningVerificationService {
 	static final String OUTCOME_NEEDS_MANUAL_REVIEW = "NEEDS_MANUAL_REVIEW";
 
 	static final String REASON_NOT_REGISTERED = "NOT_REGISTERED";
+	static final String REASON_OWNER_NOT_REGISTERED = "OWNER_NOT_REGISTERED";
 	static final String REASON_REAPPLICATION_REJECTED = "REAPPLICATION_REJECTED";
 	static final String REASON_REAPPLICATION_ONGOING = "REAPPLICATION_ONGOING";
 
@@ -102,7 +103,10 @@ public class EgensotningVerificationService {
 		final String manualReviewReason;
 		if (!registeredAtProperty) {
 			outcome = OUTCOME_NEEDS_MANUAL_REVIEW;
-			manualReviewReason = REASON_NOT_REGISTERED;
+			// Sökanden är inte folkbokförd på fastigheten. Har hen uppgett sig äga den (t.ex. en
+			// sommarstuga som hen inte är folkbokförd på) ges en mer specifik anledning, så att
+			// handläggaren ser ägar-underlaget vid den manuella granskningen.
+			manualReviewReason = Boolean.TRUE.equals(details.getOwnsProperty()) ? REASON_OWNER_NOT_REGISTERED : REASON_NOT_REGISTERED;
 		} else if (!reapplication.ok()) {
 			outcome = OUTCOME_NEEDS_MANUAL_REVIEW;
 			manualReviewReason = reapplication.reason();

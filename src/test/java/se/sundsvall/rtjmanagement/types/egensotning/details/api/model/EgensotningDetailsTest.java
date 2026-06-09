@@ -46,6 +46,10 @@ class EgensotningDetailsTest {
 			.withPersonnummer("199001011234")
 			.withFastighetsbeteckning("Sundsvall Stenstaden 1:23")
 			.withPropertyAddress("Storgatan 5")
+			.withOwnsProperty(true)
+			.withOwnershipMotivation("Arrenderar fastigheten")
+			.withAppliesForOtherProperty(false)
+			.withMotivering("Egen motivering")
 			.withBilagaPresent(true)
 			.withRegisteredAtProperty(true)
 			.withReapplicationOk(false)
@@ -62,6 +66,10 @@ class EgensotningDetailsTest {
 		assertThat(result.getPersonnummer()).isEqualTo("199001011234");
 		assertThat(result.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(result.getPropertyAddress()).isEqualTo("Storgatan 5");
+		assertThat(result.getOwnsProperty()).isTrue();
+		assertThat(result.getOwnershipMotivation()).isEqualTo("Arrenderar fastigheten");
+		assertThat(result.getAppliesForOtherProperty()).isFalse();
+		assertThat(result.getMotivering()).isEqualTo("Egen motivering");
 		assertThat(result.getBilagaPresent()).isTrue();
 		assertThat(result.getRegisteredAtProperty()).isTrue();
 		assertThat(result.getReapplicationOk()).isFalse();

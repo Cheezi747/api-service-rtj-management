@@ -4,23 +4,22 @@ import generated.eneo.AskAssistant;
 import generated.eneo.AskResponse;
 import generated.eneo.FilePublic;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 /**
- * Thin wrapper over the municipality-specific {@link EneoClient}s. Resolves the right client for a
- * municipality and translates any transport/Eneo failure into a {@code BAD_GATEWAY} problem so the
- * caller can treat Eneo as a non-blocking dependency.
+ * Thin wrapper over the {@link EneoClient}. Translates any transport/Eneo failure into a
+ * {@code BAD_GATEWAY} problem (so the caller can treat Eneo as a non-blocking dependency) while
+ * carrying the upstream status/message into the log and the problem detail for diagnosis.
  */
 @Component
 public class EneoIntegration {
@@ -29,46 +28,46 @@ public class EneoIntegration {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EneoIntegration.class);
 
-	/** Keyed by municipality id, value the municipality-specific configured {@link EneoClient}. */
-	private final Map<String, EneoClient> eneoClients;
+	private final EneoClient eneoClient;
 
-	public EneoIntegration(final Map<String, EneoClient> eneoClients) {
-		this.eneoClients = eneoClients;
+	public EneoIntegration(final EneoClient eneoClient) {
+		this.eneoClient = eneoClient;
 	}
 
-	private EneoClient getEneoClient(final String municipalityId) {
-		return ofNullable(eneoClients.get(municipalityId))
-			.orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, "Eneo client not configured for municipality id: %s".formatted(municipalityId)));
-	}
-
-	public AskResponse askAssistant(final String municipalityId, final UUID assistantId, final AskAssistant request) {
-		final var client = getEneoClient(municipalityId);
+	public AskResponse askAssistant(final UUID assistantId, final AskAssistant request) {
 		try {
 			LOG.debug("Asking Eneo assistant {} with {} file(s)", assistantId, ofNullable(request.getFiles()).map(List::size).orElse(0));
-			return client.askAssistant(assistantId, request);
+			return eneoClient.askAssistant(assistantId, request);
 		} catch (final Exception e) {
-			LOG.error("Error asking Eneo assistant {}", assistantId, e);
-			throw Problem.valueOf(BAD_GATEWAY, "Error asking Eneo assistant %s".formatted(assistantId));
+			LOG.error("Error asking Eneo assistant {}: {}", assistantId, describe(e), e);
+			throw Problem.valueOf(BAD_GATEWAY, "Error asking Eneo assistant %s: %s".formatted(assistantId, describe(e)));
 		}
 	}
 
-	public FilePublic uploadFile(final String municipalityId, final MultipartFile file) {
-		final var client = getEneoClient(municipalityId);
+	public FilePublic uploadFile(final MultipartFile file) {
 		try {
 			LOG.debug("Uploading file '{}' to Eneo", sanitizeForLogging(file.getOriginalFilename()));
-			return client.uploadFile(file).getBody();
+			return eneoClient.uploadFile(file).getBody();
 		} catch (final Exception e) {
-			LOG.error("Error uploading file '{}' to Eneo", sanitizeForLogging(file.getOriginalFilename()), e);
-			throw Problem.valueOf(BAD_GATEWAY, "Error uploading file to Eneo");
+			LOG.error("Error uploading file '{}' to Eneo: {}", sanitizeForLogging(file.getOriginalFilename()), describe(e), e);
+			throw Problem.valueOf(BAD_GATEWAY, "Error uploading file to Eneo: %s".formatted(describe(e)));
 		}
 	}
 
-	public void deleteFile(final String municipalityId, final UUID fileId) {
+	public void deleteFile(final UUID fileId) {
 		try {
-			getEneoClient(municipalityId).deleteFile(fileId);
+			eneoClient.deleteFile(fileId);
 		} catch (final Exception e) {
 			// Best-effort cleanup — log and swallow so a failed delete never fails the validation result.
-			LOG.warn("Error deleting Eneo file {}", fileId, e);
+			LOG.warn("Error deleting Eneo file {}: {}", fileId, describe(e));
 		}
+	}
+
+	/** Short upstream descriptor (HTTP status when available) to make failures self-diagnosing. */
+	private static String describe(final Throwable e) {
+		if (e instanceof final ThrowableProblem problem) {
+			return ofNullable(problem.getStatus()).map(status -> status.value() + " " + problem.getMessage()).orElseGet(problem::getMessage);
+		}
+		return e.getClass().getSimpleName() + ": " + e.getMessage();
 	}
 }

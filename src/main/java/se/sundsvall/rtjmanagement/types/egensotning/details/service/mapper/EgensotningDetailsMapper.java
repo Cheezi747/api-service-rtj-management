@@ -15,6 +15,10 @@ public final class EgensotningDetailsMapper {
 				.withPersonnummer(e.getPersonnummer())
 				.withFastighetsbeteckning(e.getFastighetsbeteckning())
 				.withPropertyAddress(e.getPropertyAddress())
+				.withOwnsProperty(e.getOwnsProperty())
+				.withOwnershipMotivation(e.getOwnershipMotivation())
+				.withAppliesForOtherProperty(e.getAppliesForOtherProperty())
+				.withMotivering(e.getMotivering())
 				.withBilagaPresent(e.getBilagaPresent())
 				.withRegisteredAtProperty(e.getRegisteredAtProperty())
 				.withReapplicationOk(e.getReapplicationOk())
@@ -39,7 +43,10 @@ public final class EgensotningDetailsMapper {
 				.withErrandId(errandId)
 				.withPersonnummer(d.getPersonnummer())
 				.withFastighetsbeteckning(d.getFastighetsbeteckning())
-				.withPropertyAddress(d.getPropertyAddress()))
+				.withPropertyAddress(d.getPropertyAddress())
+				.withOwnsProperty(d.getOwnsProperty())
+				.withOwnershipMotivation(d.getOwnershipMotivation())
+				.withAppliesForOtherProperty(d.getAppliesForOtherProperty()))
 			.orElse(null);
 	}
 
@@ -55,6 +62,10 @@ public final class EgensotningDetailsMapper {
 		ofNullable(patch.getPersonnummer()).ifPresent(target::setPersonnummer);
 		ofNullable(patch.getFastighetsbeteckning()).ifPresent(target::setFastighetsbeteckning);
 		ofNullable(patch.getPropertyAddress()).ifPresent(target::setPropertyAddress);
+		ofNullable(patch.getOwnsProperty()).ifPresent(target::setOwnsProperty);
+		ofNullable(patch.getOwnershipMotivation()).ifPresent(target::setOwnershipMotivation);
+		ofNullable(patch.getAppliesForOtherProperty()).ifPresent(target::setAppliesForOtherProperty);
+		ofNullable(patch.getMotivering()).ifPresent(target::setMotivering);
 		return target;
 	}
 }

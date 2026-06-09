@@ -52,6 +52,16 @@ public class EgensotningApplication {
 	@Schema(description = "Adress till fastigheten", examples = "Storgatan 5")
 	private String propertyAddress;
 
+	@Schema(description = "Om sökanden äger fastigheten ansökan gäller. Underlag för manuell granskning när sökanden inte är folkbokförd på fastigheten.", examples = "true")
+	private Boolean ownsProperty;
+
+	@Schema(description = "Motivering när sökanden inte äger fastigheten (anges vid 'nej' på ägarfrågan)", examples = "Arrenderar fastigheten av ägaren sedan 2019.")
+	@Size(max = 2048)
+	private String ownershipMotivation;
+
+	@Schema(description = "Om ansökan gäller en annan fastighet än sökandens folkbokföringsadress (t.ex. sommarstuga)", examples = "false")
+	private Boolean appliesForOtherProperty;
+
 	@Schema(description = "Sökandes förnamn", examples = "Anna")
 	private String applicantFirstName;
 
@@ -152,6 +162,30 @@ public class EgensotningApplication {
 
 	public void setPropertyAddress(final String propertyAddress) {
 		this.propertyAddress = propertyAddress;
+	}
+
+	public Boolean getOwnsProperty() {
+		return ownsProperty;
+	}
+
+	public void setOwnsProperty(final Boolean ownsProperty) {
+		this.ownsProperty = ownsProperty;
+	}
+
+	public String getOwnershipMotivation() {
+		return ownershipMotivation;
+	}
+
+	public void setOwnershipMotivation(final String ownershipMotivation) {
+		this.ownershipMotivation = ownershipMotivation;
+	}
+
+	public Boolean getAppliesForOtherProperty() {
+		return appliesForOtherProperty;
+	}
+
+	public void setAppliesForOtherProperty(final Boolean appliesForOtherProperty) {
+		this.appliesForOtherProperty = appliesForOtherProperty;
 	}
 
 	public String getApplicantFirstName() {

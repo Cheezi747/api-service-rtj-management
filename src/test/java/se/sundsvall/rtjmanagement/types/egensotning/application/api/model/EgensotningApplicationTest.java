@@ -22,6 +22,9 @@ class EgensotningApplicationTest {
 		application.setPersonnummer("198507231234");
 		application.setFastighetsbeteckning("Sundsvall Stenstaden 1:23");
 		application.setPropertyAddress("Storgatan 5");
+		application.setOwnsProperty(true);
+		application.setOwnershipMotivation("Arrenderar fastigheten");
+		application.setAppliesForOtherProperty(false);
 		application.setApplicantFirstName("Anna");
 		application.setApplicantLastName("Karlsson");
 		application.setApplicantAddress("Storgatan 5");
@@ -40,6 +43,9 @@ class EgensotningApplicationTest {
 		assertThat(application.getPersonnummer()).isEqualTo("198507231234");
 		assertThat(application.getFastighetsbeteckning()).isEqualTo("Sundsvall Stenstaden 1:23");
 		assertThat(application.getPropertyAddress()).isEqualTo("Storgatan 5");
+		assertThat(application.getOwnsProperty()).isTrue();
+		assertThat(application.getOwnershipMotivation()).isEqualTo("Arrenderar fastigheten");
+		assertThat(application.getAppliesForOtherProperty()).isFalse();
 		assertThat(application.getApplicantFirstName()).isEqualTo("Anna");
 		assertThat(application.getApplicantLastName()).isEqualTo("Karlsson");
 		assertThat(application.getApplicantAddress()).isEqualTo("Storgatan 5");

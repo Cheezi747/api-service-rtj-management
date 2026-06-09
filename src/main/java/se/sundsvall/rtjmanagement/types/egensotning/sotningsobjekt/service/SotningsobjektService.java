@@ -7,6 +7,7 @@ import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig;
+import se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningMutationGuard;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.api.model.Sotningsobjekt;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.integration.db.SotningsobjektRepository;
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.integration.db.model.SotningsobjektEntity;
@@ -35,7 +36,7 @@ public class SotningsobjektService {
 	}
 
 	public String create(final String municipalityId, final String namespace, final String errandId, final Sotningsobjekt sotningsobjekt) {
-		findErrandWithType(municipalityId, namespace, errandId);
+		EgensotningMutationGuard.assertMutable(findErrandWithType(municipalityId, namespace, errandId));
 		return repository.save(toEntity(sotningsobjekt, errandId)).getId();
 	}
 
@@ -51,12 +52,14 @@ public class SotningsobjektService {
 	}
 
 	public void update(final String municipalityId, final String namespace, final String errandId, final String objektId, final Sotningsobjekt patch) {
+		EgensotningMutationGuard.assertMutable(findErrandWithType(municipalityId, namespace, errandId));
 		final var entity = findObjekt(municipalityId, namespace, errandId, objektId);
 		applyPatch(entity, patch);
 		repository.save(entity);
 	}
 
 	public void delete(final String municipalityId, final String namespace, final String errandId, final String objektId) {
+		EgensotningMutationGuard.assertMutable(findErrandWithType(municipalityId, namespace, errandId));
 		repository.delete(findObjekt(municipalityId, namespace, errandId, objektId));
 	}
 

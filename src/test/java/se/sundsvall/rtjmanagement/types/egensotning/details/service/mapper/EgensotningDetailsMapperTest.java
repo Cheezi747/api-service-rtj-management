@@ -14,7 +14,10 @@ class EgensotningDetailsMapperTest {
 		return EgensotningDetails.create()
 			.withPersonnummer("199001011234")
 			.withFastighetsbeteckning("Fast 1:1")
-			.withPropertyAddress("Gatan 1");
+			.withPropertyAddress("Gatan 1")
+			.withOwnsProperty(true)
+			.withOwnershipMotivation("Arrenderar")
+			.withAppliesForOtherProperty(false);
 	}
 
 	@Test
@@ -26,6 +29,11 @@ class EgensotningDetailsMapperTest {
 		assertThat(entity.getPersonnummer()).isEqualTo("199001011234");
 		assertThat(entity.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		assertThat(entity.getPropertyAddress()).isEqualTo("Gatan 1");
+		assertThat(entity.getOwnsProperty()).isTrue();
+		assertThat(entity.getOwnershipMotivation()).isEqualTo("Arrenderar");
+		assertThat(entity.getAppliesForOtherProperty()).isFalse();
+		// motivering is handläggare-owned (set during manual review), never from the create payload
+		assertThat(entity.getMotivering()).isNull();
 		// Computed fields are never set from the payload
 		assertThat(entity.getBilagaPresent()).isNull();
 		assertThat(entity.getRegisteredAtProperty()).isNull();
@@ -50,6 +58,7 @@ class EgensotningDetailsMapperTest {
 		final var reminderSentAt = OffsetDateTime.parse("2032-03-01T00:00:00Z");
 		final var entity = EgensotningDetailsMapper.toEntity(frontendDetails(), "errand-1")
 			.withId(7L)
+			.withMotivering("Handläggarens motivering")
 			.withBilagaPresent(true)
 			.withRegisteredAtProperty(false)
 			.withReapplicationOk(true)
@@ -65,6 +74,10 @@ class EgensotningDetailsMapperTest {
 		assertThat(dto.getPersonnummer()).isEqualTo("199001011234");
 		assertThat(dto.getFastighetsbeteckning()).isEqualTo("Fast 1:1");
 		assertThat(dto.getPropertyAddress()).isEqualTo("Gatan 1");
+		assertThat(dto.getOwnsProperty()).isTrue();
+		assertThat(dto.getOwnershipMotivation()).isEqualTo("Arrenderar");
+		assertThat(dto.getAppliesForOtherProperty()).isFalse();
+		assertThat(dto.getMotivering()).isEqualTo("Handläggarens motivering");
 		assertThat(dto.getBilagaPresent()).isTrue();
 		assertThat(dto.getRegisteredAtProperty()).isFalse();
 		assertThat(dto.getReapplicationOk()).isTrue();
@@ -85,11 +98,13 @@ class EgensotningDetailsMapperTest {
 		final var target = EgensotningDetailsMapper.toEntity(frontendDetails(), "errand-1")
 			.withBilagaPresent(true)
 			.withLastOutcome("AUTO_APPROVE");
-		final var patch = EgensotningDetails.create().withFastighetsbeteckning("Fast 2:2");
+		final var patch = EgensotningDetails.create().withFastighetsbeteckning("Fast 2:2").withMotivering("Handläggarens motivering");
 
 		EgensotningDetailsMapper.applyPatch(target, patch);
 
 		assertThat(target.getFastighetsbeteckning()).isEqualTo("Fast 2:2");
+		// Handläggaren kan sätta motivering via patch
+		assertThat(target.getMotivering()).isEqualTo("Handläggarens motivering");
 		// Untouched frontend field keeps its value
 		assertThat(target.getPersonnummer()).isEqualTo("199001011234");
 		// Computed fields are not disturbed by a details patch

@@ -86,7 +86,10 @@ public class EgensotningApplicationService {
 		return EgensotningDetails.create()
 			.withPersonnummer(application.getPersonnummer())
 			.withFastighetsbeteckning(application.getFastighetsbeteckning())
-			.withPropertyAddress(application.getPropertyAddress());
+			.withPropertyAddress(application.getPropertyAddress())
+			.withOwnsProperty(application.getOwnsProperty())
+			.withOwnershipMotivation(application.getOwnershipMotivation())
+			.withAppliesForOtherProperty(application.getAppliesForOtherProperty());
 	}
 
 	private static Stakeholder toApplicantStakeholder(final EgensotningApplication application) {

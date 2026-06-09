@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -45,10 +46,12 @@ class EgensotningDecisionListener {
 	private final TemplatingMapper templatingMapper;
 	private final TemplatingIntegration templatingIntegration;
 	private final AttachmentService attachmentService;
+	private final int validityYears;
 
 	EgensotningDecisionListener(final ErrandRepository errandRepository, final EgensotningDetailsRepository egensotningDetailsRepository,
 		final SotningsobjektRepository sotningsobjektRepository, final StakeholderService stakeholderService,
-		final TemplatingMapper templatingMapper, final TemplatingIntegration templatingIntegration, final AttachmentService attachmentService) {
+		final TemplatingMapper templatingMapper, final TemplatingIntegration templatingIntegration, final AttachmentService attachmentService,
+		@Value("${egensotning.validity.years:6}") final int validityYears) {
 		this.errandRepository = errandRepository;
 		this.egensotningDetailsRepository = egensotningDetailsRepository;
 		this.sotningsobjektRepository = sotningsobjektRepository;
@@ -56,6 +59,7 @@ class EgensotningDecisionListener {
 		this.templatingMapper = templatingMapper;
 		this.templatingIntegration = templatingIntegration;
 		this.attachmentService = attachmentService;
+		this.validityYears = validityYears;
 	}
 
 	@ApplicationModuleListener
@@ -89,7 +93,13 @@ class EgensotningDecisionListener {
 				.findFirst()
 				.orElse(null);
 
-			final var request = templatingMapper.toRenderRequest(event, errand, details, sotningsobjekt, applicant);
+			// Bygg beslutstexten på nytt från aktuella details (ev. handläggar-redigerad motivering) i
+			// stället för den lagrade event.description() — så att en motivering som ändrats under manuell
+			// granskning slår igenom i beslutsdokumentet. Avslagstexten genereras här i stället för i BPMN.
+			final var decisionText = OUTCOME_APPROVED.equals(event.outcome())
+				? EgensotningDecisionTextBuilder.buildApprovalDescription(details, sotningsobjekt)
+				: EgensotningDecisionTextBuilder.buildRejectionDescription(details, sotningsobjekt);
+			final var request = templatingMapper.toRenderRequest(event, errand, details, sotningsobjekt, applicant, decisionText);
 			final var pdf = templatingIntegration.renderPdf(errand.getMunicipalityId(), request);
 			final var fileName = "beslut-egensotning-%s.pdf".formatted(
 				Optional.ofNullable(errand.getErrandNumber()).filter(StringUtils::hasText).orElse(event.decisionId()));
@@ -102,19 +112,22 @@ class EgensotningDecisionListener {
 	}
 
 	/**
-	 * Time-limits an approved egensotning decision to six years (from beslutsdatum, framflyttat till
-	 * nästa fasta datum). Runs only for APPROVAL decisions and at most once per details row (idempotent
-	 * on {@code validUntil}); REJECTION-beslut får ingen giltighetstid.
+	 * Sätter giltighetstid på ett godkänt egensotningsbeslut: {@code validFrom} = beslutsdatum och
+	 * {@code validUntil} = {@code validFrom + N år} (konfigurerbart via {@code egensotning.validity.years},
+	 * framflyttat till nästa fasta datum). När antalet år är {@code <= 0} gäller beslutet tillsvidare och
+	 * {@code validUntil} lämnas {@code null}. Körs bara för APPROVAL-beslut och som mest en gång per
+	 * details-rad (idempotent — hoppar över om giltighet redan satts); REJECTION-beslut får ingen giltighetstid.
 	 */
 	private void setValidityIfApproved(final DecisionRecorded event, final EgensotningDetailsEntity details) {
-		if (details == null || !OUTCOME_APPROVED.equals(event.outcome()) || details.getValidUntil() != null) {
+		if (details == null || !OUTCOME_APPROVED.equals(event.outcome()) || details.getValidFrom() != null || details.getValidUntil() != null) {
 			return;
 		}
 		final var validFrom = LocalDate.now(ZoneId.systemDefault());
 		details.setValidFrom(validFrom);
-		details.setValidUntil(EgensotningValidityCalculator.computeValidUntil(validFrom));
+		details.setValidUntil(EgensotningValidityCalculator.computeValidUntil(validFrom, validityYears));
 		details.setReminderSentAt(null);
 		egensotningDetailsRepository.save(details);
-		LOG.info("Egensotning decision {} on errand {} time-limited: valid {} – {}", event.decisionId(), event.errandId(), validFrom, details.getValidUntil());
+		LOG.info("Egensotning decision {} on errand {}: gäller från {} – {}", event.decisionId(), event.errandId(), validFrom,
+			Optional.ofNullable(details.getValidUntil()).map(Object::toString).orElse("tillsvidare"));
 	}
 }

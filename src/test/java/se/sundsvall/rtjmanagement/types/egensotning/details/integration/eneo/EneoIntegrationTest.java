@@ -3,7 +3,6 @@ package se.sundsvall.rtjmanagement.types.egensotning.details.integration.eneo;
 import generated.eneo.AskAssistant;
 import generated.eneo.AskResponse;
 import generated.eneo.FilePublic;
-import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,12 +17,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ExtendWith(MockitoExtension.class)
 class EneoIntegrationTest {
 
-	private static final String MUNICIPALITY_ID = "2281";
 	private static final UUID ASSISTANT_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 	private static final UUID FILE_ID = UUID.fromString("33333333-3333-3333-3333-333333333333");
 
@@ -31,7 +28,7 @@ class EneoIntegrationTest {
 	private EneoClient eneoClientMock;
 
 	private EneoIntegration integration() {
-		return new EneoIntegration(Map.of(MUNICIPALITY_ID, eneoClientMock));
+		return new EneoIntegration(eneoClientMock);
 	}
 
 	private static ByteArrayMultipartFile file() {
@@ -43,14 +40,14 @@ class EneoIntegrationTest {
 		final var response = new AskResponse().answer("ok");
 		when(eneoClientMock.askAssistant(ASSISTANT_ID, new AskAssistant().question("q"))).thenReturn(response);
 
-		assertThat(integration().askAssistant(MUNICIPALITY_ID, ASSISTANT_ID, new AskAssistant().question("q"))).isSameAs(response);
+		assertThat(integration().askAssistant(ASSISTANT_ID, new AskAssistant().question("q"))).isSameAs(response);
 	}
 
 	@Test
 	void askAssistantWrapsErrorAsBadGateway() {
 		when(eneoClientMock.askAssistant(any(), any())).thenThrow(new RuntimeException("boom"));
 
-		assertThatThrownBy(() -> integration().askAssistant(MUNICIPALITY_ID, ASSISTANT_ID, new AskAssistant().question("q")))
+		assertThatThrownBy(() -> integration().askAssistant(ASSISTANT_ID, new AskAssistant().question("q")))
 			.isInstanceOf(ThrowableProblem.class)
 			.hasFieldOrPropertyWithValue("status", BAD_GATEWAY);
 	}
@@ -60,14 +57,14 @@ class EneoIntegrationTest {
 		final var filePublic = new FilePublic().id(FILE_ID);
 		when(eneoClientMock.uploadFile(any())).thenReturn(ResponseEntity.ok(filePublic));
 
-		assertThat(integration().uploadFile(MUNICIPALITY_ID, file()).getId()).isEqualTo(FILE_ID);
+		assertThat(integration().uploadFile(file()).getId()).isEqualTo(FILE_ID);
 	}
 
 	@Test
 	void uploadFileWrapsErrorAsBadGateway() {
 		when(eneoClientMock.uploadFile(any())).thenThrow(new RuntimeException("boom"));
 
-		assertThatThrownBy(() -> integration().uploadFile(MUNICIPALITY_ID, file()))
+		assertThatThrownBy(() -> integration().uploadFile(file()))
 			.isInstanceOf(ThrowableProblem.class)
 			.hasFieldOrPropertyWithValue("status", BAD_GATEWAY);
 	}
@@ -76,7 +73,7 @@ class EneoIntegrationTest {
 	void deleteFileDelegates() {
 		when(eneoClientMock.deleteFile(FILE_ID)).thenReturn(ResponseEntity.noContent().build());
 
-		integration().deleteFile(MUNICIPALITY_ID, FILE_ID);
+		integration().deleteFile(FILE_ID);
 
 		verify(eneoClientMock).deleteFile(FILE_ID);
 	}
@@ -86,13 +83,6 @@ class EneoIntegrationTest {
 		when(eneoClientMock.deleteFile(FILE_ID)).thenThrow(new RuntimeException("boom"));
 
 		// Best-effort cleanup must not throw.
-		integration().deleteFile(MUNICIPALITY_ID, FILE_ID);
-	}
-
-	@Test
-	void unknownMunicipalityThrowsInternalServerError() {
-		assertThatThrownBy(() -> integration().askAssistant("9999", ASSISTANT_ID, new AskAssistant().question("q")))
-			.isInstanceOf(ThrowableProblem.class)
-			.hasFieldOrPropertyWithValue("status", INTERNAL_SERVER_ERROR);
+		integration().deleteFile(FILE_ID);
 	}
 }
