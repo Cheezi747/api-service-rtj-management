@@ -104,95 +104,95 @@ public class SotningsobjektEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setFabrikat(final String v) {
-		this.fabrikat = v;
+	public void setFabrikat(final String fabrikat) {
+		this.fabrikat = fabrikat;
 	}
 
-	public void setTyp(final String v) {
-		this.typ = v;
+	public void setTyp(final String typ) {
+		this.typ = typ;
 	}
 
-	public void setTillverkningsar(final Integer v) {
-		this.tillverkningsar = v;
+	public void setTillverkningsar(final Integer tillverkningsar) {
+		this.tillverkningsar = tillverkningsar;
 	}
 
-	public void setBransleslag(final String v) {
-		this.bransleslag = v;
+	public void setBransleslag(final String bransleslag) {
+		this.bransleslag = bransleslag;
 	}
 
-	public void setBranslemangd(final String v) {
-		this.branslemangd = v;
+	public void setBranslemangd(final String branslemangd) {
+		this.branslemangd = branslemangd;
 	}
 
-	public void setSotningsintervallVeckor(final Integer v) {
-		this.sotningsintervallVeckor = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setSotningsintervallVeckor(final Integer sotningsintervallVeckor) {
+		this.sotningsintervallVeckor = sotningsintervallVeckor;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public SotningsobjektEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public SotningsobjektEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public SotningsobjektEntity withErrandId(final String v) {
-		this.errandId = v;
+	public SotningsobjektEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public SotningsobjektEntity withFabrikat(final String v) {
-		this.fabrikat = v;
+	public SotningsobjektEntity withFabrikat(final String fabrikat) {
+		this.fabrikat = fabrikat;
 		return this;
 	}
 
-	public SotningsobjektEntity withTyp(final String v) {
-		this.typ = v;
+	public SotningsobjektEntity withTyp(final String typ) {
+		this.typ = typ;
 		return this;
 	}
 
-	public SotningsobjektEntity withTillverkningsar(final Integer v) {
-		this.tillverkningsar = v;
+	public SotningsobjektEntity withTillverkningsar(final Integer tillverkningsar) {
+		this.tillverkningsar = tillverkningsar;
 		return this;
 	}
 
-	public SotningsobjektEntity withBransleslag(final String v) {
-		this.bransleslag = v;
+	public SotningsobjektEntity withBransleslag(final String bransleslag) {
+		this.bransleslag = bransleslag;
 		return this;
 	}
 
-	public SotningsobjektEntity withBranslemangd(final String v) {
-		this.branslemangd = v;
+	public SotningsobjektEntity withBranslemangd(final String branslemangd) {
+		this.branslemangd = branslemangd;
 		return this;
 	}
 
-	public SotningsobjektEntity withSotningsintervallVeckor(final Integer v) {
-		this.sotningsintervallVeckor = v;
+	public SotningsobjektEntity withSotningsintervallVeckor(final Integer sotningsintervallVeckor) {
+		this.sotningsintervallVeckor = sotningsintervallVeckor;
 		return this;
 	}
 
-	public SotningsobjektEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public SotningsobjektEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public SotningsobjektEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public SotningsobjektEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

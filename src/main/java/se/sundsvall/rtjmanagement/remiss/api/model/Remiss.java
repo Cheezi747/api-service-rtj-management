@@ -74,12 +74,12 @@ public class Remiss {
 		return id;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public Remiss withId(final String v) {
-		this.id = v;
+	public Remiss withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
@@ -87,12 +87,12 @@ public class Remiss {
 		return instans;
 	}
 
-	public void setInstans(final String v) {
-		this.instans = v;
+	public void setInstans(final String instans) {
+		this.instans = instans;
 	}
 
-	public Remiss withInstans(final String v) {
-		this.instans = v;
+	public Remiss withInstans(final String instans) {
+		this.instans = instans;
 		return this;
 	}
 
@@ -100,12 +100,12 @@ public class Remiss {
 		return recipient;
 	}
 
-	public void setRecipient(final String v) {
-		this.recipient = v;
+	public void setRecipient(final String recipient) {
+		this.recipient = recipient;
 	}
 
-	public Remiss withRecipient(final String v) {
-		this.recipient = v;
+	public Remiss withRecipient(final String recipient) {
+		this.recipient = recipient;
 		return this;
 	}
 
@@ -113,12 +113,12 @@ public class Remiss {
 		return sentAt;
 	}
 
-	public void setSentAt(final LocalDate v) {
-		this.sentAt = v;
+	public void setSentAt(final LocalDate sentAt) {
+		this.sentAt = sentAt;
 	}
 
-	public Remiss withSentAt(final LocalDate v) {
-		this.sentAt = v;
+	public Remiss withSentAt(final LocalDate sentAt) {
+		this.sentAt = sentAt;
 		return this;
 	}
 
@@ -126,12 +126,12 @@ public class Remiss {
 		return dueAt;
 	}
 
-	public void setDueAt(final LocalDate v) {
-		this.dueAt = v;
+	public void setDueAt(final LocalDate dueAt) {
+		this.dueAt = dueAt;
 	}
 
-	public Remiss withDueAt(final LocalDate v) {
-		this.dueAt = v;
+	public Remiss withDueAt(final LocalDate dueAt) {
+		this.dueAt = dueAt;
 		return this;
 	}
 
@@ -139,12 +139,12 @@ public class Remiss {
 		return responseText;
 	}
 
-	public void setResponseText(final String v) {
-		this.responseText = v;
+	public void setResponseText(final String responseText) {
+		this.responseText = responseText;
 	}
 
-	public Remiss withResponseText(final String v) {
-		this.responseText = v;
+	public Remiss withResponseText(final String responseText) {
+		this.responseText = responseText;
 		return this;
 	}
 
@@ -152,12 +152,12 @@ public class Remiss {
 		return status;
 	}
 
-	public void setStatus(final String v) {
-		this.status = v;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
-	public Remiss withStatus(final String v) {
-		this.status = v;
+	public Remiss withStatus(final String status) {
+		this.status = status;
 		return this;
 	}
 
@@ -165,12 +165,12 @@ public class Remiss {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public Remiss withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public Remiss withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -178,12 +178,12 @@ public class Remiss {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public Remiss withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public Remiss withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

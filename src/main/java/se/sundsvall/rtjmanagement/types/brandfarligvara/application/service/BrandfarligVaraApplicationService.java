@@ -92,7 +92,7 @@ public class BrandfarligVaraApplicationService {
 	private static Errand toErrand(final BrandfarligVaraApplication application) {
 		return Errand.create()
 			.withTypeSlug(BrandfarligVaraModuleConfig.TYPE_SLUG)
-			.withTitle(hasText(application.getTitle()) ? application.getTitle() : DEFAULT_TITLE)
+			.withTitle(ofNullable(application.getTitle()).filter(title -> !title.isBlank()).orElse(DEFAULT_TITLE))
 			.withStatus(BrandfarligVaraModuleConfig.STATUS_REGISTERED)
 			.withDescription(application.getDescription())
 			.withPriority(application.getPriority())
@@ -124,7 +124,7 @@ public class BrandfarligVaraApplicationService {
 			.withAddress(application.getCompanyAddress())
 			.withZipCode(application.getCompanyZipCode())
 			.withCity(application.getCompanyCity())
-			.withContactChannels(contactChannels.isEmpty() ? null : contactChannels);
+			.withContactChannels(nullIfEmpty(contactChannels));
 	}
 
 	private static Stakeholder toContactPersonStakeholder(final BrandfarligVaraApplication application) {
@@ -138,7 +138,7 @@ public class BrandfarligVaraApplicationService {
 		return Stakeholder.create()
 			.withRole(BrandfarligVaraModuleConfig.ROLE_CONTACT_PERSON)
 			.withFirstName(application.getContactPersonName())
-			.withContactChannels(contactChannels.isEmpty() ? null : contactChannels);
+			.withContactChannels(nullIfEmpty(contactChannels));
 	}
 
 	private static Stakeholder toResponsiblePersonStakeholder(final ApplicantResponsiblePerson person) {
@@ -152,7 +152,14 @@ public class BrandfarligVaraApplicationService {
 			.withExternalIdType(EXTERNAL_ID_TYPE_PERSON)
 			.withFirstName(person.getFirstName())
 			.withLastName(person.getLastName())
-			.withContactChannels(contactChannels.isEmpty() ? null : contactChannels);
+			.withContactChannels(nullIfEmpty(contactChannels));
+	}
+
+	private static List<ContactChannel> nullIfEmpty(final List<ContactChannel> channels) {
+		if (channels.isEmpty()) {
+			return null;
+		}
+		return channels;
 	}
 
 	private static void addChannel(final List<ContactChannel> channels, final String key, final String value) {

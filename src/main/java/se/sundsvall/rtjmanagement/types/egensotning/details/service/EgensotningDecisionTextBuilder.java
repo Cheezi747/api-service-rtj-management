@@ -70,7 +70,10 @@ public final class EgensotningDecisionTextBuilder {
 	}
 
 	private static String truncate(final String text) {
-		return text.length() > MAX_DESCRIPTION_LENGTH ? text.substring(0, MAX_DESCRIPTION_LENGTH - 3) + "..." : text;
+		if (text.length() > MAX_DESCRIPTION_LENGTH) {
+			return text.substring(0, MAX_DESCRIPTION_LENGTH - 3) + "...";
+		}
+		return text;
 	}
 
 	private static String formatObjekt(final List<SotningsobjektEntity> objekt) {

@@ -69,33 +69,33 @@ public class MessageEntity {
 		return created;
 	}
 
-	public MessageEntity withId(final String v) {
-		this.id = v;
+	public MessageEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public MessageEntity withErrandId(final String v) {
-		this.errandId = v;
+	public MessageEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public MessageEntity withDirection(final String v) {
-		this.direction = v;
+	public MessageEntity withDirection(final String direction) {
+		this.direction = direction;
 		return this;
 	}
 
-	public MessageEntity withBody(final String v) {
-		this.body = v;
+	public MessageEntity withBody(final String body) {
+		this.body = body;
 		return this;
 	}
 
-	public MessageEntity withAuthor(final String v) {
-		this.author = v;
+	public MessageEntity withAuthor(final String author) {
+		this.author = author;
 		return this;
 	}
 
-	public MessageEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public MessageEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 }

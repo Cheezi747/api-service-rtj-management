@@ -121,104 +121,104 @@ public class AttachmentEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setNamespace(final String v) {
-		this.namespace = v;
+	public void setNamespace(final String namespace) {
+		this.namespace = namespace;
 	}
 
-	public void setMunicipalityId(final String v) {
-		this.municipalityId = v;
+	public void setMunicipalityId(final String municipalityId) {
+		this.municipalityId = municipalityId;
 	}
 
-	public void setFileName(final String v) {
-		this.fileName = v;
+	public void setFileName(final String fileName) {
+		this.fileName = fileName;
 	}
 
-	public void setMimeType(final String v) {
-		this.mimeType = v;
+	public void setMimeType(final String mimeType) {
+		this.mimeType = mimeType;
 	}
 
-	public void setFileSize(final Integer v) {
-		this.fileSize = v;
+	public void setFileSize(final Integer fileSize) {
+		this.fileSize = fileSize;
 	}
 
-	public void setCategory(final String v) {
-		this.category = v;
+	public void setCategory(final String category) {
+		this.category = category;
 	}
 
-	public void setAttachmentData(final AttachmentDataEntity v) {
-		this.attachmentData = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setAttachmentData(final AttachmentDataEntity attachmentData) {
+		this.attachmentData = attachmentData;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public AttachmentEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public AttachmentEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public AttachmentEntity withErrandId(final String v) {
-		this.errandId = v;
+	public AttachmentEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public AttachmentEntity withNamespace(final String v) {
-		this.namespace = v;
+	public AttachmentEntity withNamespace(final String namespace) {
+		this.namespace = namespace;
 		return this;
 	}
 
-	public AttachmentEntity withMunicipalityId(final String v) {
-		this.municipalityId = v;
+	public AttachmentEntity withMunicipalityId(final String municipalityId) {
+		this.municipalityId = municipalityId;
 		return this;
 	}
 
-	public AttachmentEntity withFileName(final String v) {
-		this.fileName = v;
+	public AttachmentEntity withFileName(final String fileName) {
+		this.fileName = fileName;
 		return this;
 	}
 
-	public AttachmentEntity withMimeType(final String v) {
-		this.mimeType = v;
+	public AttachmentEntity withMimeType(final String mimeType) {
+		this.mimeType = mimeType;
 		return this;
 	}
 
-	public AttachmentEntity withFileSize(final Integer v) {
-		this.fileSize = v;
+	public AttachmentEntity withFileSize(final Integer fileSize) {
+		this.fileSize = fileSize;
 		return this;
 	}
 
-	public AttachmentEntity withCategory(final String v) {
-		this.category = v;
+	public AttachmentEntity withCategory(final String category) {
+		this.category = category;
 		return this;
 	}
 
-	public AttachmentEntity withAttachmentData(final AttachmentDataEntity v) {
-		this.attachmentData = v;
+	public AttachmentEntity withAttachmentData(final AttachmentDataEntity attachmentData) {
+		this.attachmentData = attachmentData;
 		return this;
 	}
 
-	public AttachmentEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public AttachmentEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public AttachmentEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public AttachmentEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

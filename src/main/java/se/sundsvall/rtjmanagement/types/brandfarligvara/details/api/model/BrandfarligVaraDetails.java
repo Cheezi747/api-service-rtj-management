@@ -67,12 +67,12 @@ public class BrandfarligVaraDetails {
 		return verksamhetstyp;
 	}
 
-	public void setVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public void setVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 	}
 
-	public BrandfarligVaraDetails withVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public BrandfarligVaraDetails withVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 		return this;
 	}
 
@@ -80,12 +80,12 @@ public class BrandfarligVaraDetails {
 		return anlaggningTyp;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public BrandfarligVaraDetails withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public BrandfarligVaraDetails withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
@@ -93,12 +93,12 @@ public class BrandfarligVaraDetails {
 		return isProxy;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public BrandfarligVaraDetails withProxy(final boolean v) {
-		this.isProxy = v;
+	public BrandfarligVaraDetails withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
@@ -106,12 +106,12 @@ public class BrandfarligVaraDetails {
 		return fastighetsbeteckning;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public BrandfarligVaraDetails withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public BrandfarligVaraDetails withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
@@ -119,12 +119,12 @@ public class BrandfarligVaraDetails {
 		return handlingLocationAddress;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public BrandfarligVaraDetails withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public BrandfarligVaraDetails withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
@@ -132,12 +132,12 @@ public class BrandfarligVaraDetails {
 		return handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public BrandfarligVaraDetails withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public BrandfarligVaraDetails withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
@@ -145,12 +145,12 @@ public class BrandfarligVaraDetails {
 		return handlingLocationCity;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
-	public BrandfarligVaraDetails withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public BrandfarligVaraDetails withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
@@ -158,12 +158,12 @@ public class BrandfarligVaraDetails {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public BrandfarligVaraDetails withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public BrandfarligVaraDetails withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -171,12 +171,12 @@ public class BrandfarligVaraDetails {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public BrandfarligVaraDetails withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public BrandfarligVaraDetails withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

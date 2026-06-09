@@ -102,95 +102,95 @@ public class ExplosivGoodsProductEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setHazardClass(final String v) {
-		this.hazardClass = v;
+	public void setHazardClass(final String hazardClass) {
+		this.hazardClass = hazardClass;
 	}
 
-	public void setProductName(final String v) {
-		this.productName = v;
+	public void setProductName(final String productName) {
+		this.productName = productName;
 	}
 
-	public void setQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public void setQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 
-	public void setQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public void setQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 	}
 
-	public void setStorageType(final String v) {
-		this.storageType = v;
+	public void setStorageType(final String storageType) {
+		this.storageType = storageType;
 	}
 
-	public void setStorageLocation(final String v) {
-		this.storageLocation = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public ExplosivGoodsProductEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public ExplosivGoodsProductEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withErrandId(final String v) {
-		this.errandId = v;
+	public ExplosivGoodsProductEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withHazardClass(final String v) {
-		this.hazardClass = v;
+	public ExplosivGoodsProductEntity withHazardClass(final String hazardClass) {
+		this.hazardClass = hazardClass;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withProductName(final String v) {
-		this.productName = v;
+	public ExplosivGoodsProductEntity withProductName(final String productName) {
+		this.productName = productName;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public ExplosivGoodsProductEntity withQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public ExplosivGoodsProductEntity withQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withStorageType(final String v) {
-		this.storageType = v;
+	public ExplosivGoodsProductEntity withStorageType(final String storageType) {
+		this.storageType = storageType;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withStorageLocation(final String v) {
-		this.storageLocation = v;
+	public ExplosivGoodsProductEntity withStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public ExplosivGoodsProductEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public ExplosivGoodsProductEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public ExplosivGoodsProductEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

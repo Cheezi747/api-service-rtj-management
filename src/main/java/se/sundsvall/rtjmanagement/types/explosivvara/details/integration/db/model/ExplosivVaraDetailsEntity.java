@@ -108,104 +108,104 @@ public class ExplosivVaraDetailsEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final Long v) {
-		this.id = v;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public void setTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public ExplosivVaraDetailsEntity withId(final Long v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public ExplosivVaraDetailsEntity withId(final Long id) {
+		this.id = id;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withErrandId(final String v) {
-		this.errandId = v;
+	public ExplosivVaraDetailsEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public ExplosivVaraDetailsEntity withTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public ExplosivVaraDetailsEntity withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withProxy(final boolean v) {
-		this.isProxy = v;
+	public ExplosivVaraDetailsEntity withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public ExplosivVaraDetailsEntity withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public ExplosivVaraDetailsEntity withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public ExplosivVaraDetailsEntity withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public ExplosivVaraDetailsEntity withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public ExplosivVaraDetailsEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public ExplosivVaraDetailsEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public ExplosivVaraDetailsEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

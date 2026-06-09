@@ -109,104 +109,104 @@ public class HazardousGoodsProductEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setCategory(final String v) {
-		this.category = v;
+	public void setCategory(final String category) {
+		this.category = category;
 	}
 
-	public void setProductName(final String v) {
-		this.productName = v;
+	public void setProductName(final String productName) {
+		this.productName = productName;
 	}
 
-	public void setQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public void setQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 
-	public void setQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public void setQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 	}
 
-	public void setStorageType(final String v) {
-		this.storageType = v;
+	public void setStorageType(final String storageType) {
+		this.storageType = storageType;
 	}
 
-	public void setStorageLocation(final String v) {
-		this.storageLocation = v;
+	public void setStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 	}
 
-	public void setFlashPoint(final BigDecimal v) {
-		this.flashPoint = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setFlashPoint(final BigDecimal flashPoint) {
+		this.flashPoint = flashPoint;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public HazardousGoodsProductEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public HazardousGoodsProductEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withErrandId(final String v) {
-		this.errandId = v;
+	public HazardousGoodsProductEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withCategory(final String v) {
-		this.category = v;
+	public HazardousGoodsProductEntity withCategory(final String category) {
+		this.category = category;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withProductName(final String v) {
-		this.productName = v;
+	public HazardousGoodsProductEntity withProductName(final String productName) {
+		this.productName = productName;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public HazardousGoodsProductEntity withQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public HazardousGoodsProductEntity withQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withStorageType(final String v) {
-		this.storageType = v;
+	public HazardousGoodsProductEntity withStorageType(final String storageType) {
+		this.storageType = storageType;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withStorageLocation(final String v) {
-		this.storageLocation = v;
+	public HazardousGoodsProductEntity withStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withFlashPoint(final BigDecimal v) {
-		this.flashPoint = v;
+	public HazardousGoodsProductEntity withFlashPoint(final BigDecimal flashPoint) {
+		this.flashPoint = flashPoint;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public HazardousGoodsProductEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public HazardousGoodsProductEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public HazardousGoodsProductEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

@@ -79,7 +79,10 @@ public class TemplatingMapper {
 		return Optional.ofNullable(applicant)
 			.map(stakeholder -> {
 				final var fullName = (nullToEmpty(stakeholder.getFirstName()) + " " + nullToEmpty(stakeholder.getLastName())).trim();
-				return StringUtils.hasText(fullName) ? fullName : nullToEmpty(stakeholder.getOrganizationName());
+				if (StringUtils.hasText(fullName)) {
+					return fullName;
+				}
+				return nullToEmpty(stakeholder.getOrganizationName());
 			})
 			.orElse("");
 	}

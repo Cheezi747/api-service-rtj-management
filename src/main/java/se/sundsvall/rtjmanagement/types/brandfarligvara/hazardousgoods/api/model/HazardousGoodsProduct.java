@@ -78,12 +78,12 @@ public class HazardousGoodsProduct {
 		return id;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public HazardousGoodsProduct withId(final String v) {
-		this.id = v;
+	public HazardousGoodsProduct withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
@@ -91,12 +91,12 @@ public class HazardousGoodsProduct {
 		return category;
 	}
 
-	public void setCategory(final String v) {
-		this.category = v;
+	public void setCategory(final String category) {
+		this.category = category;
 	}
 
-	public HazardousGoodsProduct withCategory(final String v) {
-		this.category = v;
+	public HazardousGoodsProduct withCategory(final String category) {
+		this.category = category;
 		return this;
 	}
 
@@ -104,12 +104,12 @@ public class HazardousGoodsProduct {
 		return productName;
 	}
 
-	public void setProductName(final String v) {
-		this.productName = v;
+	public void setProductName(final String productName) {
+		this.productName = productName;
 	}
 
-	public HazardousGoodsProduct withProductName(final String v) {
-		this.productName = v;
+	public HazardousGoodsProduct withProductName(final String productName) {
+		this.productName = productName;
 		return this;
 	}
 
@@ -117,12 +117,12 @@ public class HazardousGoodsProduct {
 		return quantity;
 	}
 
-	public void setQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public void setQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 
-	public HazardousGoodsProduct withQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public HazardousGoodsProduct withQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 		return this;
 	}
 
@@ -130,12 +130,12 @@ public class HazardousGoodsProduct {
 		return quantityUnit;
 	}
 
-	public void setQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public void setQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 	}
 
-	public HazardousGoodsProduct withQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public HazardousGoodsProduct withQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 		return this;
 	}
 
@@ -143,12 +143,12 @@ public class HazardousGoodsProduct {
 		return storageType;
 	}
 
-	public void setStorageType(final String v) {
-		this.storageType = v;
+	public void setStorageType(final String storageType) {
+		this.storageType = storageType;
 	}
 
-	public HazardousGoodsProduct withStorageType(final String v) {
-		this.storageType = v;
+	public HazardousGoodsProduct withStorageType(final String storageType) {
+		this.storageType = storageType;
 		return this;
 	}
 
@@ -156,12 +156,12 @@ public class HazardousGoodsProduct {
 		return storageLocation;
 	}
 
-	public void setStorageLocation(final String v) {
-		this.storageLocation = v;
+	public void setStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 	}
 
-	public HazardousGoodsProduct withStorageLocation(final String v) {
-		this.storageLocation = v;
+	public HazardousGoodsProduct withStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 		return this;
 	}
 
@@ -169,12 +169,12 @@ public class HazardousGoodsProduct {
 		return flashPoint;
 	}
 
-	public void setFlashPoint(final BigDecimal v) {
-		this.flashPoint = v;
+	public void setFlashPoint(final BigDecimal flashPoint) {
+		this.flashPoint = flashPoint;
 	}
 
-	public HazardousGoodsProduct withFlashPoint(final BigDecimal v) {
-		this.flashPoint = v;
+	public HazardousGoodsProduct withFlashPoint(final BigDecimal flashPoint) {
+		this.flashPoint = flashPoint;
 		return this;
 	}
 
@@ -182,12 +182,12 @@ public class HazardousGoodsProduct {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public HazardousGoodsProduct withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public HazardousGoodsProduct withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -195,12 +195,12 @@ public class HazardousGoodsProduct {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public HazardousGoodsProduct withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public HazardousGoodsProduct withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

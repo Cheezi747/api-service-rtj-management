@@ -167,7 +167,10 @@ public class EgensotningDocumentValidationService {
 		}
 		final var start = answer.indexOf('{');
 		final var end = answer.lastIndexOf('}');
-		return (start >= 0 && end > start) ? answer.substring(start, end + 1) : null;
+		if (start >= 0 && end > start) {
+			return answer.substring(start, end + 1);
+		}
+		return null;
 	}
 
 	private String buildApplicantContext(final String municipalityId, final String namespace, final String errandId, final EgensotningDetailsEntity details) {

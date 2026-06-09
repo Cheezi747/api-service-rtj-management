@@ -75,12 +75,12 @@ public class ExplosivGoodsProduct {
 		return id;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public ExplosivGoodsProduct withId(final String v) {
-		this.id = v;
+	public ExplosivGoodsProduct withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
@@ -88,12 +88,12 @@ public class ExplosivGoodsProduct {
 		return hazardClass;
 	}
 
-	public void setHazardClass(final String v) {
-		this.hazardClass = v;
+	public void setHazardClass(final String hazardClass) {
+		this.hazardClass = hazardClass;
 	}
 
-	public ExplosivGoodsProduct withHazardClass(final String v) {
-		this.hazardClass = v;
+	public ExplosivGoodsProduct withHazardClass(final String hazardClass) {
+		this.hazardClass = hazardClass;
 		return this;
 	}
 
@@ -101,12 +101,12 @@ public class ExplosivGoodsProduct {
 		return productName;
 	}
 
-	public void setProductName(final String v) {
-		this.productName = v;
+	public void setProductName(final String productName) {
+		this.productName = productName;
 	}
 
-	public ExplosivGoodsProduct withProductName(final String v) {
-		this.productName = v;
+	public ExplosivGoodsProduct withProductName(final String productName) {
+		this.productName = productName;
 		return this;
 	}
 
@@ -114,12 +114,12 @@ public class ExplosivGoodsProduct {
 		return quantity;
 	}
 
-	public void setQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public void setQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 
-	public ExplosivGoodsProduct withQuantity(final BigDecimal v) {
-		this.quantity = v;
+	public ExplosivGoodsProduct withQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
 		return this;
 	}
 
@@ -127,12 +127,12 @@ public class ExplosivGoodsProduct {
 		return quantityUnit;
 	}
 
-	public void setQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public void setQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 	}
 
-	public ExplosivGoodsProduct withQuantityUnit(final String v) {
-		this.quantityUnit = v;
+	public ExplosivGoodsProduct withQuantityUnit(final String quantityUnit) {
+		this.quantityUnit = quantityUnit;
 		return this;
 	}
 
@@ -140,12 +140,12 @@ public class ExplosivGoodsProduct {
 		return storageType;
 	}
 
-	public void setStorageType(final String v) {
-		this.storageType = v;
+	public void setStorageType(final String storageType) {
+		this.storageType = storageType;
 	}
 
-	public ExplosivGoodsProduct withStorageType(final String v) {
-		this.storageType = v;
+	public ExplosivGoodsProduct withStorageType(final String storageType) {
+		this.storageType = storageType;
 		return this;
 	}
 
@@ -153,12 +153,12 @@ public class ExplosivGoodsProduct {
 		return storageLocation;
 	}
 
-	public void setStorageLocation(final String v) {
-		this.storageLocation = v;
+	public void setStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 	}
 
-	public ExplosivGoodsProduct withStorageLocation(final String v) {
-		this.storageLocation = v;
+	public ExplosivGoodsProduct withStorageLocation(final String storageLocation) {
+		this.storageLocation = storageLocation;
 		return this;
 	}
 
@@ -166,12 +166,12 @@ public class ExplosivGoodsProduct {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public ExplosivGoodsProduct withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public ExplosivGoodsProduct withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -179,12 +179,12 @@ public class ExplosivGoodsProduct {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public ExplosivGoodsProduct withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public ExplosivGoodsProduct withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

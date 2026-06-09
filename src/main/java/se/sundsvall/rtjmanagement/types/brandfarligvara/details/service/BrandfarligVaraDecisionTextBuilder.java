@@ -41,7 +41,10 @@ public final class BrandfarligVaraDecisionTextBuilder {
 		sb.append(" ").append(OVERKLAGANDE);
 
 		final var text = sb.toString();
-		return text.length() > MAX_DESCRIPTION_LENGTH ? text.substring(0, MAX_DESCRIPTION_LENGTH - 3) + "..." : text;
+		if (text.length() > MAX_DESCRIPTION_LENGTH) {
+			return text.substring(0, MAX_DESCRIPTION_LENGTH - 3) + "...";
+		}
+		return text;
 	}
 
 	private static String formatProducts(final List<HazardousGoodsProductEntity> products) {

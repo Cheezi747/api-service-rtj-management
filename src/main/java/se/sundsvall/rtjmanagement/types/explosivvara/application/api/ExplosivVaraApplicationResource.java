@@ -26,6 +26,8 @@ import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
 import se.sundsvall.rtjmanagement.types.explosivvara.application.api.model.ExplosivVaraApplication;
 import se.sundsvall.rtjmanagement.types.explosivvara.application.service.ExplosivVaraApplicationService;
 
+import static java.util.Optional.ofNullable;
+import static java.util.function.Predicate.not;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -69,9 +71,8 @@ class ExplosivVaraApplicationResource {
 		@Valid @NotNull @RequestPart("application") final ExplosivVaraApplication application,
 		@RequestPart(value = "files", required = false) final List<MultipartFile> files) {
 
-		if (files == null || files.isEmpty()) {
-			throw valueOf(BAD_REQUEST, FILES_REQUIRED_MESSAGE);
-		}
+		ofNullable(files).filter(not(List::isEmpty))
+			.orElseThrow(() -> valueOf(BAD_REQUEST, FILES_REQUIRED_MESSAGE));
 
 		final var errandId = service.submit(municipalityId, namespace, application, files);
 		return created(fromPath("/{municipalityId}/{namespace}/errands/{errandId}")

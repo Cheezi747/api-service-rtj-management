@@ -57,57 +57,57 @@ public class PatchErrand {
 		return assignedUserId;
 	}
 
-	public void setTitle(final String v) {
-		this.title = v;
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
-	public void setStatus(final String v) {
-		this.status = v;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
-	public void setDescription(final String v) {
-		this.description = v;
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
-	public void setPriority(final String v) {
-		this.priority = v;
+	public void setPriority(final String priority) {
+		this.priority = priority;
 	}
 
-	public void setReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public void setReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 	}
 
-	public void setAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public void setAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 	}
 
-	public PatchErrand withTitle(final String v) {
-		this.title = v;
+	public PatchErrand withTitle(final String title) {
+		this.title = title;
 		return this;
 	}
 
-	public PatchErrand withStatus(final String v) {
-		this.status = v;
+	public PatchErrand withStatus(final String status) {
+		this.status = status;
 		return this;
 	}
 
-	public PatchErrand withDescription(final String v) {
-		this.description = v;
+	public PatchErrand withDescription(final String description) {
+		this.description = description;
 		return this;
 	}
 
-	public PatchErrand withPriority(final String v) {
-		this.priority = v;
+	public PatchErrand withPriority(final String priority) {
+		this.priority = priority;
 		return this;
 	}
 
-	public PatchErrand withReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public PatchErrand withReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 		return this;
 	}
 
-	public PatchErrand withAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public PatchErrand withAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 		return this;
 	}
 

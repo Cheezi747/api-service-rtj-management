@@ -36,12 +36,12 @@ public class EgensotningVerificationResult {
 		return outcome;
 	}
 
-	public void setOutcome(final String v) {
-		this.outcome = v;
+	public void setOutcome(final String outcome) {
+		this.outcome = outcome;
 	}
 
-	public EgensotningVerificationResult withOutcome(final String v) {
-		this.outcome = v;
+	public EgensotningVerificationResult withOutcome(final String outcome) {
+		this.outcome = outcome;
 		return this;
 	}
 
@@ -49,12 +49,12 @@ public class EgensotningVerificationResult {
 		return bilagaPresent;
 	}
 
-	public void setBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public void setBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 	}
 
-	public EgensotningVerificationResult withBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public EgensotningVerificationResult withBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 		return this;
 	}
 
@@ -62,12 +62,12 @@ public class EgensotningVerificationResult {
 		return registeredAtProperty;
 	}
 
-	public void setRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public void setRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 	}
 
-	public EgensotningVerificationResult withRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public EgensotningVerificationResult withRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 		return this;
 	}
 
@@ -75,12 +75,12 @@ public class EgensotningVerificationResult {
 		return reapplicationOk;
 	}
 
-	public void setReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public void setReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 	}
 
-	public EgensotningVerificationResult withReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public EgensotningVerificationResult withReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 		return this;
 	}
 
@@ -88,12 +88,12 @@ public class EgensotningVerificationResult {
 		return manualReviewReason;
 	}
 
-	public void setManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public void setManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 	}
 
-	public EgensotningVerificationResult withManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public EgensotningVerificationResult withManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 		return this;
 	}
 
@@ -101,12 +101,12 @@ public class EgensotningVerificationResult {
 		return decisionDescription;
 	}
 
-	public void setDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public void setDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 	}
 
-	public EgensotningVerificationResult withDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public EgensotningVerificationResult withDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 		return this;
 	}
 

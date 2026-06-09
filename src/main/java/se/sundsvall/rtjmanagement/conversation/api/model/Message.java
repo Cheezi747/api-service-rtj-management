@@ -55,57 +55,57 @@ public class Message {
 		return created;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setDirection(final String v) {
-		this.direction = v;
+	public void setDirection(final String direction) {
+		this.direction = direction;
 	}
 
-	public void setBody(final String v) {
-		this.body = v;
+	public void setBody(final String body) {
+		this.body = body;
 	}
 
-	public void setAuthor(final String v) {
-		this.author = v;
+	public void setAuthor(final String author) {
+		this.author = author;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public Message withId(final String v) {
-		this.id = v;
+	public Message withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public Message withErrandId(final String v) {
-		this.errandId = v;
+	public Message withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public Message withDirection(final String v) {
-		this.direction = v;
+	public Message withDirection(final String direction) {
+		this.direction = direction;
 		return this;
 	}
 
-	public Message withBody(final String v) {
-		this.body = v;
+	public Message withBody(final String body) {
+		this.body = body;
 		return this;
 	}
 
-	public Message withAuthor(final String v) {
-		this.author = v;
+	public Message withAuthor(final String author) {
+		this.author = author;
 		return this;
 	}
 
-	public Message withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public Message withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 

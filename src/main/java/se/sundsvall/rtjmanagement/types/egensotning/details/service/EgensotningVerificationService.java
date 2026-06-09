@@ -106,7 +106,11 @@ public class EgensotningVerificationService {
 			// Sökanden är inte folkbokförd på fastigheten. Har hen uppgett sig äga den (t.ex. en
 			// sommarstuga som hen inte är folkbokförd på) ges en mer specifik anledning, så att
 			// handläggaren ser ägar-underlaget vid den manuella granskningen.
-			manualReviewReason = Boolean.TRUE.equals(details.getOwnsProperty()) ? REASON_OWNER_NOT_REGISTERED : REASON_NOT_REGISTERED;
+			if (Boolean.TRUE.equals(details.getOwnsProperty())) {
+				manualReviewReason = REASON_OWNER_NOT_REGISTERED;
+			} else {
+				manualReviewReason = REASON_NOT_REGISTERED;
+			}
 		} else if (!reapplication.ok()) {
 			outcome = OUTCOME_NEEDS_MANUAL_REVIEW;
 			manualReviewReason = reapplication.reason();

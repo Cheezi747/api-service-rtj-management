@@ -26,12 +26,12 @@ public class DocumentValidationResult {
 		return valid;
 	}
 
-	public void setValid(final Boolean v) {
-		this.valid = v;
+	public void setValid(final Boolean valid) {
+		this.valid = valid;
 	}
 
-	public DocumentValidationResult withValid(final Boolean v) {
-		this.valid = v;
+	public DocumentValidationResult withValid(final Boolean valid) {
+		this.valid = valid;
 		return this;
 	}
 
@@ -39,12 +39,12 @@ public class DocumentValidationResult {
 		return documentTypeOk;
 	}
 
-	public void setDocumentTypeOk(final Boolean v) {
-		this.documentTypeOk = v;
+	public void setDocumentTypeOk(final Boolean documentTypeOk) {
+		this.documentTypeOk = documentTypeOk;
 	}
 
-	public DocumentValidationResult withDocumentTypeOk(final Boolean v) {
-		this.documentTypeOk = v;
+	public DocumentValidationResult withDocumentTypeOk(final Boolean documentTypeOk) {
+		this.documentTypeOk = documentTypeOk;
 		return this;
 	}
 
@@ -52,12 +52,12 @@ public class DocumentValidationResult {
 		return identityMatch;
 	}
 
-	public void setIdentityMatch(final Boolean v) {
-		this.identityMatch = v;
+	public void setIdentityMatch(final Boolean identityMatch) {
+		this.identityMatch = identityMatch;
 	}
 
-	public DocumentValidationResult withIdentityMatch(final Boolean v) {
-		this.identityMatch = v;
+	public DocumentValidationResult withIdentityMatch(final Boolean identityMatch) {
+		this.identityMatch = identityMatch;
 		return this;
 	}
 
@@ -65,12 +65,12 @@ public class DocumentValidationResult {
 		return reason;
 	}
 
-	public void setReason(final String v) {
-		this.reason = v;
+	public void setReason(final String reason) {
+		this.reason = reason;
 	}
 
-	public DocumentValidationResult withReason(final String v) {
-		this.reason = v;
+	public DocumentValidationResult withReason(final String reason) {
+		this.reason = reason;
 		return this;
 	}
 

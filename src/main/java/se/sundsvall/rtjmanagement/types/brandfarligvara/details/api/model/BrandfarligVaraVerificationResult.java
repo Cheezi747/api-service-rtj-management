@@ -41,12 +41,12 @@ public class BrandfarligVaraVerificationResult {
 		return outcome;
 	}
 
-	public void setOutcome(final String v) {
-		this.outcome = v;
+	public void setOutcome(final String outcome) {
+		this.outcome = outcome;
 	}
 
-	public BrandfarligVaraVerificationResult withOutcome(final String v) {
-		this.outcome = v;
+	public BrandfarligVaraVerificationResult withOutcome(final String outcome) {
+		this.outcome = outcome;
 		return this;
 	}
 
@@ -54,12 +54,12 @@ public class BrandfarligVaraVerificationResult {
 		return bilagaPresent;
 	}
 
-	public void setBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public void setBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 	}
 
-	public BrandfarligVaraVerificationResult withBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public BrandfarligVaraVerificationResult withBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 		return this;
 	}
 
@@ -67,12 +67,12 @@ public class BrandfarligVaraVerificationResult {
 		return productsPresent;
 	}
 
-	public void setProductsPresent(final Boolean v) {
-		this.productsPresent = v;
+	public void setProductsPresent(final Boolean productsPresent) {
+		this.productsPresent = productsPresent;
 	}
 
-	public BrandfarligVaraVerificationResult withProductsPresent(final Boolean v) {
-		this.productsPresent = v;
+	public BrandfarligVaraVerificationResult withProductsPresent(final Boolean productsPresent) {
+		this.productsPresent = productsPresent;
 		return this;
 	}
 
@@ -80,12 +80,12 @@ public class BrandfarligVaraVerificationResult {
 		return supplementReason;
 	}
 
-	public void setSupplementReason(final String v) {
-		this.supplementReason = v;
+	public void setSupplementReason(final String supplementReason) {
+		this.supplementReason = supplementReason;
 	}
 
-	public BrandfarligVaraVerificationResult withSupplementReason(final String v) {
-		this.supplementReason = v;
+	public BrandfarligVaraVerificationResult withSupplementReason(final String supplementReason) {
+		this.supplementReason = supplementReason;
 		return this;
 	}
 
@@ -93,12 +93,12 @@ public class BrandfarligVaraVerificationResult {
 		return decisionDescription;
 	}
 
-	public void setDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public void setDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 	}
 
-	public BrandfarligVaraVerificationResult withDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public BrandfarligVaraVerificationResult withDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 		return this;
 	}
 

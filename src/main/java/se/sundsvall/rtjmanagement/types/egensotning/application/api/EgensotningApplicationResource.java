@@ -25,6 +25,8 @@ import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
 import se.sundsvall.rtjmanagement.types.egensotning.application.api.model.EgensotningApplication;
 import se.sundsvall.rtjmanagement.types.egensotning.application.service.EgensotningApplicationService;
 
+import static java.util.Optional.ofNullable;
+import static java.util.function.Predicate.not;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -70,12 +72,10 @@ class EgensotningApplicationResource {
 		@RequestPart(value = "brandskyddskontroll", required = false) final MultipartFile brandskyddskontroll,
 		@RequestPart(value = "utbildningsintyg", required = false) final MultipartFile utbildningsintyg) {
 
-		if (brandskyddskontroll == null || brandskyddskontroll.isEmpty()) {
-			throw valueOf(BAD_REQUEST, BRANDSKYDDSKONTROLL_REQUIRED_MESSAGE);
-		}
-		if (utbildningsintyg == null || utbildningsintyg.isEmpty()) {
-			throw valueOf(BAD_REQUEST, UTBILDNINGSINTYG_REQUIRED_MESSAGE);
-		}
+		ofNullable(brandskyddskontroll).filter(not(MultipartFile::isEmpty))
+			.orElseThrow(() -> valueOf(BAD_REQUEST, BRANDSKYDDSKONTROLL_REQUIRED_MESSAGE));
+		ofNullable(utbildningsintyg).filter(not(MultipartFile::isEmpty))
+			.orElseThrow(() -> valueOf(BAD_REQUEST, UTBILDNINGSINTYG_REQUIRED_MESSAGE));
 
 		final var errandId = service.submit(municipalityId, namespace, application, brandskyddskontroll, utbildningsintyg);
 		return created(fromPath("/{municipalityId}/{namespace}/errands/{errandId}")

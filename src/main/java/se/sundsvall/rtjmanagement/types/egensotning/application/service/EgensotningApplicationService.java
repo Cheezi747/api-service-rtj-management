@@ -18,7 +18,6 @@ import se.sundsvall.rtjmanagement.types.egensotning.details.service.EgensotningD
 import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.service.SotningsobjektService;
 
 import static java.util.Optional.ofNullable;
-import static org.springframework.util.StringUtils.hasText;
 
 /**
  * One-call submission of a complete egensotning application. Creates the errand and all its child
@@ -78,7 +77,7 @@ public class EgensotningApplicationService {
 	private static Errand toErrand(final EgensotningApplication application) {
 		return Errand.create()
 			.withTypeSlug(EgensotningModuleConfig.TYPE_SLUG)
-			.withTitle(hasText(application.getTitle()) ? application.getTitle() : DEFAULT_TITLE)
+			.withTitle(ofNullable(application.getTitle()).filter(title -> !title.isBlank()).orElse(DEFAULT_TITLE))
 			.withStatus(EgensotningModuleConfig.STATUS_REGISTERED)
 			.withDescription(application.getDescription())
 			.withPriority(application.getPriority())
@@ -114,6 +113,13 @@ public class EgensotningApplicationService {
 			.withZipCode(application.getApplicantZipCode())
 			.withCity(application.getApplicantCity())
 			.withCountry(application.getApplicantCountry())
-			.withContactChannels(contactChannels.isEmpty() ? null : contactChannels);
+			.withContactChannels(nullIfEmpty(contactChannels));
+	}
+
+	private static List<ContactChannel> nullIfEmpty(final List<ContactChannel> channels) {
+		if (channels.isEmpty()) {
+			return null;
+		}
+		return channels;
 	}
 }

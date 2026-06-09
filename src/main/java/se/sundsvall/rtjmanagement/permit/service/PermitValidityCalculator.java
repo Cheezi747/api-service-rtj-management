@@ -25,7 +25,10 @@ public final class PermitValidityCalculator {
 	private PermitValidityCalculator() {}
 
 	public static int defaultYears(final String permitType) {
-		return PERMIT_TYPE_EXPLOSIV.equals(permitType) ? YEARS_EXPLOSIV : YEARS_DEFAULT;
+		if (PERMIT_TYPE_EXPLOSIV.equals(permitType)) {
+			return YEARS_EXPLOSIV;
+		}
+		return YEARS_DEFAULT;
 	}
 
 	public static LocalDate computeValidUntil(final LocalDate validFrom, final String permitType) {

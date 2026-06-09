@@ -218,230 +218,230 @@ public class EgensotningDetailsEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final Long v) {
-		this.id = v;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setPersonnummer(final String v) {
-		this.personnummer = v;
+	public void setPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public void setPropertyAddress(final String v) {
-		this.propertyAddress = v;
+	public void setPropertyAddress(final String propertyAddress) {
+		this.propertyAddress = propertyAddress;
 	}
 
-	public void setOwnsProperty(final Boolean v) {
-		this.ownsProperty = v;
+	public void setOwnsProperty(final Boolean ownsProperty) {
+		this.ownsProperty = ownsProperty;
 	}
 
-	public void setOwnershipMotivation(final String v) {
-		this.ownershipMotivation = v;
+	public void setOwnershipMotivation(final String ownershipMotivation) {
+		this.ownershipMotivation = ownershipMotivation;
 	}
 
-	public void setAppliesForOtherProperty(final Boolean v) {
-		this.appliesForOtherProperty = v;
+	public void setAppliesForOtherProperty(final Boolean appliesForOtherProperty) {
+		this.appliesForOtherProperty = appliesForOtherProperty;
 	}
 
-	public void setMotivering(final String v) {
-		this.motivering = v;
+	public void setMotivering(final String motivering) {
+		this.motivering = motivering;
 	}
 
-	public void setBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public void setBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 	}
 
-	public void setRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public void setRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 	}
 
-	public void setReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public void setReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 	}
 
-	public void setLastOutcome(final String v) {
-		this.lastOutcome = v;
+	public void setLastOutcome(final String lastOutcome) {
+		this.lastOutcome = lastOutcome;
 	}
 
-	public void setManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public void setManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 	}
 
-	public void setLastVerifiedAt(final OffsetDateTime v) {
-		this.lastVerifiedAt = v;
+	public void setLastVerifiedAt(final OffsetDateTime lastVerifiedAt) {
+		this.lastVerifiedAt = lastVerifiedAt;
 	}
 
-	public void setValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public void setValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 	}
 
-	public void setValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public void setValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 	}
 
-	public void setReminderSentAt(final OffsetDateTime v) {
-		this.reminderSentAt = v;
+	public void setReminderSentAt(final OffsetDateTime reminderSentAt) {
+		this.reminderSentAt = reminderSentAt;
 	}
 
-	public void setDocumentsValid(final Boolean v) {
-		this.documentsValid = v;
+	public void setDocumentsValid(final Boolean documentsValid) {
+		this.documentsValid = documentsValid;
 	}
 
-	public void setDocumentValidationDetail(final String v) {
-		this.documentValidationDetail = v;
+	public void setDocumentValidationDetail(final String documentValidationDetail) {
+		this.documentValidationDetail = documentValidationDetail;
 	}
 
-	public void setDocumentValidatedAt(final OffsetDateTime v) {
-		this.documentValidatedAt = v;
+	public void setDocumentValidatedAt(final OffsetDateTime documentValidatedAt) {
+		this.documentValidatedAt = documentValidatedAt;
 	}
 
-	public void setRevokedAt(final OffsetDateTime v) {
-		this.revokedAt = v;
+	public void setRevokedAt(final OffsetDateTime revokedAt) {
+		this.revokedAt = revokedAt;
 	}
 
-	public void setRevocationReason(final String v) {
-		this.revocationReason = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setRevocationReason(final String revocationReason) {
+		this.revocationReason = revocationReason;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public EgensotningDetailsEntity withId(final Long v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public EgensotningDetailsEntity withId(final Long id) {
+		this.id = id;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withErrandId(final String v) {
-		this.errandId = v;
+	public EgensotningDetailsEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withPersonnummer(final String v) {
-		this.personnummer = v;
+	public EgensotningDetailsEntity withPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public EgensotningDetailsEntity withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withPropertyAddress(final String v) {
-		this.propertyAddress = v;
+	public EgensotningDetailsEntity withPropertyAddress(final String propertyAddress) {
+		this.propertyAddress = propertyAddress;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withOwnsProperty(final Boolean v) {
-		this.ownsProperty = v;
+	public EgensotningDetailsEntity withOwnsProperty(final Boolean ownsProperty) {
+		this.ownsProperty = ownsProperty;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withOwnershipMotivation(final String v) {
-		this.ownershipMotivation = v;
+	public EgensotningDetailsEntity withOwnershipMotivation(final String ownershipMotivation) {
+		this.ownershipMotivation = ownershipMotivation;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withAppliesForOtherProperty(final Boolean v) {
-		this.appliesForOtherProperty = v;
+	public EgensotningDetailsEntity withAppliesForOtherProperty(final Boolean appliesForOtherProperty) {
+		this.appliesForOtherProperty = appliesForOtherProperty;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withMotivering(final String v) {
-		this.motivering = v;
+	public EgensotningDetailsEntity withMotivering(final String motivering) {
+		this.motivering = motivering;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public EgensotningDetailsEntity withBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public EgensotningDetailsEntity withRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public EgensotningDetailsEntity withReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withLastOutcome(final String v) {
-		this.lastOutcome = v;
+	public EgensotningDetailsEntity withLastOutcome(final String lastOutcome) {
+		this.lastOutcome = lastOutcome;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public EgensotningDetailsEntity withManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withLastVerifiedAt(final OffsetDateTime v) {
-		this.lastVerifiedAt = v;
+	public EgensotningDetailsEntity withLastVerifiedAt(final OffsetDateTime lastVerifiedAt) {
+		this.lastVerifiedAt = lastVerifiedAt;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public EgensotningDetailsEntity withValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public EgensotningDetailsEntity withValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withReminderSentAt(final OffsetDateTime v) {
-		this.reminderSentAt = v;
+	public EgensotningDetailsEntity withReminderSentAt(final OffsetDateTime reminderSentAt) {
+		this.reminderSentAt = reminderSentAt;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withDocumentsValid(final Boolean v) {
-		this.documentsValid = v;
+	public EgensotningDetailsEntity withDocumentsValid(final Boolean documentsValid) {
+		this.documentsValid = documentsValid;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withDocumentValidationDetail(final String v) {
-		this.documentValidationDetail = v;
+	public EgensotningDetailsEntity withDocumentValidationDetail(final String documentValidationDetail) {
+		this.documentValidationDetail = documentValidationDetail;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withDocumentValidatedAt(final OffsetDateTime v) {
-		this.documentValidatedAt = v;
+	public EgensotningDetailsEntity withDocumentValidatedAt(final OffsetDateTime documentValidatedAt) {
+		this.documentValidatedAt = documentValidatedAt;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withRevokedAt(final OffsetDateTime v) {
-		this.revokedAt = v;
+	public EgensotningDetailsEntity withRevokedAt(final OffsetDateTime revokedAt) {
+		this.revokedAt = revokedAt;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withRevocationReason(final String v) {
-		this.revocationReason = v;
+	public EgensotningDetailsEntity withRevocationReason(final String revocationReason) {
+		this.revocationReason = revocationReason;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public EgensotningDetailsEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public EgensotningDetailsEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public EgensotningDetailsEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

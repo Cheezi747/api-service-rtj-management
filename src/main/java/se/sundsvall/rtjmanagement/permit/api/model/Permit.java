@@ -71,12 +71,12 @@ public class Permit {
 		return id;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public Permit withId(final String v) {
-		this.id = v;
+	public Permit withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
@@ -84,12 +84,12 @@ public class Permit {
 		return permitType;
 	}
 
-	public void setPermitType(final String v) {
-		this.permitType = v;
+	public void setPermitType(final String permitType) {
+		this.permitType = permitType;
 	}
 
-	public Permit withPermitType(final String v) {
-		this.permitType = v;
+	public Permit withPermitType(final String permitType) {
+		this.permitType = permitType;
 		return this;
 	}
 
@@ -97,12 +97,12 @@ public class Permit {
 		return validFrom;
 	}
 
-	public void setValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public void setValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 	}
 
-	public Permit withValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public Permit withValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 		return this;
 	}
 
@@ -110,12 +110,12 @@ public class Permit {
 		return validUntil;
 	}
 
-	public void setValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public void setValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 	}
 
-	public Permit withValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public Permit withValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 		return this;
 	}
 
@@ -123,12 +123,12 @@ public class Permit {
 		return conditions;
 	}
 
-	public void setConditions(final String v) {
-		this.conditions = v;
+	public void setConditions(final String conditions) {
+		this.conditions = conditions;
 	}
 
-	public Permit withConditions(final String v) {
-		this.conditions = v;
+	public Permit withConditions(final String conditions) {
+		this.conditions = conditions;
 		return this;
 	}
 
@@ -136,12 +136,12 @@ public class Permit {
 		return status;
 	}
 
-	public void setStatus(final String v) {
-		this.status = v;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
-	public Permit withStatus(final String v) {
-		this.status = v;
+	public Permit withStatus(final String status) {
+		this.status = status;
 		return this;
 	}
 
@@ -149,12 +149,12 @@ public class Permit {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public Permit withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public Permit withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -162,12 +162,12 @@ public class Permit {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public Permit withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public Permit withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

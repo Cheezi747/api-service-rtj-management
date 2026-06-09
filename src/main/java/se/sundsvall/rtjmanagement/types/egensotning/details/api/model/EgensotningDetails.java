@@ -101,12 +101,12 @@ public class EgensotningDetails {
 		return personnummer;
 	}
 
-	public void setPersonnummer(final String v) {
-		this.personnummer = v;
+	public void setPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 	}
 
-	public EgensotningDetails withPersonnummer(final String v) {
-		this.personnummer = v;
+	public EgensotningDetails withPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 		return this;
 	}
 
@@ -114,12 +114,12 @@ public class EgensotningDetails {
 		return fastighetsbeteckning;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public EgensotningDetails withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public EgensotningDetails withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
@@ -127,12 +127,12 @@ public class EgensotningDetails {
 		return propertyAddress;
 	}
 
-	public void setPropertyAddress(final String v) {
-		this.propertyAddress = v;
+	public void setPropertyAddress(final String propertyAddress) {
+		this.propertyAddress = propertyAddress;
 	}
 
-	public EgensotningDetails withPropertyAddress(final String v) {
-		this.propertyAddress = v;
+	public EgensotningDetails withPropertyAddress(final String propertyAddress) {
+		this.propertyAddress = propertyAddress;
 		return this;
 	}
 
@@ -140,12 +140,12 @@ public class EgensotningDetails {
 		return ownsProperty;
 	}
 
-	public void setOwnsProperty(final Boolean v) {
-		this.ownsProperty = v;
+	public void setOwnsProperty(final Boolean ownsProperty) {
+		this.ownsProperty = ownsProperty;
 	}
 
-	public EgensotningDetails withOwnsProperty(final Boolean v) {
-		this.ownsProperty = v;
+	public EgensotningDetails withOwnsProperty(final Boolean ownsProperty) {
+		this.ownsProperty = ownsProperty;
 		return this;
 	}
 
@@ -153,12 +153,12 @@ public class EgensotningDetails {
 		return ownershipMotivation;
 	}
 
-	public void setOwnershipMotivation(final String v) {
-		this.ownershipMotivation = v;
+	public void setOwnershipMotivation(final String ownershipMotivation) {
+		this.ownershipMotivation = ownershipMotivation;
 	}
 
-	public EgensotningDetails withOwnershipMotivation(final String v) {
-		this.ownershipMotivation = v;
+	public EgensotningDetails withOwnershipMotivation(final String ownershipMotivation) {
+		this.ownershipMotivation = ownershipMotivation;
 		return this;
 	}
 
@@ -166,12 +166,12 @@ public class EgensotningDetails {
 		return appliesForOtherProperty;
 	}
 
-	public void setAppliesForOtherProperty(final Boolean v) {
-		this.appliesForOtherProperty = v;
+	public void setAppliesForOtherProperty(final Boolean appliesForOtherProperty) {
+		this.appliesForOtherProperty = appliesForOtherProperty;
 	}
 
-	public EgensotningDetails withAppliesForOtherProperty(final Boolean v) {
-		this.appliesForOtherProperty = v;
+	public EgensotningDetails withAppliesForOtherProperty(final Boolean appliesForOtherProperty) {
+		this.appliesForOtherProperty = appliesForOtherProperty;
 		return this;
 	}
 
@@ -179,12 +179,12 @@ public class EgensotningDetails {
 		return motivering;
 	}
 
-	public void setMotivering(final String v) {
-		this.motivering = v;
+	public void setMotivering(final String motivering) {
+		this.motivering = motivering;
 	}
 
-	public EgensotningDetails withMotivering(final String v) {
-		this.motivering = v;
+	public EgensotningDetails withMotivering(final String motivering) {
+		this.motivering = motivering;
 		return this;
 	}
 
@@ -192,12 +192,12 @@ public class EgensotningDetails {
 		return bilagaPresent;
 	}
 
-	public void setBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public void setBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 	}
 
-	public EgensotningDetails withBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public EgensotningDetails withBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 		return this;
 	}
 
@@ -205,12 +205,12 @@ public class EgensotningDetails {
 		return registeredAtProperty;
 	}
 
-	public void setRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public void setRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 	}
 
-	public EgensotningDetails withRegisteredAtProperty(final Boolean v) {
-		this.registeredAtProperty = v;
+	public EgensotningDetails withRegisteredAtProperty(final Boolean registeredAtProperty) {
+		this.registeredAtProperty = registeredAtProperty;
 		return this;
 	}
 
@@ -218,12 +218,12 @@ public class EgensotningDetails {
 		return reapplicationOk;
 	}
 
-	public void setReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public void setReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 	}
 
-	public EgensotningDetails withReapplicationOk(final Boolean v) {
-		this.reapplicationOk = v;
+	public EgensotningDetails withReapplicationOk(final Boolean reapplicationOk) {
+		this.reapplicationOk = reapplicationOk;
 		return this;
 	}
 
@@ -231,12 +231,12 @@ public class EgensotningDetails {
 		return lastOutcome;
 	}
 
-	public void setLastOutcome(final String v) {
-		this.lastOutcome = v;
+	public void setLastOutcome(final String lastOutcome) {
+		this.lastOutcome = lastOutcome;
 	}
 
-	public EgensotningDetails withLastOutcome(final String v) {
-		this.lastOutcome = v;
+	public EgensotningDetails withLastOutcome(final String lastOutcome) {
+		this.lastOutcome = lastOutcome;
 		return this;
 	}
 
@@ -244,12 +244,12 @@ public class EgensotningDetails {
 		return manualReviewReason;
 	}
 
-	public void setManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public void setManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 	}
 
-	public EgensotningDetails withManualReviewReason(final String v) {
-		this.manualReviewReason = v;
+	public EgensotningDetails withManualReviewReason(final String manualReviewReason) {
+		this.manualReviewReason = manualReviewReason;
 		return this;
 	}
 
@@ -257,12 +257,12 @@ public class EgensotningDetails {
 		return lastVerifiedAt;
 	}
 
-	public void setLastVerifiedAt(final OffsetDateTime v) {
-		this.lastVerifiedAt = v;
+	public void setLastVerifiedAt(final OffsetDateTime lastVerifiedAt) {
+		this.lastVerifiedAt = lastVerifiedAt;
 	}
 
-	public EgensotningDetails withLastVerifiedAt(final OffsetDateTime v) {
-		this.lastVerifiedAt = v;
+	public EgensotningDetails withLastVerifiedAt(final OffsetDateTime lastVerifiedAt) {
+		this.lastVerifiedAt = lastVerifiedAt;
 		return this;
 	}
 
@@ -270,12 +270,12 @@ public class EgensotningDetails {
 		return validFrom;
 	}
 
-	public void setValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public void setValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 	}
 
-	public EgensotningDetails withValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public EgensotningDetails withValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 		return this;
 	}
 
@@ -283,12 +283,12 @@ public class EgensotningDetails {
 		return validUntil;
 	}
 
-	public void setValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public void setValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 	}
 
-	public EgensotningDetails withValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public EgensotningDetails withValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 		return this;
 	}
 
@@ -296,12 +296,12 @@ public class EgensotningDetails {
 		return reminderSentAt;
 	}
 
-	public void setReminderSentAt(final OffsetDateTime v) {
-		this.reminderSentAt = v;
+	public void setReminderSentAt(final OffsetDateTime reminderSentAt) {
+		this.reminderSentAt = reminderSentAt;
 	}
 
-	public EgensotningDetails withReminderSentAt(final OffsetDateTime v) {
-		this.reminderSentAt = v;
+	public EgensotningDetails withReminderSentAt(final OffsetDateTime reminderSentAt) {
+		this.reminderSentAt = reminderSentAt;
 		return this;
 	}
 
@@ -309,12 +309,12 @@ public class EgensotningDetails {
 		return revokedAt;
 	}
 
-	public void setRevokedAt(final OffsetDateTime v) {
-		this.revokedAt = v;
+	public void setRevokedAt(final OffsetDateTime revokedAt) {
+		this.revokedAt = revokedAt;
 	}
 
-	public EgensotningDetails withRevokedAt(final OffsetDateTime v) {
-		this.revokedAt = v;
+	public EgensotningDetails withRevokedAt(final OffsetDateTime revokedAt) {
+		this.revokedAt = revokedAt;
 		return this;
 	}
 
@@ -322,12 +322,12 @@ public class EgensotningDetails {
 		return revocationReason;
 	}
 
-	public void setRevocationReason(final String v) {
-		this.revocationReason = v;
+	public void setRevocationReason(final String revocationReason) {
+		this.revocationReason = revocationReason;
 	}
 
-	public EgensotningDetails withRevocationReason(final String v) {
-		this.revocationReason = v;
+	public EgensotningDetails withRevocationReason(final String revocationReason) {
+		this.revocationReason = revocationReason;
 		return this;
 	}
 
@@ -335,12 +335,12 @@ public class EgensotningDetails {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public EgensotningDetails withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public EgensotningDetails withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -348,12 +348,12 @@ public class EgensotningDetails {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public EgensotningDetails withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public EgensotningDetails withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

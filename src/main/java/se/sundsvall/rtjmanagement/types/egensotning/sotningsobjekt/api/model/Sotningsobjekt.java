@@ -52,12 +52,12 @@ public class Sotningsobjekt {
 		return id;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public Sotningsobjekt withId(final String v) {
-		this.id = v;
+	public Sotningsobjekt withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
@@ -65,12 +65,12 @@ public class Sotningsobjekt {
 		return typ;
 	}
 
-	public void setTyp(final String v) {
-		this.typ = v;
+	public void setTyp(final String typ) {
+		this.typ = typ;
 	}
 
-	public Sotningsobjekt withTyp(final String v) {
-		this.typ = v;
+	public Sotningsobjekt withTyp(final String typ) {
+		this.typ = typ;
 		return this;
 	}
 
@@ -78,12 +78,12 @@ public class Sotningsobjekt {
 		return fabrikat;
 	}
 
-	public void setFabrikat(final String v) {
-		this.fabrikat = v;
+	public void setFabrikat(final String fabrikat) {
+		this.fabrikat = fabrikat;
 	}
 
-	public Sotningsobjekt withFabrikat(final String v) {
-		this.fabrikat = v;
+	public Sotningsobjekt withFabrikat(final String fabrikat) {
+		this.fabrikat = fabrikat;
 		return this;
 	}
 
@@ -91,12 +91,12 @@ public class Sotningsobjekt {
 		return tillverkningsar;
 	}
 
-	public void setTillverkningsar(final Integer v) {
-		this.tillverkningsar = v;
+	public void setTillverkningsar(final Integer tillverkningsar) {
+		this.tillverkningsar = tillverkningsar;
 	}
 
-	public Sotningsobjekt withTillverkningsar(final Integer v) {
-		this.tillverkningsar = v;
+	public Sotningsobjekt withTillverkningsar(final Integer tillverkningsar) {
+		this.tillverkningsar = tillverkningsar;
 		return this;
 	}
 
@@ -104,12 +104,12 @@ public class Sotningsobjekt {
 		return bransleslag;
 	}
 
-	public void setBransleslag(final String v) {
-		this.bransleslag = v;
+	public void setBransleslag(final String bransleslag) {
+		this.bransleslag = bransleslag;
 	}
 
-	public Sotningsobjekt withBransleslag(final String v) {
-		this.bransleslag = v;
+	public Sotningsobjekt withBransleslag(final String bransleslag) {
+		this.bransleslag = bransleslag;
 		return this;
 	}
 
@@ -117,12 +117,12 @@ public class Sotningsobjekt {
 		return branslemangd;
 	}
 
-	public void setBranslemangd(final String v) {
-		this.branslemangd = v;
+	public void setBranslemangd(final String branslemangd) {
+		this.branslemangd = branslemangd;
 	}
 
-	public Sotningsobjekt withBranslemangd(final String v) {
-		this.branslemangd = v;
+	public Sotningsobjekt withBranslemangd(final String branslemangd) {
+		this.branslemangd = branslemangd;
 		return this;
 	}
 
@@ -130,12 +130,12 @@ public class Sotningsobjekt {
 		return sotningsintervallVeckor;
 	}
 
-	public void setSotningsintervallVeckor(final Integer v) {
-		this.sotningsintervallVeckor = v;
+	public void setSotningsintervallVeckor(final Integer sotningsintervallVeckor) {
+		this.sotningsintervallVeckor = sotningsintervallVeckor;
 	}
 
-	public Sotningsobjekt withSotningsintervallVeckor(final Integer v) {
-		this.sotningsintervallVeckor = v;
+	public Sotningsobjekt withSotningsintervallVeckor(final Integer sotningsintervallVeckor) {
+		this.sotningsintervallVeckor = sotningsintervallVeckor;
 		return this;
 	}
 
@@ -143,12 +143,12 @@ public class Sotningsobjekt {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public Sotningsobjekt withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public Sotningsobjekt withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -156,12 +156,12 @@ public class Sotningsobjekt {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public Sotningsobjekt withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public Sotningsobjekt withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

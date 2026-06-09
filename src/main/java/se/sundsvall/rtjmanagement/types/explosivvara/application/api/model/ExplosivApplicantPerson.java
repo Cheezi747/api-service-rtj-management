@@ -45,12 +45,12 @@ public class ExplosivApplicantPerson {
 		return role;
 	}
 
-	public void setRole(final String v) {
-		this.role = v;
+	public void setRole(final String role) {
+		this.role = role;
 	}
 
-	public ExplosivApplicantPerson withRole(final String v) {
-		this.role = v;
+	public ExplosivApplicantPerson withRole(final String role) {
+		this.role = role;
 		return this;
 	}
 
@@ -58,12 +58,12 @@ public class ExplosivApplicantPerson {
 		return firstName;
 	}
 
-	public void setFirstName(final String v) {
-		this.firstName = v;
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
 	}
 
-	public ExplosivApplicantPerson withFirstName(final String v) {
-		this.firstName = v;
+	public ExplosivApplicantPerson withFirstName(final String firstName) {
+		this.firstName = firstName;
 		return this;
 	}
 
@@ -71,12 +71,12 @@ public class ExplosivApplicantPerson {
 		return lastName;
 	}
 
-	public void setLastName(final String v) {
-		this.lastName = v;
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
-	public ExplosivApplicantPerson withLastName(final String v) {
-		this.lastName = v;
+	public ExplosivApplicantPerson withLastName(final String lastName) {
+		this.lastName = lastName;
 		return this;
 	}
 
@@ -84,12 +84,12 @@ public class ExplosivApplicantPerson {
 		return personnummer;
 	}
 
-	public void setPersonnummer(final String v) {
-		this.personnummer = v;
+	public void setPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 	}
 
-	public ExplosivApplicantPerson withPersonnummer(final String v) {
-		this.personnummer = v;
+	public ExplosivApplicantPerson withPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 		return this;
 	}
 
@@ -97,12 +97,12 @@ public class ExplosivApplicantPerson {
 		return email;
 	}
 
-	public void setEmail(final String v) {
-		this.email = v;
+	public void setEmail(final String email) {
+		this.email = email;
 	}
 
-	public ExplosivApplicantPerson withEmail(final String v) {
-		this.email = v;
+	public ExplosivApplicantPerson withEmail(final String email) {
+		this.email = email;
 		return this;
 	}
 
@@ -110,12 +110,12 @@ public class ExplosivApplicantPerson {
 		return phone;
 	}
 
-	public void setPhone(final String v) {
-		this.phone = v;
+	public void setPhone(final String phone) {
+		this.phone = phone;
 	}
 
-	public ExplosivApplicantPerson withPhone(final String v) {
-		this.phone = v;
+	public ExplosivApplicantPerson withPhone(final String phone) {
+		this.phone = phone;
 		return this;
 	}
 

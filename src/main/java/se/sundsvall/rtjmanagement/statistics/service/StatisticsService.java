@@ -115,7 +115,10 @@ public class StatisticsService {
 		var cursor = errand.getCreated();
 		var currentStatus = STATUS_REGISTERED;
 		for (final var transition : transitions) {
-			final var segmentEnd = transition.getChangedAt().isAfter(end) ? end : transition.getChangedAt();
+			var segmentEnd = transition.getChangedAt();
+			if (segmentEnd.isAfter(end)) {
+				segmentEnd = end;
+			}
 			if (segmentEnd.isAfter(cursor)) {
 				if (!isPaused(currentStatus)) {
 					total = total.plus(Duration.between(cursor, segmentEnd));

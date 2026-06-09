@@ -9,10 +9,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.rtjmanagement.conversation.api.model.CreateMessage;
 import se.sundsvall.rtjmanagement.conversation.integration.db.MessageRepository;
 import se.sundsvall.rtjmanagement.conversation.integration.db.model.MessageEntity;
+import se.sundsvall.rtjmanagement.shared.MessagePosted;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,13 +30,15 @@ class MessageServiceTest {
 
 	@Mock
 	private MessageRepository repositoryMock;
+	@Mock
+	private ApplicationEventPublisher eventPublisherMock;
 
 	@InjectMocks
 	private MessageService service;
 
 	@Test
-	void postPersistsMessageWithTimestamp() {
-		when(repositoryMock.save(any(MessageEntity.class))).thenReturn(MessageEntity.create().withId("m1"));
+	void postPersistsMessageWithTimestampAndPublishesEvent() {
+		when(repositoryMock.save(any(MessageEntity.class))).thenAnswer(invocation -> invocation.<MessageEntity>getArgument(0).withId("m1"));
 
 		final var id = service.post(ERRAND_ID, new CreateMessage("OUTBOUND", "Komplettera tack", "bsk1"));
 
@@ -46,6 +50,17 @@ class MessageServiceTest {
 		assertThat(captor.getValue().getBody()).isEqualTo("Komplettera tack");
 		assertThat(captor.getValue().getAuthor()).isEqualTo("bsk1");
 		assertThat(captor.getValue().getCreated()).isNotNull();
+
+		// Eventet bär metadata (messageId, direction, author) men ALDRIG meddelandetexten — den lever
+		// bara i tråden. Egensotningsmodulen aviserar sökanden innehållslöst vid OUTBOUND.
+		final var eventCaptor = ArgumentCaptor.forClass(MessagePosted.class);
+		verify(eventPublisherMock).publishEvent(eventCaptor.capture());
+		final var published = eventCaptor.getValue();
+		assertThat(published.messageId()).isEqualTo("m1");
+		assertThat(published.errandId()).isEqualTo(ERRAND_ID);
+		assertThat(published.direction()).isEqualTo("OUTBOUND");
+		assertThat(published.author()).isEqualTo("bsk1");
+		assertThat(published.timestamp()).isNotNull();
 	}
 
 	@Test

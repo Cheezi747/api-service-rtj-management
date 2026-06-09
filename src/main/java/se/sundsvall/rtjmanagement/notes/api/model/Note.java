@@ -46,48 +46,48 @@ public class Note {
 		return created;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setBody(final String v) {
-		this.body = v;
+	public void setBody(final String body) {
+		this.body = body;
 	}
 
-	public void setAuthor(final String v) {
-		this.author = v;
+	public void setAuthor(final String author) {
+		this.author = author;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public Note withId(final String v) {
-		this.id = v;
+	public Note withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public Note withErrandId(final String v) {
-		this.errandId = v;
+	public Note withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public Note withBody(final String v) {
-		this.body = v;
+	public Note withBody(final String body) {
+		this.body = body;
 		return this;
 	}
 
-	public Note withAuthor(final String v) {
-		this.author = v;
+	public Note withAuthor(final String author) {
+		this.author = author;
 		return this;
 	}
 
-	public Note withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public Note withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 

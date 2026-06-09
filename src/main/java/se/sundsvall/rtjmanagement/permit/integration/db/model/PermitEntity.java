@@ -94,86 +94,86 @@ public class PermitEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setPermitType(final String v) {
-		this.permitType = v;
+	public void setPermitType(final String permitType) {
+		this.permitType = permitType;
 	}
 
-	public void setValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public void setValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 	}
 
-	public void setValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public void setValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 	}
 
-	public void setConditions(final String v) {
-		this.conditions = v;
+	public void setConditions(final String conditions) {
+		this.conditions = conditions;
 	}
 
-	public void setStatus(final String v) {
-		this.status = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public PermitEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public PermitEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public PermitEntity withErrandId(final String v) {
-		this.errandId = v;
+	public PermitEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public PermitEntity withPermitType(final String v) {
-		this.permitType = v;
+	public PermitEntity withPermitType(final String permitType) {
+		this.permitType = permitType;
 		return this;
 	}
 
-	public PermitEntity withValidFrom(final LocalDate v) {
-		this.validFrom = v;
+	public PermitEntity withValidFrom(final LocalDate validFrom) {
+		this.validFrom = validFrom;
 		return this;
 	}
 
-	public PermitEntity withValidUntil(final LocalDate v) {
-		this.validUntil = v;
+	public PermitEntity withValidUntil(final LocalDate validUntil) {
+		this.validUntil = validUntil;
 		return this;
 	}
 
-	public PermitEntity withConditions(final String v) {
-		this.conditions = v;
+	public PermitEntity withConditions(final String conditions) {
+		this.conditions = conditions;
 		return this;
 	}
 
-	public PermitEntity withStatus(final String v) {
-		this.status = v;
+	public PermitEntity withStatus(final String status) {
+		this.status = status;
 		return this;
 	}
 
-	public PermitEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public PermitEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public PermitEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public PermitEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

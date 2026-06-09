@@ -41,12 +41,12 @@ public class ExplosivVaraVerificationResult {
 		return outcome;
 	}
 
-	public void setOutcome(final String v) {
-		this.outcome = v;
+	public void setOutcome(final String outcome) {
+		this.outcome = outcome;
 	}
 
-	public ExplosivVaraVerificationResult withOutcome(final String v) {
-		this.outcome = v;
+	public ExplosivVaraVerificationResult withOutcome(final String outcome) {
+		this.outcome = outcome;
 		return this;
 	}
 
@@ -54,12 +54,12 @@ public class ExplosivVaraVerificationResult {
 		return bilagaPresent;
 	}
 
-	public void setBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public void setBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 	}
 
-	public ExplosivVaraVerificationResult withBilagaPresent(final Boolean v) {
-		this.bilagaPresent = v;
+	public ExplosivVaraVerificationResult withBilagaPresent(final Boolean bilagaPresent) {
+		this.bilagaPresent = bilagaPresent;
 		return this;
 	}
 
@@ -67,12 +67,12 @@ public class ExplosivVaraVerificationResult {
 		return productsPresent;
 	}
 
-	public void setProductsPresent(final Boolean v) {
-		this.productsPresent = v;
+	public void setProductsPresent(final Boolean productsPresent) {
+		this.productsPresent = productsPresent;
 	}
 
-	public ExplosivVaraVerificationResult withProductsPresent(final Boolean v) {
-		this.productsPresent = v;
+	public ExplosivVaraVerificationResult withProductsPresent(final Boolean productsPresent) {
+		this.productsPresent = productsPresent;
 		return this;
 	}
 
@@ -80,12 +80,12 @@ public class ExplosivVaraVerificationResult {
 		return supplementReason;
 	}
 
-	public void setSupplementReason(final String v) {
-		this.supplementReason = v;
+	public void setSupplementReason(final String supplementReason) {
+		this.supplementReason = supplementReason;
 	}
 
-	public ExplosivVaraVerificationResult withSupplementReason(final String v) {
-		this.supplementReason = v;
+	public ExplosivVaraVerificationResult withSupplementReason(final String supplementReason) {
+		this.supplementReason = supplementReason;
 		return this;
 	}
 
@@ -93,12 +93,12 @@ public class ExplosivVaraVerificationResult {
 		return decisionDescription;
 	}
 
-	public void setDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public void setDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 	}
 
-	public ExplosivVaraVerificationResult withDecisionDescription(final String v) {
-		this.decisionDescription = v;
+	public ExplosivVaraVerificationResult withDecisionDescription(final String decisionDescription) {
+		this.decisionDescription = decisionDescription;
 		return this;
 	}
 

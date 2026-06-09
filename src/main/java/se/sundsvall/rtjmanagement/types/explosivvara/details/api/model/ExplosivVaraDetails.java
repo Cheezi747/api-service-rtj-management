@@ -67,12 +67,12 @@ public class ExplosivVaraDetails {
 		return typAvHantering;
 	}
 
-	public void setTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public void setTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 	}
 
-	public ExplosivVaraDetails withTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public ExplosivVaraDetails withTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 		return this;
 	}
 
@@ -80,12 +80,12 @@ public class ExplosivVaraDetails {
 		return anlaggningTyp;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public ExplosivVaraDetails withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public ExplosivVaraDetails withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
@@ -93,12 +93,12 @@ public class ExplosivVaraDetails {
 		return isProxy;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public ExplosivVaraDetails withProxy(final boolean v) {
-		this.isProxy = v;
+	public ExplosivVaraDetails withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
@@ -106,12 +106,12 @@ public class ExplosivVaraDetails {
 		return fastighetsbeteckning;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public ExplosivVaraDetails withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public ExplosivVaraDetails withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
@@ -119,12 +119,12 @@ public class ExplosivVaraDetails {
 		return handlingLocationAddress;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public ExplosivVaraDetails withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public ExplosivVaraDetails withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
@@ -132,12 +132,12 @@ public class ExplosivVaraDetails {
 		return handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public ExplosivVaraDetails withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public ExplosivVaraDetails withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
@@ -145,12 +145,12 @@ public class ExplosivVaraDetails {
 		return handlingLocationCity;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
-	public ExplosivVaraDetails withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public ExplosivVaraDetails withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
@@ -158,12 +158,12 @@ public class ExplosivVaraDetails {
 		return created;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public ExplosivVaraDetails withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public ExplosivVaraDetails withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -171,12 +171,12 @@ public class ExplosivVaraDetails {
 		return modified;
 	}
 
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
 	}
 
-	public ExplosivVaraDetails withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public ExplosivVaraDetails withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

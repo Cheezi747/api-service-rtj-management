@@ -37,12 +37,12 @@ public class ApplicantResponsiblePerson {
 		return firstName;
 	}
 
-	public void setFirstName(final String v) {
-		this.firstName = v;
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
 	}
 
-	public ApplicantResponsiblePerson withFirstName(final String v) {
-		this.firstName = v;
+	public ApplicantResponsiblePerson withFirstName(final String firstName) {
+		this.firstName = firstName;
 		return this;
 	}
 
@@ -50,12 +50,12 @@ public class ApplicantResponsiblePerson {
 		return lastName;
 	}
 
-	public void setLastName(final String v) {
-		this.lastName = v;
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
-	public ApplicantResponsiblePerson withLastName(final String v) {
-		this.lastName = v;
+	public ApplicantResponsiblePerson withLastName(final String lastName) {
+		this.lastName = lastName;
 		return this;
 	}
 
@@ -63,12 +63,12 @@ public class ApplicantResponsiblePerson {
 		return personnummer;
 	}
 
-	public void setPersonnummer(final String v) {
-		this.personnummer = v;
+	public void setPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 	}
 
-	public ApplicantResponsiblePerson withPersonnummer(final String v) {
-		this.personnummer = v;
+	public ApplicantResponsiblePerson withPersonnummer(final String personnummer) {
+		this.personnummer = personnummer;
 		return this;
 	}
 
@@ -76,12 +76,12 @@ public class ApplicantResponsiblePerson {
 		return email;
 	}
 
-	public void setEmail(final String v) {
-		this.email = v;
+	public void setEmail(final String email) {
+		this.email = email;
 	}
 
-	public ApplicantResponsiblePerson withEmail(final String v) {
-		this.email = v;
+	public ApplicantResponsiblePerson withEmail(final String email) {
+		this.email = email;
 		return this;
 	}
 
@@ -89,12 +89,12 @@ public class ApplicantResponsiblePerson {
 		return phone;
 	}
 
-	public void setPhone(final String v) {
-		this.phone = v;
+	public void setPhone(final String phone) {
+		this.phone = phone;
 	}
 
-	public ApplicantResponsiblePerson withPhone(final String v) {
-		this.phone = v;
+	public ApplicantResponsiblePerson withPhone(final String phone) {
+		this.phone = phone;
 		return this;
 	}
 

@@ -108,104 +108,104 @@ public class BrandfarligVaraDetailsEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final Long v) {
-		this.id = v;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public void setVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public BrandfarligVaraDetailsEntity withId(final Long v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public BrandfarligVaraDetailsEntity withId(final Long id) {
+		this.id = id;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withErrandId(final String v) {
-		this.errandId = v;
+	public BrandfarligVaraDetailsEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public BrandfarligVaraDetailsEntity withVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public BrandfarligVaraDetailsEntity withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withProxy(final boolean v) {
-		this.isProxy = v;
+	public BrandfarligVaraDetailsEntity withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public BrandfarligVaraDetailsEntity withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public BrandfarligVaraDetailsEntity withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public BrandfarligVaraDetailsEntity withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public BrandfarligVaraDetailsEntity withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public BrandfarligVaraDetailsEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public BrandfarligVaraDetailsEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public BrandfarligVaraDetailsEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 

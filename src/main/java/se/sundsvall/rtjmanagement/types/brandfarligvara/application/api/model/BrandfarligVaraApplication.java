@@ -128,12 +128,12 @@ public class BrandfarligVaraApplication {
 		return title;
 	}
 
-	public void setTitle(final String v) {
-		this.title = v;
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
-	public BrandfarligVaraApplication withTitle(final String v) {
-		this.title = v;
+	public BrandfarligVaraApplication withTitle(final String title) {
+		this.title = title;
 		return this;
 	}
 
@@ -141,12 +141,12 @@ public class BrandfarligVaraApplication {
 		return description;
 	}
 
-	public void setDescription(final String v) {
-		this.description = v;
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
-	public BrandfarligVaraApplication withDescription(final String v) {
-		this.description = v;
+	public BrandfarligVaraApplication withDescription(final String description) {
+		this.description = description;
 		return this;
 	}
 
@@ -154,12 +154,12 @@ public class BrandfarligVaraApplication {
 		return priority;
 	}
 
-	public void setPriority(final String v) {
-		this.priority = v;
+	public void setPriority(final String priority) {
+		this.priority = priority;
 	}
 
-	public BrandfarligVaraApplication withPriority(final String v) {
-		this.priority = v;
+	public BrandfarligVaraApplication withPriority(final String priority) {
+		this.priority = priority;
 		return this;
 	}
 
@@ -167,12 +167,12 @@ public class BrandfarligVaraApplication {
 		return reporterUserId;
 	}
 
-	public void setReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public void setReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 	}
 
-	public BrandfarligVaraApplication withReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public BrandfarligVaraApplication withReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 		return this;
 	}
 
@@ -180,12 +180,12 @@ public class BrandfarligVaraApplication {
 		return assignedUserId;
 	}
 
-	public void setAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public void setAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 	}
 
-	public BrandfarligVaraApplication withAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public BrandfarligVaraApplication withAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 		return this;
 	}
 
@@ -193,12 +193,12 @@ public class BrandfarligVaraApplication {
 		return applicantEmail;
 	}
 
-	public void setApplicantEmail(final String v) {
-		this.applicantEmail = v;
+	public void setApplicantEmail(final String applicantEmail) {
+		this.applicantEmail = applicantEmail;
 	}
 
-	public BrandfarligVaraApplication withApplicantEmail(final String v) {
-		this.applicantEmail = v;
+	public BrandfarligVaraApplication withApplicantEmail(final String applicantEmail) {
+		this.applicantEmail = applicantEmail;
 		return this;
 	}
 
@@ -206,12 +206,12 @@ public class BrandfarligVaraApplication {
 		return organizationNumber;
 	}
 
-	public void setOrganizationNumber(final String v) {
-		this.organizationNumber = v;
+	public void setOrganizationNumber(final String organizationNumber) {
+		this.organizationNumber = organizationNumber;
 	}
 
-	public BrandfarligVaraApplication withOrganizationNumber(final String v) {
-		this.organizationNumber = v;
+	public BrandfarligVaraApplication withOrganizationNumber(final String organizationNumber) {
+		this.organizationNumber = organizationNumber;
 		return this;
 	}
 
@@ -219,12 +219,12 @@ public class BrandfarligVaraApplication {
 		return companyName;
 	}
 
-	public void setCompanyName(final String v) {
-		this.companyName = v;
+	public void setCompanyName(final String companyName) {
+		this.companyName = companyName;
 	}
 
-	public BrandfarligVaraApplication withCompanyName(final String v) {
-		this.companyName = v;
+	public BrandfarligVaraApplication withCompanyName(final String companyName) {
+		this.companyName = companyName;
 		return this;
 	}
 
@@ -232,12 +232,12 @@ public class BrandfarligVaraApplication {
 		return companyAddress;
 	}
 
-	public void setCompanyAddress(final String v) {
-		this.companyAddress = v;
+	public void setCompanyAddress(final String companyAddress) {
+		this.companyAddress = companyAddress;
 	}
 
-	public BrandfarligVaraApplication withCompanyAddress(final String v) {
-		this.companyAddress = v;
+	public BrandfarligVaraApplication withCompanyAddress(final String companyAddress) {
+		this.companyAddress = companyAddress;
 		return this;
 	}
 
@@ -245,12 +245,12 @@ public class BrandfarligVaraApplication {
 		return companyZipCode;
 	}
 
-	public void setCompanyZipCode(final String v) {
-		this.companyZipCode = v;
+	public void setCompanyZipCode(final String companyZipCode) {
+		this.companyZipCode = companyZipCode;
 	}
 
-	public BrandfarligVaraApplication withCompanyZipCode(final String v) {
-		this.companyZipCode = v;
+	public BrandfarligVaraApplication withCompanyZipCode(final String companyZipCode) {
+		this.companyZipCode = companyZipCode;
 		return this;
 	}
 
@@ -258,12 +258,12 @@ public class BrandfarligVaraApplication {
 		return companyCity;
 	}
 
-	public void setCompanyCity(final String v) {
-		this.companyCity = v;
+	public void setCompanyCity(final String companyCity) {
+		this.companyCity = companyCity;
 	}
 
-	public BrandfarligVaraApplication withCompanyCity(final String v) {
-		this.companyCity = v;
+	public BrandfarligVaraApplication withCompanyCity(final String companyCity) {
+		this.companyCity = companyCity;
 		return this;
 	}
 
@@ -271,12 +271,12 @@ public class BrandfarligVaraApplication {
 		return contactPersonName;
 	}
 
-	public void setContactPersonName(final String v) {
-		this.contactPersonName = v;
+	public void setContactPersonName(final String contactPersonName) {
+		this.contactPersonName = contactPersonName;
 	}
 
-	public BrandfarligVaraApplication withContactPersonName(final String v) {
-		this.contactPersonName = v;
+	public BrandfarligVaraApplication withContactPersonName(final String contactPersonName) {
+		this.contactPersonName = contactPersonName;
 		return this;
 	}
 
@@ -284,12 +284,12 @@ public class BrandfarligVaraApplication {
 		return contactPersonEmail;
 	}
 
-	public void setContactPersonEmail(final String v) {
-		this.contactPersonEmail = v;
+	public void setContactPersonEmail(final String contactPersonEmail) {
+		this.contactPersonEmail = contactPersonEmail;
 	}
 
-	public BrandfarligVaraApplication withContactPersonEmail(final String v) {
-		this.contactPersonEmail = v;
+	public BrandfarligVaraApplication withContactPersonEmail(final String contactPersonEmail) {
+		this.contactPersonEmail = contactPersonEmail;
 		return this;
 	}
 
@@ -297,12 +297,12 @@ public class BrandfarligVaraApplication {
 		return contactPersonPhone;
 	}
 
-	public void setContactPersonPhone(final String v) {
-		this.contactPersonPhone = v;
+	public void setContactPersonPhone(final String contactPersonPhone) {
+		this.contactPersonPhone = contactPersonPhone;
 	}
 
-	public BrandfarligVaraApplication withContactPersonPhone(final String v) {
-		this.contactPersonPhone = v;
+	public BrandfarligVaraApplication withContactPersonPhone(final String contactPersonPhone) {
+		this.contactPersonPhone = contactPersonPhone;
 		return this;
 	}
 
@@ -310,12 +310,12 @@ public class BrandfarligVaraApplication {
 		return verksamhetstyp;
 	}
 
-	public void setVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public void setVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 	}
 
-	public BrandfarligVaraApplication withVerksamhetstyp(final String v) {
-		this.verksamhetstyp = v;
+	public BrandfarligVaraApplication withVerksamhetstyp(final String verksamhetstyp) {
+		this.verksamhetstyp = verksamhetstyp;
 		return this;
 	}
 
@@ -323,12 +323,12 @@ public class BrandfarligVaraApplication {
 		return anlaggningTyp;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public BrandfarligVaraApplication withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public BrandfarligVaraApplication withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
@@ -336,12 +336,12 @@ public class BrandfarligVaraApplication {
 		return isProxy;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public BrandfarligVaraApplication withProxy(final boolean v) {
-		this.isProxy = v;
+	public BrandfarligVaraApplication withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
@@ -349,12 +349,12 @@ public class BrandfarligVaraApplication {
 		return fastighetsbeteckning;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public BrandfarligVaraApplication withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public BrandfarligVaraApplication withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
@@ -362,12 +362,12 @@ public class BrandfarligVaraApplication {
 		return handlingLocationAddress;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public BrandfarligVaraApplication withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public BrandfarligVaraApplication withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
@@ -375,12 +375,12 @@ public class BrandfarligVaraApplication {
 		return handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public BrandfarligVaraApplication withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public BrandfarligVaraApplication withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
@@ -388,12 +388,12 @@ public class BrandfarligVaraApplication {
 		return handlingLocationCity;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
-	public BrandfarligVaraApplication withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public BrandfarligVaraApplication withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
@@ -401,12 +401,12 @@ public class BrandfarligVaraApplication {
 		return products;
 	}
 
-	public void setProducts(final List<HazardousGoodsProduct> v) {
-		this.products = v;
+	public void setProducts(final List<HazardousGoodsProduct> products) {
+		this.products = products;
 	}
 
-	public BrandfarligVaraApplication withProducts(final List<HazardousGoodsProduct> v) {
-		this.products = v;
+	public BrandfarligVaraApplication withProducts(final List<HazardousGoodsProduct> products) {
+		this.products = products;
 		return this;
 	}
 
@@ -414,12 +414,12 @@ public class BrandfarligVaraApplication {
 		return responsiblePersons;
 	}
 
-	public void setResponsiblePersons(final List<ApplicantResponsiblePerson> v) {
-		this.responsiblePersons = v;
+	public void setResponsiblePersons(final List<ApplicantResponsiblePerson> responsiblePersons) {
+		this.responsiblePersons = responsiblePersons;
 	}
 
-	public BrandfarligVaraApplication withResponsiblePersons(final List<ApplicantResponsiblePerson> v) {
-		this.responsiblePersons = v;
+	public BrandfarligVaraApplication withResponsiblePersons(final List<ApplicantResponsiblePerson> responsiblePersons) {
+		this.responsiblePersons = responsiblePersons;
 		return this;
 	}
 

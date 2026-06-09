@@ -136,6 +136,41 @@ class EgensotningApplicationServiceTest {
 	}
 
 	@Test
+	void submitWithBlankTitleAndContactsUsesDefaultTitleAndNullChannels() {
+		// Blanka valfria fält: titel → standardtitel, blank e-post/telefon → inga kontaktkanaler (null).
+		final var application = EgensotningApplication.create();
+		application.setTitle("   ");
+		application.setApplicantEmail("   ");
+		application.setApplicantPhone("   ");
+		application.setPersonnummer("198501010000");
+		application.setFastighetsbeteckning("Sundsvall Fast 1:1");
+		when(errandServiceMock.createErrand(any(), any(), any())).thenReturn(ERRAND_ID);
+
+		service.submit(MUNICIPALITY_ID, NAMESPACE, application, protokoll(), intyg());
+
+		final var errandCaptor = ArgumentCaptor.forClass(Errand.class);
+		verify(errandServiceMock).createErrand(eq(MUNICIPALITY_ID), eq(NAMESPACE), errandCaptor.capture());
+		assertThat(errandCaptor.getValue().getTitle()).isEqualTo("Ansökan om egensotning");
+
+		final var stakeholderCaptor = ArgumentCaptor.forClass(Stakeholder.class);
+		verify(stakeholderServiceMock).create(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(ERRAND_ID), stakeholderCaptor.capture());
+		assertThat(stakeholderCaptor.getValue().getContactChannels()).isNull();
+	}
+
+	@Test
+	void submitWithExplicitTitleKeepsIt() {
+		final var application = sampleApplication();
+		application.setTitle("Egen rubrik");
+		when(errandServiceMock.createErrand(any(), any(), any())).thenReturn(ERRAND_ID);
+
+		service.submit(MUNICIPALITY_ID, NAMESPACE, application, protokoll(), intyg());
+
+		final var errandCaptor = ArgumentCaptor.forClass(Errand.class);
+		verify(errandServiceMock).createErrand(eq(MUNICIPALITY_ID), eq(NAMESPACE), errandCaptor.capture());
+		assertThat(errandCaptor.getValue().getTitle()).isEqualTo("Egen rubrik");
+	}
+
+	@Test
 	void submitForPropertyOutsideAreaIsRejectedBeforeAnythingIsCreated() {
 		doThrow(Problem.valueOf(BAD_REQUEST, "Fastigheten ligger i fel område")).when(propertyValidatorMock).assertValid(any());
 

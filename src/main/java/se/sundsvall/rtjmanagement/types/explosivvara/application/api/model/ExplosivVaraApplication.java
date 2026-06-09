@@ -128,12 +128,12 @@ public class ExplosivVaraApplication {
 		return title;
 	}
 
-	public void setTitle(final String v) {
-		this.title = v;
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
-	public ExplosivVaraApplication withTitle(final String v) {
-		this.title = v;
+	public ExplosivVaraApplication withTitle(final String title) {
+		this.title = title;
 		return this;
 	}
 
@@ -141,12 +141,12 @@ public class ExplosivVaraApplication {
 		return description;
 	}
 
-	public void setDescription(final String v) {
-		this.description = v;
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
-	public ExplosivVaraApplication withDescription(final String v) {
-		this.description = v;
+	public ExplosivVaraApplication withDescription(final String description) {
+		this.description = description;
 		return this;
 	}
 
@@ -154,12 +154,12 @@ public class ExplosivVaraApplication {
 		return priority;
 	}
 
-	public void setPriority(final String v) {
-		this.priority = v;
+	public void setPriority(final String priority) {
+		this.priority = priority;
 	}
 
-	public ExplosivVaraApplication withPriority(final String v) {
-		this.priority = v;
+	public ExplosivVaraApplication withPriority(final String priority) {
+		this.priority = priority;
 		return this;
 	}
 
@@ -167,12 +167,12 @@ public class ExplosivVaraApplication {
 		return reporterUserId;
 	}
 
-	public void setReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public void setReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 	}
 
-	public ExplosivVaraApplication withReporterUserId(final String v) {
-		this.reporterUserId = v;
+	public ExplosivVaraApplication withReporterUserId(final String reporterUserId) {
+		this.reporterUserId = reporterUserId;
 		return this;
 	}
 
@@ -180,12 +180,12 @@ public class ExplosivVaraApplication {
 		return assignedUserId;
 	}
 
-	public void setAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public void setAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 	}
 
-	public ExplosivVaraApplication withAssignedUserId(final String v) {
-		this.assignedUserId = v;
+	public ExplosivVaraApplication withAssignedUserId(final String assignedUserId) {
+		this.assignedUserId = assignedUserId;
 		return this;
 	}
 
@@ -193,12 +193,12 @@ public class ExplosivVaraApplication {
 		return applicantEmail;
 	}
 
-	public void setApplicantEmail(final String v) {
-		this.applicantEmail = v;
+	public void setApplicantEmail(final String applicantEmail) {
+		this.applicantEmail = applicantEmail;
 	}
 
-	public ExplosivVaraApplication withApplicantEmail(final String v) {
-		this.applicantEmail = v;
+	public ExplosivVaraApplication withApplicantEmail(final String applicantEmail) {
+		this.applicantEmail = applicantEmail;
 		return this;
 	}
 
@@ -206,12 +206,12 @@ public class ExplosivVaraApplication {
 		return organizationNumber;
 	}
 
-	public void setOrganizationNumber(final String v) {
-		this.organizationNumber = v;
+	public void setOrganizationNumber(final String organizationNumber) {
+		this.organizationNumber = organizationNumber;
 	}
 
-	public ExplosivVaraApplication withOrganizationNumber(final String v) {
-		this.organizationNumber = v;
+	public ExplosivVaraApplication withOrganizationNumber(final String organizationNumber) {
+		this.organizationNumber = organizationNumber;
 		return this;
 	}
 
@@ -219,12 +219,12 @@ public class ExplosivVaraApplication {
 		return companyName;
 	}
 
-	public void setCompanyName(final String v) {
-		this.companyName = v;
+	public void setCompanyName(final String companyName) {
+		this.companyName = companyName;
 	}
 
-	public ExplosivVaraApplication withCompanyName(final String v) {
-		this.companyName = v;
+	public ExplosivVaraApplication withCompanyName(final String companyName) {
+		this.companyName = companyName;
 		return this;
 	}
 
@@ -232,12 +232,12 @@ public class ExplosivVaraApplication {
 		return companyAddress;
 	}
 
-	public void setCompanyAddress(final String v) {
-		this.companyAddress = v;
+	public void setCompanyAddress(final String companyAddress) {
+		this.companyAddress = companyAddress;
 	}
 
-	public ExplosivVaraApplication withCompanyAddress(final String v) {
-		this.companyAddress = v;
+	public ExplosivVaraApplication withCompanyAddress(final String companyAddress) {
+		this.companyAddress = companyAddress;
 		return this;
 	}
 
@@ -245,12 +245,12 @@ public class ExplosivVaraApplication {
 		return companyZipCode;
 	}
 
-	public void setCompanyZipCode(final String v) {
-		this.companyZipCode = v;
+	public void setCompanyZipCode(final String companyZipCode) {
+		this.companyZipCode = companyZipCode;
 	}
 
-	public ExplosivVaraApplication withCompanyZipCode(final String v) {
-		this.companyZipCode = v;
+	public ExplosivVaraApplication withCompanyZipCode(final String companyZipCode) {
+		this.companyZipCode = companyZipCode;
 		return this;
 	}
 
@@ -258,12 +258,12 @@ public class ExplosivVaraApplication {
 		return companyCity;
 	}
 
-	public void setCompanyCity(final String v) {
-		this.companyCity = v;
+	public void setCompanyCity(final String companyCity) {
+		this.companyCity = companyCity;
 	}
 
-	public ExplosivVaraApplication withCompanyCity(final String v) {
-		this.companyCity = v;
+	public ExplosivVaraApplication withCompanyCity(final String companyCity) {
+		this.companyCity = companyCity;
 		return this;
 	}
 
@@ -271,12 +271,12 @@ public class ExplosivVaraApplication {
 		return contactPersonName;
 	}
 
-	public void setContactPersonName(final String v) {
-		this.contactPersonName = v;
+	public void setContactPersonName(final String contactPersonName) {
+		this.contactPersonName = contactPersonName;
 	}
 
-	public ExplosivVaraApplication withContactPersonName(final String v) {
-		this.contactPersonName = v;
+	public ExplosivVaraApplication withContactPersonName(final String contactPersonName) {
+		this.contactPersonName = contactPersonName;
 		return this;
 	}
 
@@ -284,12 +284,12 @@ public class ExplosivVaraApplication {
 		return contactPersonEmail;
 	}
 
-	public void setContactPersonEmail(final String v) {
-		this.contactPersonEmail = v;
+	public void setContactPersonEmail(final String contactPersonEmail) {
+		this.contactPersonEmail = contactPersonEmail;
 	}
 
-	public ExplosivVaraApplication withContactPersonEmail(final String v) {
-		this.contactPersonEmail = v;
+	public ExplosivVaraApplication withContactPersonEmail(final String contactPersonEmail) {
+		this.contactPersonEmail = contactPersonEmail;
 		return this;
 	}
 
@@ -297,12 +297,12 @@ public class ExplosivVaraApplication {
 		return contactPersonPhone;
 	}
 
-	public void setContactPersonPhone(final String v) {
-		this.contactPersonPhone = v;
+	public void setContactPersonPhone(final String contactPersonPhone) {
+		this.contactPersonPhone = contactPersonPhone;
 	}
 
-	public ExplosivVaraApplication withContactPersonPhone(final String v) {
-		this.contactPersonPhone = v;
+	public ExplosivVaraApplication withContactPersonPhone(final String contactPersonPhone) {
+		this.contactPersonPhone = contactPersonPhone;
 		return this;
 	}
 
@@ -310,12 +310,12 @@ public class ExplosivVaraApplication {
 		return typAvHantering;
 	}
 
-	public void setTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public void setTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 	}
 
-	public ExplosivVaraApplication withTypAvHantering(final String v) {
-		this.typAvHantering = v;
+	public ExplosivVaraApplication withTypAvHantering(final String typAvHantering) {
+		this.typAvHantering = typAvHantering;
 		return this;
 	}
 
@@ -323,12 +323,12 @@ public class ExplosivVaraApplication {
 		return anlaggningTyp;
 	}
 
-	public void setAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public void setAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 	}
 
-	public ExplosivVaraApplication withAnlaggningTyp(final String v) {
-		this.anlaggningTyp = v;
+	public ExplosivVaraApplication withAnlaggningTyp(final String anlaggningTyp) {
+		this.anlaggningTyp = anlaggningTyp;
 		return this;
 	}
 
@@ -336,12 +336,12 @@ public class ExplosivVaraApplication {
 		return isProxy;
 	}
 
-	public void setProxy(final boolean v) {
-		this.isProxy = v;
+	public void setProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 	}
 
-	public ExplosivVaraApplication withProxy(final boolean v) {
-		this.isProxy = v;
+	public ExplosivVaraApplication withProxy(final boolean isProxy) {
+		this.isProxy = isProxy;
 		return this;
 	}
 
@@ -349,12 +349,12 @@ public class ExplosivVaraApplication {
 		return fastighetsbeteckning;
 	}
 
-	public void setFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public void setFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 	}
 
-	public ExplosivVaraApplication withFastighetsbeteckning(final String v) {
-		this.fastighetsbeteckning = v;
+	public ExplosivVaraApplication withFastighetsbeteckning(final String fastighetsbeteckning) {
+		this.fastighetsbeteckning = fastighetsbeteckning;
 		return this;
 	}
 
@@ -362,12 +362,12 @@ public class ExplosivVaraApplication {
 		return handlingLocationAddress;
 	}
 
-	public void setHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public void setHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 	}
 
-	public ExplosivVaraApplication withHandlingLocationAddress(final String v) {
-		this.handlingLocationAddress = v;
+	public ExplosivVaraApplication withHandlingLocationAddress(final String handlingLocationAddress) {
+		this.handlingLocationAddress = handlingLocationAddress;
 		return this;
 	}
 
@@ -375,12 +375,12 @@ public class ExplosivVaraApplication {
 		return handlingLocationZipCode;
 	}
 
-	public void setHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public void setHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 	}
 
-	public ExplosivVaraApplication withHandlingLocationZipCode(final String v) {
-		this.handlingLocationZipCode = v;
+	public ExplosivVaraApplication withHandlingLocationZipCode(final String handlingLocationZipCode) {
+		this.handlingLocationZipCode = handlingLocationZipCode;
 		return this;
 	}
 
@@ -388,12 +388,12 @@ public class ExplosivVaraApplication {
 		return handlingLocationCity;
 	}
 
-	public void setHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public void setHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 	}
 
-	public ExplosivVaraApplication withHandlingLocationCity(final String v) {
-		this.handlingLocationCity = v;
+	public ExplosivVaraApplication withHandlingLocationCity(final String handlingLocationCity) {
+		this.handlingLocationCity = handlingLocationCity;
 		return this;
 	}
 
@@ -401,12 +401,12 @@ public class ExplosivVaraApplication {
 		return products;
 	}
 
-	public void setProducts(final List<ExplosivGoodsProduct> v) {
-		this.products = v;
+	public void setProducts(final List<ExplosivGoodsProduct> products) {
+		this.products = products;
 	}
 
-	public ExplosivVaraApplication withProducts(final List<ExplosivGoodsProduct> v) {
-		this.products = v;
+	public ExplosivVaraApplication withProducts(final List<ExplosivGoodsProduct> products) {
+		this.products = products;
 		return this;
 	}
 
@@ -414,12 +414,12 @@ public class ExplosivVaraApplication {
 		return persons;
 	}
 
-	public void setPersons(final List<ExplosivApplicantPerson> v) {
-		this.persons = v;
+	public void setPersons(final List<ExplosivApplicantPerson> persons) {
+		this.persons = persons;
 	}
 
-	public ExplosivVaraApplication withPersons(final List<ExplosivApplicantPerson> v) {
-		this.persons = v;
+	public ExplosivVaraApplication withPersons(final List<ExplosivApplicantPerson> persons) {
+		this.persons = persons;
 		return this;
 	}
 

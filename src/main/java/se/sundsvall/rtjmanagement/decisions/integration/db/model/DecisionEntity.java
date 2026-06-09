@@ -80,66 +80,66 @@ public class DecisionEntity {
 		return created;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setDecisionType(final String v) {
-		this.decisionType = v;
+	public void setDecisionType(final String decisionType) {
+		this.decisionType = decisionType;
 	}
 
-	public void setValue(final String v) {
-		this.value = v;
+	public void setValue(final String value) {
+		this.value = value;
 	}
 
-	public void setDescription(final String v) {
-		this.description = v;
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
-	public void setCreatedBy(final String v) {
-		this.createdBy = v;
+	public void setCreatedBy(final String createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public DecisionEntity withId(final String v) {
-		this.id = v;
+	public DecisionEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public DecisionEntity withErrandId(final String v) {
-		this.errandId = v;
+	public DecisionEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public DecisionEntity withDecisionType(final String v) {
-		this.decisionType = v;
+	public DecisionEntity withDecisionType(final String decisionType) {
+		this.decisionType = decisionType;
 		return this;
 	}
 
-	public DecisionEntity withValue(final String v) {
-		this.value = v;
+	public DecisionEntity withValue(final String value) {
+		this.value = value;
 		return this;
 	}
 
-	public DecisionEntity withDescription(final String v) {
-		this.description = v;
+	public DecisionEntity withDescription(final String description) {
+		this.description = description;
 		return this;
 	}
 
-	public DecisionEntity withCreatedBy(final String v) {
-		this.createdBy = v;
+	public DecisionEntity withCreatedBy(final String createdBy) {
+		this.createdBy = createdBy;
 		return this;
 	}
 
-	public DecisionEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public DecisionEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 

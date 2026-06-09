@@ -101,95 +101,95 @@ public class RemissEntity implements Auditable {
 		return modified;
 	}
 
-	public void setId(final String v) {
-		this.id = v;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setErrandId(final String v) {
-		this.errandId = v;
+	public void setErrandId(final String errandId) {
+		this.errandId = errandId;
 	}
 
-	public void setInstans(final String v) {
-		this.instans = v;
+	public void setInstans(final String instans) {
+		this.instans = instans;
 	}
 
-	public void setRecipient(final String v) {
-		this.recipient = v;
+	public void setRecipient(final String recipient) {
+		this.recipient = recipient;
 	}
 
-	public void setSentAt(final LocalDate v) {
-		this.sentAt = v;
+	public void setSentAt(final LocalDate sentAt) {
+		this.sentAt = sentAt;
 	}
 
-	public void setDueAt(final LocalDate v) {
-		this.dueAt = v;
+	public void setDueAt(final LocalDate dueAt) {
+		this.dueAt = dueAt;
 	}
 
-	public void setResponseText(final String v) {
-		this.responseText = v;
+	public void setResponseText(final String responseText) {
+		this.responseText = responseText;
 	}
 
-	public void setStatus(final String v) {
-		this.status = v;
-	}
-
-	@Override
-	public void setCreated(final OffsetDateTime v) {
-		this.created = v;
+	public void setStatus(final String status) {
+		this.status = status;
 	}
 
 	@Override
-	public void setModified(final OffsetDateTime v) {
-		this.modified = v;
+	public void setCreated(final OffsetDateTime created) {
+		this.created = created;
 	}
 
-	public RemissEntity withId(final String v) {
-		this.id = v;
+	@Override
+	public void setModified(final OffsetDateTime modified) {
+		this.modified = modified;
+	}
+
+	public RemissEntity withId(final String id) {
+		this.id = id;
 		return this;
 	}
 
-	public RemissEntity withErrandId(final String v) {
-		this.errandId = v;
+	public RemissEntity withErrandId(final String errandId) {
+		this.errandId = errandId;
 		return this;
 	}
 
-	public RemissEntity withInstans(final String v) {
-		this.instans = v;
+	public RemissEntity withInstans(final String instans) {
+		this.instans = instans;
 		return this;
 	}
 
-	public RemissEntity withRecipient(final String v) {
-		this.recipient = v;
+	public RemissEntity withRecipient(final String recipient) {
+		this.recipient = recipient;
 		return this;
 	}
 
-	public RemissEntity withSentAt(final LocalDate v) {
-		this.sentAt = v;
+	public RemissEntity withSentAt(final LocalDate sentAt) {
+		this.sentAt = sentAt;
 		return this;
 	}
 
-	public RemissEntity withDueAt(final LocalDate v) {
-		this.dueAt = v;
+	public RemissEntity withDueAt(final LocalDate dueAt) {
+		this.dueAt = dueAt;
 		return this;
 	}
 
-	public RemissEntity withResponseText(final String v) {
-		this.responseText = v;
+	public RemissEntity withResponseText(final String responseText) {
+		this.responseText = responseText;
 		return this;
 	}
 
-	public RemissEntity withStatus(final String v) {
-		this.status = v;
+	public RemissEntity withStatus(final String status) {
+		this.status = status;
 		return this;
 	}
 
-	public RemissEntity withCreated(final OffsetDateTime v) {
-		this.created = v;
+	public RemissEntity withCreated(final OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
-	public RemissEntity withModified(final OffsetDateTime v) {
-		this.modified = v;
+	public RemissEntity withModified(final OffsetDateTime modified) {
+		this.modified = modified;
 		return this;
 	}
 
