@@ -1,5 +1,6 @@
 package se.sundsvall.rtjmanagement.types.egensotning.details.service;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class EgensotningVerificationService {
 	static final String REASON_OWNER_NOT_REGISTERED = "OWNER_NOT_REGISTERED";
 	static final String REASON_REAPPLICATION_REJECTED = "REAPPLICATION_REJECTED";
 	static final String REASON_REAPPLICATION_ONGOING = "REAPPLICATION_ONGOING";
+	static final String REASON_ACTIVE_PERMIT_EXISTS = "ACTIVE_PERMIT_EXISTS";
 
 	private static final String ERRAND_NOT_FOUND_MESSAGE = "No errand with id '%s' found in namespace '%s' for municipality id '%s'";
 	private static final String WRONG_TYPE_MESSAGE = "Errand '%s' has typeSlug '%s'; egensotning verification requires typeSlug '%s'";
@@ -172,6 +174,12 @@ public class EgensotningVerificationService {
 	 * Classifies prior egensotning applications for the same applicant. The prior errand's
 	 * STATUS encodes the previous outcome: this BPMN sets DECIDED only on approval and
 	 * REJECTED only on rejection; anything non-terminal is an in-flight application.
+	 *
+	 * A prior DECIDED errand is normally a previous approval that is fine to renew — UNLESS it is an
+	 * <b>active permit on the same fastighet</b> (still valid, i.e. not yet expired), in which case the
+	 * new application is a duplicate and must go to manual review. An expired permit on the same
+	 * fastighet is treated as a renewal and is allowed; an active permit on a different fastighet is
+	 * unrelated and does not block.
 	 */
 	private Reapplication checkReapplication(final EgensotningDetailsEntity details) {
 		final var personnummer = details.getPersonnummer();
@@ -181,14 +189,21 @@ public class EgensotningVerificationService {
 		final var priors = detailsRepository.findByPersonnummerAndErrandIdNot(personnummer, details.getErrandId());
 		var anyRejected = false;
 		var anyOngoing = false;
+		var anyActivePermit = false;
 		for (final var prior : priors) {
 			final var status = errandRepository.findById(prior.getErrandId()).map(ErrandEntity::getStatus).orElse(null);
 			if (STATUS_REJECTED.equals(status)) {
 				anyRejected = true;
-			} else if (status != null && !STATUS_DECIDED.equals(status)) {
+			} else if (STATUS_DECIDED.equals(status)) {
+				if (isActivePermitOnSameProperty(details, prior)) {
+					anyActivePermit = true;
+				}
+			} else if (status != null) {
 				anyOngoing = true;
 			}
-			// STATUS_DECIDED → a previous approval (renewal) → does not block auto-approval.
+		}
+		if (anyActivePermit) {
+			return new Reapplication(false, REASON_ACTIVE_PERMIT_EXISTS);
 		}
 		if (anyRejected) {
 			return new Reapplication(false, REASON_REAPPLICATION_REJECTED);
@@ -197,6 +212,21 @@ public class EgensotningVerificationService {
 			return new Reapplication(false, REASON_REAPPLICATION_ONGOING);
 		}
 		return new Reapplication(true, null);
+	}
+
+	/**
+	 * True when the prior approved errand concerns the same fastighet and its permit is still active
+	 * (no end date — "gäller tillsvidare" — or valid_until is today or later). Fastighetsbeteckning is
+	 * compared case-insensitively and trimmed, matching the folkbokföring check.
+	 */
+	private static boolean isActivePermitOnSameProperty(final EgensotningDetailsEntity current, final EgensotningDetailsEntity prior) {
+		final var currentFastighet = current.getFastighetsbeteckning();
+		final var priorFastighet = prior.getFastighetsbeteckning();
+		if (currentFastighet == null || priorFastighet == null || !currentFastighet.trim().equalsIgnoreCase(priorFastighet.trim())) {
+			return false;
+		}
+		final var validUntil = prior.getValidUntil();
+		return validUntil == null || !validUntil.isBefore(LocalDate.now());
 	}
 
 	private ErrandEntity findErrandWithType(final String municipalityId, final String namespace, final String errandId) {

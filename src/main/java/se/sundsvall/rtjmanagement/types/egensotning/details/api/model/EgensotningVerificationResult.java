@@ -21,7 +21,7 @@ public class EgensotningVerificationResult {
 	private Boolean reapplicationOk;
 
 	@Schema(description = "Reason a human review is needed, when outcome is NEEDS_MANUAL_REVIEW", examples = "NOT_REGISTERED", allowableValues = {
-		"NOT_REGISTERED", "REAPPLICATION_REJECTED", "REAPPLICATION_ONGOING"
+		"NOT_REGISTERED", "OWNER_NOT_REGISTERED", "REAPPLICATION_REJECTED", "REAPPLICATION_ONGOING", "ACTIVE_PERMIT_EXISTS"
 	})
 	private String manualReviewReason;
 

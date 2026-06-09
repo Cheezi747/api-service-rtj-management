@@ -2,6 +2,7 @@ package se.sundsvall.rtjmanagement.types.egensotning.details.service;
 
 import generated.se.sundsvall.citizen.CitizenAddress;
 import generated.se.sundsvall.citizen.CitizenExtended;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -281,6 +282,79 @@ class EgensotningVerificationServiceTest {
 		assertThat(result.getOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
 		assertThat(result.getReapplicationOk()).isFalse();
 		assertThat(result.getManualReviewReason()).isEqualTo("REAPPLICATION_ONGOING");
+	}
+
+	@Test
+	void activePermitOnSameFastighetNeedsManualReview() {
+		// Sökanden har redan ett giltigt tillstånd på samma fastighet → dubblett → manuell granskning.
+		stubErrandAndDetails();
+		stubBilagorPresent();
+		stubObjektPresent();
+		stubRegistered();
+		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
+			.thenReturn(List.of(EgensotningDetailsEntity.create().withErrandId("prior-1").withPersonnummer(PNR)
+				.withFastighetsbeteckning(FASTIGHET).withValidUntil(LocalDate.now().plusYears(3))));
+		when(errandRepositoryMock.findById("prior-1")).thenReturn(Optional.of(ErrandEntity.create().withId("prior-1").withStatus(STATUS_DECIDED)));
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
+		assertThat(result.getReapplicationOk()).isFalse();
+		assertThat(result.getManualReviewReason()).isEqualTo("ACTIVE_PERMIT_EXISTS");
+	}
+
+	@Test
+	void tillsvidarePermitOnSameFastighetNeedsManualReview() {
+		// Tillstånd utan utgångsdatum (gäller tills vidare, valid_until = null) → fortfarande aktivt → dubblett.
+		stubErrandAndDetails();
+		stubBilagorPresent();
+		stubObjektPresent();
+		stubRegistered();
+		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
+			.thenReturn(List.of(EgensotningDetailsEntity.create().withErrandId("prior-1").withPersonnummer(PNR)
+				.withFastighetsbeteckning(FASTIGHET)));
+		when(errandRepositoryMock.findById("prior-1")).thenReturn(Optional.of(ErrandEntity.create().withId("prior-1").withStatus(STATUS_DECIDED)));
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
+		assertThat(result.getManualReviewReason()).isEqualTo("ACTIVE_PERMIT_EXISTS");
+	}
+
+	@Test
+	void expiredPermitOnSameFastighetAllowsRenewal() {
+		// Utgånget tillstånd på samma fastighet → förnyelse → auto-godkänns.
+		stubErrandAndDetails();
+		stubBilagorPresent();
+		stubObjektPresent();
+		stubRegistered();
+		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
+			.thenReturn(List.of(EgensotningDetailsEntity.create().withErrandId("prior-1").withPersonnummer(PNR)
+				.withFastighetsbeteckning(FASTIGHET).withValidUntil(LocalDate.now().minusDays(1))));
+		when(errandRepositoryMock.findById("prior-1")).thenReturn(Optional.of(ErrandEntity.create().withId("prior-1").withStatus(STATUS_DECIDED)));
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("AUTO_APPROVE");
+		assertThat(result.getReapplicationOk()).isTrue();
+	}
+
+	@Test
+	void activePermitOnDifferentFastighetAutoApproves() {
+		// Giltigt tillstånd på en ANNAN fastighet → inte en dubblett → auto-godkänns.
+		stubErrandAndDetails();
+		stubBilagorPresent();
+		stubObjektPresent();
+		stubRegistered();
+		when(detailsRepositoryMock.findByPersonnummerAndErrandIdNot(PNR, ERRAND_ID))
+			.thenReturn(List.of(EgensotningDetailsEntity.create().withErrandId("prior-1").withPersonnummer(PNR)
+				.withFastighetsbeteckning("Sundsvall Annan 9:9").withValidUntil(LocalDate.now().plusYears(3))));
+		when(errandRepositoryMock.findById("prior-1")).thenReturn(Optional.of(ErrandEntity.create().withId("prior-1").withStatus(STATUS_DECIDED)));
+
+		final var result = service.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("AUTO_APPROVE");
+		assertThat(result.getReapplicationOk()).isTrue();
 	}
 
 	@Test
