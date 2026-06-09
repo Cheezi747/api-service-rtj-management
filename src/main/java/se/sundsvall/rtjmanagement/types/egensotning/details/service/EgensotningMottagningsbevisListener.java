@@ -21,6 +21,7 @@ import static org.springframework.util.StringUtils.hasText;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.ROLE_APPLICANT;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_UNDER_MANUAL_REVIEW;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.TYPE_SLUG;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.citizenEmailSender;
 
 /**
  * Skickar ett mottagningsbevis till den sökande när en handläggare (BSK) först tilldelas ett
@@ -99,7 +100,8 @@ class EgensotningMottagningsbevisListener {
 				.emailAddress(email)
 				.subject(EMAIL_SUBJECT)
 				.message(EMAIL_MESSAGE)
-				.attachments(List.of(attachment)));
+				.attachments(List.of(attachment))
+				.sender(citizenEmailSender()));
 
 			LOG.info("Skickade mottagningsbevis för egensotningsärende {} (tilldelat {})", event.errandId(), event.newAssignee());
 		} catch (final RuntimeException e) {

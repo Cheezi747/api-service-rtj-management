@@ -65,6 +65,10 @@ class EgensotningMessageNotificationListenerTest {
 		// Kärnan i R1: e-posten aviserar ATT ett meddelande finns, aldrig innehållet.
 		assertThat(sent.getMessage()).doesNotContain(FREE_TEXT_THAT_MUST_NOT_LEAK);
 		assertThat(sent.getAttachments()).isNullOrEmpty();
+		// Enhetlig avsändare med BPMN-flödets mejl.
+		assertThat(sent.getSender()).isNotNull();
+		assertThat(sent.getSender().getName()).isEqualTo("Räddningstjänsten Medelpad");
+		assertThat(sent.getSender().getAddress()).isEqualTo("noreply@sundsvall.se");
 	}
 
 	@Test

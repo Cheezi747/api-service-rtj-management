@@ -11,6 +11,7 @@ import se.sundsvall.rtjmanagement.types.egensotning.details.integration.messagin
 
 import static org.springframework.util.StringUtils.hasText;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.TYPE_SLUG;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.citizenEmailSender;
 
 /**
  * Skickar en <b>innehållslös</b> e-postnotis till den sökande när en handläggare postar ett OUTBOUND-
@@ -64,7 +65,8 @@ class EgensotningMessageNotificationListener {
 			messagingClient.sendEmail(errand.getMunicipalityId(), new EmailRequest()
 				.emailAddress(email)
 				.subject(EMAIL_SUBJECT)
-				.message(EMAIL_MESSAGE));
+				.message(EMAIL_MESSAGE)
+				.sender(citizenEmailSender()));
 
 			LOG.info("Skickade innehållslös meddelandenotis för egensotningsärende {} (meddelande {})", event.errandId(), event.messageId());
 		} catch (final RuntimeException e) {

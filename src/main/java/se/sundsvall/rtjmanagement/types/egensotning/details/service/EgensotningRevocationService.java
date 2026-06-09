@@ -104,7 +104,8 @@ public class EgensotningRevocationService {
 			messagingClient.sendEmail(errand.getMunicipalityId(), new EmailRequest()
 				.emailAddress(email)
 				.subject(EMAIL_SUBJECT)
-				.message(EMAIL_MESSAGE_TEMPLATE.formatted(fastighet)));
+				.message(EMAIL_MESSAGE_TEMPLATE.formatted(fastighet))
+				.sender(EgensotningModuleConfig.citizenEmailSender()));
 		} catch (final RuntimeException e) {
 			// The decision is already revoked; a failed e-mail must not roll that back.
 			LOG.error("Failed to send egensotning revocation notice for errand {}", errand.getId(), e);

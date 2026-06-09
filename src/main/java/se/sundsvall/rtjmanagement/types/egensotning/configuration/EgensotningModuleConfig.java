@@ -1,5 +1,6 @@
 package se.sundsvall.rtjmanagement.types.egensotning.configuration;
 
+import generated.se.sundsvall.messaging.EmailSender;
 import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +53,19 @@ public class EgensotningModuleConfig {
 
 	// Kategori för det systemgenererade beslutet (PDF) som lagras på ärendet.
 	public static final String CATEGORY_DECISION = "DECISION";
+
+	// Avsändare för alla medborgarvända mejl från denna modul — håll i synk med BPMN-flödets
+	// send-email-tasks (samma namn/adress) så alla aviseringar ser ut att komma från samma håll.
+	public static final String EMAIL_SENDER_NAME = "Räddningstjänsten Medelpad";
+	public static final String EMAIL_SENDER_ADDRESS = "noreply@sundsvall.se";
+
+	/**
+	 * Avsändaren för medborgarvända mejl från egensotningsmodulen (mottagningsbevis, meddelandenotis,
+	 * påminnelse, återkallelse). En ny instans per anrop — den genererade {@link EmailSender} är muterbar.
+	 */
+	public static EmailSender citizenEmailSender() {
+		return new EmailSender().name(EMAIL_SENDER_NAME).address(EMAIL_SENDER_ADDRESS);
+	}
 
 	@Bean
 	ErrandTypeContribution egensotningType() {

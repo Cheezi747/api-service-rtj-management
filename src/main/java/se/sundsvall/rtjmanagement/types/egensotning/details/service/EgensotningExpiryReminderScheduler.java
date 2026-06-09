@@ -16,6 +16,8 @@ import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.Egens
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.model.EgensotningDetailsEntity;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.messaging.MessagingClient;
 
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.citizenEmailSender;
+
 /**
  * Daily job that emails property owners ahead of their egensotning decision's six-year expiry so they
  * can re-apply (förnya). Scans egensotning details whose {@code validUntil} falls within the configured
@@ -94,6 +96,7 @@ class EgensotningExpiryReminderScheduler {
 		return new EmailRequest()
 			.emailAddress(email)
 			.subject(EMAIL_SUBJECT)
-			.message(EMAIL_MESSAGE_TEMPLATE.formatted(fastighet, details.getValidUntil()));
+			.message(EMAIL_MESSAGE_TEMPLATE.formatted(fastighet, details.getValidUntil()))
+			.sender(citizenEmailSender());
 	}
 }
