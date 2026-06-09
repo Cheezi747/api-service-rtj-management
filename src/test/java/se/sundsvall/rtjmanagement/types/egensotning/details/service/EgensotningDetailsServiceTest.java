@@ -7,11 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.dept44.problem.ThrowableProblem;
+import se.sundsvall.rtjmanagement.attachments.integration.db.AttachmentRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.ErrandRepository;
 import se.sundsvall.rtjmanagement.core.integration.db.model.ErrandEntity;
 import se.sundsvall.rtjmanagement.types.egensotning.details.api.model.EgensotningDetails;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.EgensotningDetailsRepository;
 import se.sundsvall.rtjmanagement.types.egensotning.details.integration.db.model.EgensotningDetailsEntity;
+import se.sundsvall.rtjmanagement.types.egensotning.sotningsobjekt.integration.db.SotningsobjektRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,7 +25,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_BRANDSKYDDSKONTROLL;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.CATEGORY_UTBILDNINGSINTYG;
 import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.STATUS_DECIDED;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.SUPPLEMENT_MISSING_BRANDSKYDDSKONTROLL;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.SUPPLEMENT_MISSING_SOTNINGSOBJEKT;
+import static se.sundsvall.rtjmanagement.types.egensotning.configuration.EgensotningModuleConfig.SUPPLEMENT_MISSING_UTBILDNINGSINTYG;
 
 @ExtendWith(MockitoExtension.class)
 class EgensotningDetailsServiceTest {
@@ -38,6 +45,12 @@ class EgensotningDetailsServiceTest {
 
 	@Mock
 	private EgensotningDetailsRepository repositoryMock;
+
+	@Mock
+	private AttachmentRepository attachmentRepositoryMock;
+
+	@Mock
+	private SotningsobjektRepository sotningsobjektRepositoryMock;
 
 	@InjectMocks
 	private EgensotningDetailsService service;
@@ -133,6 +146,48 @@ class EgensotningDetailsServiceTest {
 		final var result = service.read(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
 
 		assertThat(result.getFastighetsbeteckning()).isEqualTo("Fast 9:9");
+	}
+
+	@Test
+	void readPopulatesSupplementNeedsForMissingItems() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID))
+			.thenReturn(Optional.of(egensotningErrand()));
+		when(repositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(EgensotningDetailsEntity.create().withErrandId(ERRAND_ID)));
+		// Brandskyddskontroll finns; utbildningsintyg + sotningsobjekt saknas.
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_BRANDSKYDDSKONTROLL)).thenReturn(true);
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_UTBILDNINGSINTYG)).thenReturn(false);
+		when(sotningsobjektRepositoryMock.existsByErrandId(ERRAND_ID)).thenReturn(false);
+
+		final var result = service.read(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getSupplementNeeds()).containsExactly(SUPPLEMENT_MISSING_UTBILDNINGSINTYG, SUPPLEMENT_MISSING_SOTNINGSOBJEKT);
+	}
+
+	@Test
+	void readSupplementNeedsEmptyWhenComplete() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID))
+			.thenReturn(Optional.of(egensotningErrand()));
+		when(repositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(EgensotningDetailsEntity.create().withErrandId(ERRAND_ID)));
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_BRANDSKYDDSKONTROLL)).thenReturn(true);
+		when(attachmentRepositoryMock.existsByErrandIdAndCategory(ERRAND_ID, CATEGORY_UTBILDNINGSINTYG)).thenReturn(true);
+		when(sotningsobjektRepositoryMock.existsByErrandId(ERRAND_ID)).thenReturn(true);
+
+		final var result = service.read(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getSupplementNeeds()).isEmpty();
+	}
+
+	@Test
+	void readSupplementNeedsListsAllWhenNothingProvided() {
+		when(errandRepositoryMock.findByIdAndNamespaceAndMunicipalityId(ERRAND_ID, NAMESPACE, MUNICIPALITY_ID))
+			.thenReturn(Optional.of(egensotningErrand()));
+		when(repositoryMock.findByErrandId(ERRAND_ID)).thenReturn(Optional.of(EgensotningDetailsEntity.create().withErrandId(ERRAND_ID)));
+		// Inga stubbar för bilagor/sotningsobjekt → existsBy* = false → allt saknas.
+
+		final var result = service.read(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getSupplementNeeds()).containsExactly(
+			SUPPLEMENT_MISSING_BRANDSKYDDSKONTROLL, SUPPLEMENT_MISSING_UTBILDNINGSINTYG, SUPPLEMENT_MISSING_SOTNINGSOBJEKT);
 	}
 
 	@Test

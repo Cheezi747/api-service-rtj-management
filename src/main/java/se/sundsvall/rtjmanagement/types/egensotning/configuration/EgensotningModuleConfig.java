@@ -54,6 +54,11 @@ public class EgensotningModuleConfig {
 	// Kategori för det systemgenererade beslutet (PDF) som lagras på ärendet.
 	public static final String CATEGORY_DECISION = "DECISION";
 
+	// Kompletteringsbehov — vad som ännu saknas, beräknat vid läsning av egensotning-details.
+	public static final String SUPPLEMENT_MISSING_BRANDSKYDDSKONTROLL = "MISSING_BRANDSKYDDSKONTROLL";
+	public static final String SUPPLEMENT_MISSING_UTBILDNINGSINTYG = "MISSING_UTBILDNINGSINTYG";
+	public static final String SUPPLEMENT_MISSING_SOTNINGSOBJEKT = "MISSING_SOTNINGSOBJEKT";
+
 	// Avsändare för alla medborgarvända mejl från denna modul — håll i synk med BPMN-flödets
 	// send-email-tasks (samma namn/adress) så alla aviseringar ser ut att komma från samma håll.
 	public static final String EMAIL_SENDER_NAME = "Räddningstjänsten Medelpad";

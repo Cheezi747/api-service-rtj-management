@@ -13,5 +13,7 @@ public interface SotningsobjektRepository extends JpaRepository<SotningsobjektEn
 
 	Optional<SotningsobjektEntity> findByErrandIdAndId(String errandId, String id);
 
+	boolean existsByErrandId(String errandId);
+
 	long deleteByErrandId(String errandId);
 }

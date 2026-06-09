@@ -2,6 +2,7 @@ package se.sundsvall.rtjmanagement.types.egensotning.details.api.model;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,7 @@ class EgensotningDetailsTest {
 			.withReapplicationOk(false)
 			.withLastOutcome("AUTO_APPROVE")
 			.withManualReviewReason("NOT_REGISTERED")
+			.withSupplementNeeds(List.of("MISSING_BRANDSKYDDSKONTROLL"))
 			.withLastVerifiedAt(verifiedAt)
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)

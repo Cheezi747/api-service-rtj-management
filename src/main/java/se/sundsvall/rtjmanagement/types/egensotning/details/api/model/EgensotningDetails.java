@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 import se.sundsvall.dept44.common.validators.annotation.ValidPersonalNumber;
 import se.sundsvall.rtjmanagement.core.api.validation.groups.OnCreate;
@@ -60,6 +61,14 @@ public class EgensotningDetails {
 	@Schema(description = "Anledning till manuell granskning, t.ex. NOT_REGISTERED, REAPPLICATION_REJECTED, REAPPLICATION_ONGOING", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private String manualReviewReason;
+
+	@Schema(description = "Vad som återstår att komplettera, beräknat vid läsning från bilagor + sotningsobjekt. Tom lista när ansökan är komplett — frontend kan visa en exakt checklista utan att korsreferera flera endpoints.",
+		accessMode = READ_ONLY,
+		allowableValues = {
+			"MISSING_BRANDSKYDDSKONTROLL", "MISSING_UTBILDNINGSINTYG", "MISSING_SOTNINGSOBJEKT"
+		})
+	@Null(groups = OnCreate.class)
+	private List<String> supplementNeeds;
 
 	@Schema(description = "När verifieringen senast kördes", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
@@ -253,6 +262,19 @@ public class EgensotningDetails {
 		return this;
 	}
 
+	public List<String> getSupplementNeeds() {
+		return supplementNeeds;
+	}
+
+	public void setSupplementNeeds(final List<String> supplementNeeds) {
+		this.supplementNeeds = supplementNeeds;
+	}
+
+	public EgensotningDetails withSupplementNeeds(final List<String> supplementNeeds) {
+		this.supplementNeeds = supplementNeeds;
+		return this;
+	}
+
 	public OffsetDateTime getLastVerifiedAt() {
 		return lastVerifiedAt;
 	}
@@ -368,6 +390,7 @@ public class EgensotningDetails {
 			&& Objects.equals(motivering, that.motivering) && Objects.equals(bilagaPresent, that.bilagaPresent)
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
+			&& Objects.equals(supplementNeeds, that.supplementNeeds)
 			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
 			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
 			&& Objects.equals(revokedAt, that.revokedAt) && Objects.equals(revocationReason, that.revocationReason)
@@ -377,7 +400,7 @@ public class EgensotningDetails {
 	@Override
 	public int hashCode() {
 		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation, appliesForOtherProperty,
-			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, lastVerifiedAt, validFrom,
+			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, supplementNeeds, lastVerifiedAt, validFrom,
 			validUntil, reminderSentAt, revokedAt, revocationReason, created, modified);
 	}
 
@@ -386,7 +409,7 @@ public class EgensotningDetails {
 		return "EgensotningDetails{fastighetsbeteckning='" + fastighetsbeteckning + "', propertyAddress='" + propertyAddress
 			+ "', ownsProperty=" + ownsProperty + ", ownershipMotivation='" + ownershipMotivation + "', appliesForOtherProperty=" + appliesForOtherProperty
 			+ ", motivering='" + motivering + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
-			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', lastVerifiedAt=" + lastVerifiedAt
+			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', supplementNeeds=" + supplementNeeds + ", lastVerifiedAt=" + lastVerifiedAt
 			+ ", validFrom=" + validFrom + ", validUntil=" + validUntil + ", reminderSentAt=" + reminderSentAt
 			+ ", revokedAt=" + revokedAt + ", revocationReason='" + revocationReason + "', created=" + created + ", modified=" + modified + '}';
 	}
