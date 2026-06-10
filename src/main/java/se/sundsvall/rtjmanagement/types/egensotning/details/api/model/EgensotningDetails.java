@@ -74,6 +74,20 @@ public class EgensotningDetails {
 	@Null(groups = OnCreate.class)
 	private OffsetDateTime lastVerifiedAt;
 
+	@Schema(
+		description = "Om de bifogade dokumenten godkändes av Eneo (LLM) — rätt typ, giltiga och matchar sökanden. Null tills dokumentvalideringen körts. Ett icke-giltigt resultat (eller Eneo-avbrott) styr ärendet till manuell granskning; LLM:en avslår aldrig automatiskt.",
+		accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private Boolean documentsValid;
+
+	@Schema(description = "Eneos (LLM) motivering till dokumentvalideringen, på svenska — redovisas för handläggaren vid manuell granskning.", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private String documentValidationDetail;
+
+	@Schema(description = "När dokumentvalideringen (Eneo) senast kördes", accessMode = READ_ONLY)
+	@Null(groups = OnCreate.class)
+	private OffsetDateTime documentValidatedAt;
+
 	@Schema(description = "Beslutets giltighet börjar (sätts vid godkännande)", accessMode = READ_ONLY)
 	@Null(groups = OnCreate.class)
 	private LocalDate validFrom;
@@ -288,6 +302,45 @@ public class EgensotningDetails {
 		return this;
 	}
 
+	public Boolean getDocumentsValid() {
+		return documentsValid;
+	}
+
+	public void setDocumentsValid(final Boolean documentsValid) {
+		this.documentsValid = documentsValid;
+	}
+
+	public EgensotningDetails withDocumentsValid(final Boolean documentsValid) {
+		this.documentsValid = documentsValid;
+		return this;
+	}
+
+	public String getDocumentValidationDetail() {
+		return documentValidationDetail;
+	}
+
+	public void setDocumentValidationDetail(final String documentValidationDetail) {
+		this.documentValidationDetail = documentValidationDetail;
+	}
+
+	public EgensotningDetails withDocumentValidationDetail(final String documentValidationDetail) {
+		this.documentValidationDetail = documentValidationDetail;
+		return this;
+	}
+
+	public OffsetDateTime getDocumentValidatedAt() {
+		return documentValidatedAt;
+	}
+
+	public void setDocumentValidatedAt(final OffsetDateTime documentValidatedAt) {
+		this.documentValidatedAt = documentValidatedAt;
+	}
+
+	public EgensotningDetails withDocumentValidatedAt(final OffsetDateTime documentValidatedAt) {
+		this.documentValidatedAt = documentValidatedAt;
+		return this;
+	}
+
 	public LocalDate getValidFrom() {
 		return validFrom;
 	}
@@ -391,7 +444,9 @@ public class EgensotningDetails {
 			&& Objects.equals(registeredAtProperty, that.registeredAtProperty) && Objects.equals(reapplicationOk, that.reapplicationOk)
 			&& Objects.equals(lastOutcome, that.lastOutcome) && Objects.equals(manualReviewReason, that.manualReviewReason)
 			&& Objects.equals(supplementNeeds, that.supplementNeeds)
-			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt) && Objects.equals(validFrom, that.validFrom)
+			&& Objects.equals(lastVerifiedAt, that.lastVerifiedAt)
+			&& Objects.equals(documentsValid, that.documentsValid) && Objects.equals(documentValidationDetail, that.documentValidationDetail)
+			&& Objects.equals(documentValidatedAt, that.documentValidatedAt) && Objects.equals(validFrom, that.validFrom)
 			&& Objects.equals(validUntil, that.validUntil) && Objects.equals(reminderSentAt, that.reminderSentAt)
 			&& Objects.equals(revokedAt, that.revokedAt) && Objects.equals(revocationReason, that.revocationReason)
 			&& Objects.equals(created, that.created) && Objects.equals(modified, that.modified);
@@ -400,16 +455,20 @@ public class EgensotningDetails {
 	@Override
 	public int hashCode() {
 		return Objects.hash(personnummer, fastighetsbeteckning, propertyAddress, ownsProperty, ownershipMotivation, appliesForOtherProperty,
-			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, supplementNeeds, lastVerifiedAt, validFrom,
+			motivering, bilagaPresent, registeredAtProperty, reapplicationOk, lastOutcome, manualReviewReason, supplementNeeds, lastVerifiedAt,
+			documentsValid, documentValidationDetail, documentValidatedAt, validFrom,
 			validUntil, reminderSentAt, revokedAt, revocationReason, created, modified);
 	}
 
+	// Deliberately omits personnummer and documentValidationDetail — the latter is the LLM motivation
+	// and may embed the applicant's name/personnummer, so it is kept out of logs as PII.
 	@Override
 	public String toString() {
 		return "EgensotningDetails{fastighetsbeteckning='" + fastighetsbeteckning + "', propertyAddress='" + propertyAddress
 			+ "', ownsProperty=" + ownsProperty + ", ownershipMotivation='" + ownershipMotivation + "', appliesForOtherProperty=" + appliesForOtherProperty
 			+ ", motivering='" + motivering + "', bilagaPresent=" + bilagaPresent + ", registeredAtProperty=" + registeredAtProperty + ", reapplicationOk=" + reapplicationOk
 			+ ", lastOutcome='" + lastOutcome + "', manualReviewReason='" + manualReviewReason + "', supplementNeeds=" + supplementNeeds + ", lastVerifiedAt=" + lastVerifiedAt
+			+ ", documentsValid=" + documentsValid + ", documentValidatedAt=" + documentValidatedAt
 			+ ", validFrom=" + validFrom + ", validUntil=" + validUntil + ", reminderSentAt=" + reminderSentAt
 			+ ", revokedAt=" + revokedAt + ", revocationReason='" + revocationReason + "', created=" + created + ", modified=" + modified + '}';
 	}

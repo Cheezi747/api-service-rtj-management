@@ -37,6 +37,7 @@ class EgensotningDetailsTest {
 	@Test
 	void testBuilderMethods() {
 		final var verifiedAt = OffsetDateTime.now();
+		final var documentValidatedAt = OffsetDateTime.now();
 		final var validFrom = LocalDate.now();
 		final var validUntil = LocalDate.now().plusYears(6);
 		final var reminderSentAt = OffsetDateTime.now();
@@ -59,6 +60,9 @@ class EgensotningDetailsTest {
 			.withManualReviewReason("NOT_REGISTERED")
 			.withSupplementNeeds(List.of("MISSING_BRANDSKYDDSKONTROLL"))
 			.withLastVerifiedAt(verifiedAt)
+			.withDocumentsValid(true)
+			.withDocumentValidationDetail("Dokumenten är giltiga och uppgifterna stämmer med sökanden.")
+			.withDocumentValidatedAt(documentValidatedAt)
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)
 			.withReminderSentAt(reminderSentAt)
@@ -81,6 +85,9 @@ class EgensotningDetailsTest {
 		assertThat(result.getLastOutcome()).isEqualTo("AUTO_APPROVE");
 		assertThat(result.getManualReviewReason()).isEqualTo("NOT_REGISTERED");
 		assertThat(result.getLastVerifiedAt()).isEqualTo(verifiedAt);
+		assertThat(result.getDocumentsValid()).isTrue();
+		assertThat(result.getDocumentValidationDetail()).isEqualTo("Dokumenten är giltiga och uppgifterna stämmer med sökanden.");
+		assertThat(result.getDocumentValidatedAt()).isEqualTo(documentValidatedAt);
 		assertThat(result.getValidFrom()).isEqualTo(validFrom);
 		assertThat(result.getValidUntil()).isEqualTo(validUntil);
 		assertThat(result.getReminderSentAt()).isEqualTo(reminderSentAt);

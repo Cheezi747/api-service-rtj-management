@@ -57,6 +57,7 @@ class EgensotningDetailsMapperTest {
 		final var validUntil = LocalDate.of(2032, 6, 1);
 		final var reminderSentAt = OffsetDateTime.parse("2032-03-01T00:00:00Z");
 		final var revokedAt = OffsetDateTime.parse("2027-01-15T08:00:00Z");
+		final var documentValidatedAt = OffsetDateTime.parse("2026-06-10T09:00:00Z");
 		final var entity = EgensotningDetailsMapper.toEntity(frontendDetails(), "errand-1")
 			.withId(7L)
 			.withMotivering("Handläggarens motivering")
@@ -65,6 +66,9 @@ class EgensotningDetailsMapperTest {
 			.withReapplicationOk(true)
 			.withLastOutcome("NEEDS_MANUAL_REVIEW")
 			.withManualReviewReason("NOT_REGISTERED")
+			.withDocumentsValid(false)
+			.withDocumentValidationDetail("Brandskyddskontroll: fastighet stämmer inte. | Utbildningsintyg: personnummer saknas.")
+			.withDocumentValidatedAt(documentValidatedAt)
 			.withValidFrom(validFrom)
 			.withValidUntil(validUntil)
 			.withReminderSentAt(reminderSentAt)
@@ -86,6 +90,9 @@ class EgensotningDetailsMapperTest {
 		assertThat(dto.getReapplicationOk()).isTrue();
 		assertThat(dto.getLastOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
 		assertThat(dto.getManualReviewReason()).isEqualTo("NOT_REGISTERED");
+		assertThat(dto.getDocumentsValid()).isFalse();
+		assertThat(dto.getDocumentValidationDetail()).isEqualTo("Brandskyddskontroll: fastighet stämmer inte. | Utbildningsintyg: personnummer saknas.");
+		assertThat(dto.getDocumentValidatedAt()).isEqualTo(documentValidatedAt);
 		assertThat(dto.getValidFrom()).isEqualTo(validFrom);
 		assertThat(dto.getValidUntil()).isEqualTo(validUntil);
 		assertThat(dto.getReminderSentAt()).isEqualTo(reminderSentAt);
