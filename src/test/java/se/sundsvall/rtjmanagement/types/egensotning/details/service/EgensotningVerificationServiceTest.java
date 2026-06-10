@@ -5,10 +5,10 @@ import generated.se.sundsvall.citizen.CitizenExtended;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.dept44.exception.ClientProblem;
@@ -57,8 +57,14 @@ class EgensotningVerificationServiceTest {
 	@Mock
 	private CitizenClient citizenClientMock;
 
-	@InjectMocks
 	private EgensotningVerificationService service;
+
+	@BeforeEach
+	void setUp() {
+		// Reapplication/duplicate-permit check ON — the demo opt-out flag is exercised separately below.
+		service = new EgensotningVerificationService(errandRepositoryMock, detailsRepositoryMock, attachmentRepositoryMock,
+			sotningsobjektRepositoryMock, citizenClientMock, true);
+	}
 
 	private static ErrandEntity egensotningErrand() {
 		return ErrandEntity.create().withId(ERRAND_ID).withTypeSlug("EGENSOTNING").withStatus(STATUS_REGISTERED);
@@ -301,6 +307,25 @@ class EgensotningVerificationServiceTest {
 		assertThat(result.getOutcome()).isEqualTo("NEEDS_MANUAL_REVIEW");
 		assertThat(result.getReapplicationOk()).isFalse();
 		assertThat(result.getManualReviewReason()).isEqualTo("ACTIVE_PERMIT_EXISTS");
+	}
+
+	@Test
+	void reapplicationCheckDisabledSkipsDuplicatePermitGuard() {
+		// Med egensotning.reapplication-check.enabled=false hoppas hela återansöknings-/dubblettkontrollen
+		// över (demo-läge): även ett gällande beslut på samma fastighet auto-godkänns. Den tidigare-ärende-
+		// slagningen görs aldrig — därför stubbas inte findByPersonnummerAndErrandIdNot.
+		final var disabledService = new EgensotningVerificationService(errandRepositoryMock, detailsRepositoryMock,
+			attachmentRepositoryMock, sotningsobjektRepositoryMock, citizenClientMock, false);
+		stubErrandAndDetails();
+		stubBilagorPresent();
+		stubObjektPresent();
+		stubRegistered();
+
+		final var result = disabledService.verify(MUNICIPALITY_ID, NAMESPACE, ERRAND_ID);
+
+		assertThat(result.getOutcome()).isEqualTo("AUTO_APPROVE");
+		assertThat(result.getReapplicationOk()).isTrue();
+		assertThat(result.getManualReviewReason()).isNull();
 	}
 
 	@Test

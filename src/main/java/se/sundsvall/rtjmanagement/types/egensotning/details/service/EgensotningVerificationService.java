@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sundsvall.dept44.exception.ClientProblem;
@@ -65,14 +66,17 @@ public class EgensotningVerificationService {
 	private final AttachmentRepository attachmentRepository;
 	private final SotningsobjektRepository sotningsobjektRepository;
 	private final CitizenClient citizenClient;
+	private final boolean reapplicationCheckEnabled;
 
 	EgensotningVerificationService(final ErrandRepository errandRepository, final EgensotningDetailsRepository detailsRepository,
-		final AttachmentRepository attachmentRepository, final SotningsobjektRepository sotningsobjektRepository, final CitizenClient citizenClient) {
+		final AttachmentRepository attachmentRepository, final SotningsobjektRepository sotningsobjektRepository, final CitizenClient citizenClient,
+		@Value("${egensotning.reapplication-check.enabled:true}") final boolean reapplicationCheckEnabled) {
 		this.errandRepository = errandRepository;
 		this.detailsRepository = detailsRepository;
 		this.attachmentRepository = attachmentRepository;
 		this.sotningsobjektRepository = sotningsobjektRepository;
 		this.citizenClient = citizenClient;
+		this.reapplicationCheckEnabled = reapplicationCheckEnabled;
 	}
 
 	public EgensotningVerificationResult verify(final String municipalityId, final String namespace, final String errandId) {
@@ -182,6 +186,12 @@ public class EgensotningVerificationService {
 	 * unrelated and does not block.
 	 */
 	private Reapplication checkReapplication(final EgensotningDetailsEntity details) {
+		if (!reapplicationCheckEnabled) {
+			// POC/demo: dubblett-/återansökningskontrollen avstängd (egensotning.reapplication-check.enabled=false)
+			// så samma testperson/fastighet kan godkännas upprepat utan att fastna i manuell granskning. Sätt
+			// flaggan till true (env EGENSOTNING_REAPPLICATION_CHECK_ENABLED=true) för skarpt beteende.
+			return new Reapplication(true, null);
+		}
 		final var personnummer = details.getPersonnummer();
 		if (personnummer == null || personnummer.isBlank()) {
 			return new Reapplication(true, null);

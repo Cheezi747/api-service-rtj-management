@@ -77,6 +77,13 @@ integration:
 # Egensotning domain settings
 #========================================
 egensotning:
+  # Återansöknings-/dubblettkontroll i verifieringssteget. När true styrs en ansökan till manuell
+  # granskning om sökanden redan har ett gällande beslut på samma fastighet (ACTIVE_PERMIT_EXISTS),
+  # ett tidigare avslag (REAPPLICATION_REJECTED) eller ett pågående ärende (REAPPLICATION_ONGOING).
+  # POC/demo: avstängd (false) så samma testperson/fastighet kan godkännas upprepat utan att fastna i
+  # manuell granskning. Sätt true (env EGENSOTNING_REAPPLICATION_CHECK_ENABLED=true) för skarpt beteende.
+  reapplication-check:
+    enabled: false
   validity:
     # Antal år ett godkänt egensotningsmedgivande gäller (default 6). 0 = gäller tillsvidare
     # (inget utgångsdatum, inga förnyelsepåminnelser). Kan överstyras per miljö (EGENSOTNING_VALIDITY_YEARS).
