@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,9 +37,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  * Validates the two egensotning attachments with the Eneo LLM platform. Each document type is sent
  * to its own purpose-built Eneo assistant — the brandskyddskontroll PDF to the brandskyddskontroll
  * assistant, the utbildningsintyg PDF to the egensotning assistant — and each assistant judges
- * whether the document is the right type, valid, and matches the applicant. The identity match is
- * name + fastighet/adress for the brandskyddskontroll underlag (which carries no personnummer) and
- * additionally personnummer for the utbildningsintyg. The overall verdict is the AND of both.
+ * whether the document is the right type, valid, and matches the applicant. The identity match uses
+ * only the fields each underlag can contain: name + fastighet/adress for the brandskyddskontroll
+ * (which carries no personnummer), name + personnummer for the utbildningsintyg (which certifies a
+ * person's course and carries no fastighet/adress). The overall verdict is the AND of both.
  *
  * The verdict gates auto-approval. A non-valid verdict, an unparseable answer, or an Eneo outage all
  * resolve to {@code valid=false} (non-blocking) so the BPMN diverts the errand to manual review —
@@ -97,11 +99,13 @@ public class EgensotningDocumentValidationService {
 		final var applicantName = resolveApplicantName(municipalityId, namespace, errandId);
 
 		// brandskyddskontroll PDF → brandskyddskontroll assistant; utbildningsintyg PDF → egensotning assistant.
-		// BSK-underlaget innehåller inga personnummer → matcha endast namn + fastighet/adress för det dokumentet.
+		// The two underlag carry complementary identity fields: the brandskyddskontroll names a fastighet but no
+		// personnummer; the utbildningsintyg names a personnummer but no fastighet/adress (it certifies a person's
+		// course, not a property). Each is matched only on the fields it can actually contain.
 		final var brandResult = validateOne(eneoProperties.assistants().brandskyddskontroll(), DOC_BRANDSKYDDSKONTROLL,
-			buildPrompt(DOC_BRANDSKYDDSKONTROLL, applicantName, details, false), brandskyddskontroll.get());
+			buildPrompt(DOC_BRANDSKYDDSKONTROLL, applicantName, details, false, true), brandskyddskontroll.get());
 		final var utbResult = validateOne(eneoProperties.assistants().egensotning(), DOC_UTBILDNINGSINTYG,
-			buildPrompt(DOC_UTBILDNINGSINTYG, applicantName, details, true), utbildningsintyg.get());
+			buildPrompt(DOC_UTBILDNINGSINTYG, applicantName, details, true, false), utbildningsintyg.get());
 
 		return persist(details, combine(brandResult, utbResult));
 	}
@@ -187,12 +191,13 @@ public class EgensotningDocumentValidationService {
 	}
 
 	/**
-	 * Builds the per-document Eneo prompt. {@code matchPersonnummer} controls whether the identity
-	 * check (and the supplied applicant context) includes personnummer — the brandskyddskontroll
-	 * underlag carries no personnummer, so it is matched on name + fastighet/adress only, while the
-	 * utbildningsintyg is additionally matched on personnummer.
+	 * Builds the per-document Eneo prompt. {@code matchPersonnummer} / {@code matchFastighet} control which
+	 * identity fields the assistant is asked to match (and which are supplied in the applicant context) —
+	 * each underlag is matched only on the fields it can actually contain. The brandskyddskontroll names a
+	 * fastighet but no personnummer; the utbildningsintyg names a personnummer but no fastighet/adress.
 	 */
-	private String buildPrompt(final String documentLabel, final String applicantName, final EgensotningDetailsEntity details, final boolean matchPersonnummer) {
+	private String buildPrompt(final String documentLabel, final String applicantName, final EgensotningDetailsEntity details,
+		final boolean matchPersonnummer, final boolean matchFastighet) {
 		return """
 			Validera det bifogade dokumentet i en ansökan om egensotning. Förväntad dokumenttyp: %s.
 
@@ -206,20 +211,47 @@ public class EgensotningDocumentValidationService {
 
 			Svara ENDAST med ett JSON-objekt på formen:
 			{"valid": boolean, "documentTypeOk": boolean, "identityMatch": boolean, "reason": "kort motivering på svenska"}
-			Sätt "valid" till true endast om alla tre kontrollerna är uppfyllda.""".formatted(documentLabel, documentLabel, buildIdentityCheck(matchPersonnummer), buildApplicantContext(applicantName, details, matchPersonnummer));
+			Sätt "valid" till true endast om alla tre kontrollerna är uppfyllda.""".formatted(documentLabel, documentLabel,
+			buildIdentityCheck(matchPersonnummer, matchFastighet), buildApplicantContext(applicantName, details, matchPersonnummer, matchFastighet));
 	}
 
-	private static String buildIdentityCheck(final boolean matchPersonnummer) {
+	private static String buildIdentityCheck(final boolean matchPersonnummer, final boolean matchFastighet) {
+		final var matched = new ArrayList<String>();
+		matched.add("namn");
 		if (matchPersonnummer) {
-			return "Namn, personnummer och fastighet/adress i dokumentet stämmer med sökanden.";
+			matched.add("personnummer");
 		}
-		return "Namn och fastighet/adress i dokumentet stämmer med sökanden. (Detta underlag innehåller inte personnummer — kontrollera inte personnummer.)";
+		if (matchFastighet) {
+			matched.add("fastighet/adress");
+		}
+
+		final var absent = new ArrayList<String>();
+		if (!matchPersonnummer) {
+			absent.add("personnummer");
+		}
+		if (!matchFastighet) {
+			absent.add("fastighet/adress");
+		}
+
+		final var check = new StringBuilder("De uppgifter som dokumentet innehåller (")
+			.append(String.join(", ", matched))
+			.append(") stämmer med sökanden.");
+		if (!absent.isEmpty()) {
+			final var absentJoined = String.join(" och ", absent);
+			check.append(" (Denna dokumenttyp innehåller normalt inte ").append(absentJoined)
+				.append(" — kontrollera och bedöm därför inte ").append(absentJoined).append(".)");
+		}
+		return check.toString();
 	}
 
-	private static String buildApplicantContext(final String applicantName, final EgensotningDetailsEntity details, final boolean includePersonnummer) {
+	private static String buildApplicantContext(final String applicantName, final EgensotningDetailsEntity details,
+		final boolean includePersonnummer, final boolean includeFastighet) {
 		final var context = new StringBuilder("- Namn: ").append(applicantName);
 		if (includePersonnummer) {
 			context.append("\n- Personnummer: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getPersonnummer).orElse(UNKNOWN));
+		}
+		if (!includeFastighet) {
+			return context.toString();
 		}
 		context.append("\n- Fastighet: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getFastighetsbeteckning).orElse(UNKNOWN));
 		context.append("\n- Adress: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getPropertyAddress).orElse(UNKNOWN));
