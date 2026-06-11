@@ -36,8 +36,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  * Validates the two egensotning attachments with the Eneo LLM platform. Each document type is sent
  * to its own purpose-built Eneo assistant — the brandskyddskontroll PDF to the brandskyddskontroll
  * assistant, the utbildningsintyg PDF to the egensotning assistant — and each assistant judges
- * whether the document is the right type, valid, and matches the applicant (name / personnummer /
- * fastighet). The overall verdict is the AND of both.
+ * whether the document is the right type, valid, and matches the applicant. The identity match is
+ * name + fastighet/adress for the brandskyddskontroll underlag (which carries no personnummer) and
+ * additionally personnummer for the utbildningsintyg. The overall verdict is the AND of both.
  *
  * The verdict gates auto-approval. A non-valid verdict, an unparseable answer, or an Eneo outage all
  * resolve to {@code valid=false} (non-blocking) so the BPMN diverts the errand to manual review —
@@ -93,23 +94,26 @@ public class EgensotningDocumentValidationService {
 			return persist(details, DocumentValidationResult.create().withValid(false).withReason(REASON_MISSING_DOCUMENTS));
 		}
 
-		final var applicantContext = buildApplicantContext(municipalityId, namespace, errandId, details);
+		final var applicantName = resolveApplicantName(municipalityId, namespace, errandId);
 
 		// brandskyddskontroll PDF → brandskyddskontroll assistant; utbildningsintyg PDF → egensotning assistant.
-		final var brandResult = validateOne(eneoProperties.assistants().brandskyddskontroll(), DOC_BRANDSKYDDSKONTROLL, applicantContext, brandskyddskontroll.get());
-		final var utbResult = validateOne(eneoProperties.assistants().egensotning(), DOC_UTBILDNINGSINTYG, applicantContext, utbildningsintyg.get());
+		// BSK-underlaget innehåller inga personnummer → matcha endast namn + fastighet/adress för det dokumentet.
+		final var brandResult = validateOne(eneoProperties.assistants().brandskyddskontroll(), DOC_BRANDSKYDDSKONTROLL,
+			buildPrompt(DOC_BRANDSKYDDSKONTROLL, applicantName, details, false), brandskyddskontroll.get());
+		final var utbResult = validateOne(eneoProperties.assistants().egensotning(), DOC_UTBILDNINGSINTYG,
+			buildPrompt(DOC_UTBILDNINGSINTYG, applicantName, details, true), utbildningsintyg.get());
 
 		return persist(details, combine(brandResult, utbResult));
 	}
 
 	private DocumentValidationResult validateOne(final UUID assistantId, final String documentLabel,
-		final String applicantContext, final AttachmentEntity attachment) {
+		final String prompt, final AttachmentEntity attachment) {
 		UUID uploadedFileId = null;
 		try {
 			final var file = new ByteArrayMultipartFile("upload_file", attachment.getFileName(), attachment.getMimeType(), readBytes(attachment));
 			uploadedFileId = eneoIntegration.uploadFile(file).getId();
 
-			final var request = new AskAssistant().question(buildPrompt(documentLabel, applicantContext)).files(List.of(uploadedFileId));
+			final var request = new AskAssistant().question(prompt).files(List.of(uploadedFileId));
 			final var answer = eneoIntegration.askAssistant(assistantId, request).getAnswer();
 
 			return parseVerdict(answer);
@@ -173,40 +177,53 @@ public class EgensotningDocumentValidationService {
 		return null;
 	}
 
-	private String buildApplicantContext(final String municipalityId, final String namespace, final String errandId, final EgensotningDetailsEntity details) {
-		final var applicantName = stakeholderService.readAll(municipalityId, namespace, errandId).stream()
+	private String resolveApplicantName(final String municipalityId, final String namespace, final String errandId) {
+		return stakeholderService.readAll(municipalityId, namespace, errandId).stream()
 			.filter(stakeholder -> EgensotningModuleConfig.ROLE_APPLICANT.equals(stakeholder.getRole()))
 			.findFirst()
 			.map(stakeholder -> (Optional.ofNullable(stakeholder.getFirstName()).orElse("") + " " + Optional.ofNullable(stakeholder.getLastName()).orElse("")).trim())
 			.filter(name -> !name.isBlank())
 			.orElse(UNKNOWN);
-
-		return """
-			- Namn: %s
-			- Personnummer: %s
-			- Fastighet: %s
-			- Adress: %s""".formatted(
-			applicantName,
-			Optional.ofNullable(details).map(EgensotningDetailsEntity::getPersonnummer).orElse(UNKNOWN),
-			Optional.ofNullable(details).map(EgensotningDetailsEntity::getFastighetsbeteckning).orElse(UNKNOWN),
-			Optional.ofNullable(details).map(EgensotningDetailsEntity::getPropertyAddress).orElse(UNKNOWN));
 	}
 
-	private String buildPrompt(final String documentLabel, final String applicantContext) {
+	/**
+	 * Builds the per-document Eneo prompt. {@code matchPersonnummer} controls whether the identity
+	 * check (and the supplied applicant context) includes personnummer — the brandskyddskontroll
+	 * underlag carries no personnummer, so it is matched on name + fastighet/adress only, while the
+	 * utbildningsintyg is additionally matched on personnummer.
+	 */
+	private String buildPrompt(final String documentLabel, final String applicantName, final EgensotningDetailsEntity details, final boolean matchPersonnummer) {
 		return """
 			Validera det bifogade dokumentet i en ansökan om egensotning. Förväntad dokumenttyp: %s.
 
 			Kontrollera att:
 			1. Dokumentet är av rätt typ (%s).
 			2. Dokumentet är giltigt och fullständigt.
-			3. Namn, personnummer och fastighet/adress i dokumentet stämmer med sökanden.
+			3. %s
 
 			Sökandens uppgifter:
 			%s
 
 			Svara ENDAST med ett JSON-objekt på formen:
 			{"valid": boolean, "documentTypeOk": boolean, "identityMatch": boolean, "reason": "kort motivering på svenska"}
-			Sätt "valid" till true endast om alla tre kontrollerna är uppfyllda.""".formatted(documentLabel, documentLabel, applicantContext);
+			Sätt "valid" till true endast om alla tre kontrollerna är uppfyllda.""".formatted(documentLabel, documentLabel, buildIdentityCheck(matchPersonnummer), buildApplicantContext(applicantName, details, matchPersonnummer));
+	}
+
+	private static String buildIdentityCheck(final boolean matchPersonnummer) {
+		if (matchPersonnummer) {
+			return "Namn, personnummer och fastighet/adress i dokumentet stämmer med sökanden.";
+		}
+		return "Namn och fastighet/adress i dokumentet stämmer med sökanden. (Detta underlag innehåller inte personnummer — kontrollera inte personnummer.)";
+	}
+
+	private static String buildApplicantContext(final String applicantName, final EgensotningDetailsEntity details, final boolean includePersonnummer) {
+		final var context = new StringBuilder("- Namn: ").append(applicantName);
+		if (includePersonnummer) {
+			context.append("\n- Personnummer: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getPersonnummer).orElse(UNKNOWN));
+		}
+		context.append("\n- Fastighet: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getFastighetsbeteckning).orElse(UNKNOWN));
+		context.append("\n- Adress: ").append(Optional.ofNullable(details).map(EgensotningDetailsEntity::getPropertyAddress).orElse(UNKNOWN));
+		return context.toString();
 	}
 
 	private Optional<AttachmentEntity> findAttachment(final String errandId, final String category) {
